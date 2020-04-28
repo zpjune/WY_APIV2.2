@@ -1,0 +1,6 @@
+{
+  "DataType": "MYSQL",
+  "MYSQL": "server=114.115.142.34;user id=root;pwd=123456;database=pfhouse;SslMode = none;Charset=utf8",
+  "SQLSERVER": "server=114.115.142.34;user id=sa;pwd=Lhsm7800525;database=PFHouse",
+  "ORACLE": "server=localhost;user id=root;pwd=root;database=uidp;SslMode = none;Charset=utf8"
+}

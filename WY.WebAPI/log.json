@@ -1,0 +1,6 @@
+{
+  "DataType": "MYSQL", //数据库类型 MYSQL ， SQLSERVER
+  "MYSQL": "server=114.115.142.34;user id=root;pwd=123456;database=pfhouse;SslMode = none;Charset=utf8",
+  "SQLSERVER": "server=114.115.142.34;user id=sa;pwd=Lhsm7800525;database=PFHouse",
+  "ORACLE": "server=localhost;user id=sa;pwd=123456;database=uidp;"
+}
