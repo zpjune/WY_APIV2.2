@@ -14,7 +14,7 @@ namespace WY.WebAPI.Controllers.wy
     {
         CheckResultModule CRM = new CheckResultModule();
         [HttpGet("GetCheckResult")]
-        public IActionResult GetCheckResult(string year, string FWBH, string RWMC, int page, int limit) => Ok(CRM.GetCheckResult(year, FWBH, RWMC, page, limit));
+        public IActionResult GetCheckResult(string year, string FWBH, string RWMC,string JCJG,int page, int limit) => Ok(CRM.GetCheckResult(year, FWBH, RWMC,JCJG,page, limit));
 
         [HttpGet("GetTaskProcessInfo")]
         public IActionResult GetTaskProcessInfo(string year, string RWMC, string RWBH, int page, int limit) => Ok(CRM.GetTaskProcessInfo(year, RWMC, RWBH, page, limit));

@@ -20,20 +20,26 @@ namespace WY.WebAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            CurrentEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
 
+        private IHostingEnvironment CurrentEnvironment { get; set; }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(
                  opt =>
                  {
-                     opt.UseCentralRoutePrefix(new RouteAttribute("WY_API/"));
+                     if (!CurrentEnvironment.IsDevelopment())
+                     {
+                         opt.UseCentralRoutePrefix(new RouteAttribute("WY_API/"));
+                     }
+                     //opt.UseCentralRoutePrefix(new RouteAttribute("WY_API/"));
                      //opt.UseCentralRoutePrefix(new RouteAttribute("api/[controller]/[action]"));
 
                  }).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver()

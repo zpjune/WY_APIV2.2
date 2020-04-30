@@ -10,15 +10,24 @@ namespace UIDP.ODS.wy
     {
         DBTool db = new DBTool("");
 
-        public DataTable GetCheckResult(string year,string FWBH,string RWMC)
+        public DataTable GetCheckResult(string year,string FWBH,string RWMC,string JCJG)
         {
-            string sql = "select a.*,e.FWBH,f.ZHXM from wy_check_result a" +
+            string sql = "select a.RESULT_ID,a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,g.ZHXM,GROUP_CONCAT(h.`Name`) AS JCQY,j.Name" +
+                " from wy_check_result a" +
                 " join wy_check_task b on a.TASK_ID=b.TASK_ID AND b.IS_DELETE=0" +
-                " join wy_checkPlan_detail c on b.PLAN_DETAIL_ID=c.PLAN_DETAIL_ID AND c.IS_DELETE=0" +
-                " join wy_checkPlan d on c.PLAN_ID=d.PLAN_ID AND d.IS_DELETE=0" +
-                " join wy_houseinfo e on a.FWID=e.FWID AND e.IS_DELETE=0" +
-                " join wy_shopinfo f on e.CZ_SHID=f.CZ_SHID AND f.IS_DELETE=0" +
-                " where a.IS_DELETE=0 AND d.JHND='"+year+"'";
+                " join wy_map_checkplandetail c ON b.TASK_ID=c.TASK_ID" +
+                " JOIN wy_checkPlan_detail d ON c.PLAN_DETAIL_ID = d.PLAN_DETAIL_ID AND d.IS_DELETE = 0" +
+                " JOIN wy_checkPlan e ON d.PLAN_ID = e.PLAN_ID AND e.IS_DELETE = 0" +
+                " JOIN wy_houseinfo f ON a.FWID = f.FWID AND f.IS_DELETE = 0" +
+                " JOIN wy_shopinfo g ON f.CZ_SHID = g.CZ_SHID AND g.IS_DELETE = 0 " +
+                " JOIN v_taskregion h ON h.PLAN_DETAIL_ID = d.PLAN_DETAIL_ID" +
+                " JOIN wy_region_director i ON a.JCR = i.WX_OPEN_ID" +
+                " JOIN tax_dictionary j on f.SSQY=j.Code AND j.ParentCode='SSQY'" +
+                " where a.IS_DELETE=0";
+            if (!string.IsNullOrEmpty(year))
+            {
+                sql += " AND e.JHND='" + year + "'";
+            }
             if (!string.IsNullOrEmpty(FWBH))
             {
                 sql += " AND e.FWBH='" + FWBH + "'";
@@ -27,6 +36,12 @@ namespace UIDP.ODS.wy
             {
                 sql += " AND b.RWMC like'%" + RWMC + "%'";
             }
+            if (!string.IsNullOrEmpty(JCJG))
+            {
+                sql += " AND a.JCJG=" + JCJG;
+            }
+            sql += " GROUP BY a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,g.ZHXM,a.RESULT_ID,j.Name";
+            sql += " ORDER BY b.RWBH,j.Name";
             return db.GetDataTable(sql);
         }
 

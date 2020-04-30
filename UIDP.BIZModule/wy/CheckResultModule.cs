@@ -11,17 +11,17 @@ namespace UIDP.BIZModule.wy
     {
         CheckResultDB db = new CheckResultDB();
 
-        public Dictionary<string,object> GetCheckResult(string year, string FWBH, string RWMC,int page,int limit)
+        public Dictionary<string,object> GetCheckResult(string year, string FWBH, string RWMC,string JCJG,int page,int limit)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                DataTable dt = db.GetCheckResult(year, FWBH, RWMC);
+                DataTable dt = db.GetCheckResult(year, FWBH, RWMC,JCJG);
                 if (dt.Rows.Count > 0)
                 {
                     r["message"] = "成功";
                     r["code"] = 2000;
-                    r["itmes"] = KVTool.GetPagedTable(dt, page, limit);
+                    r["items"] = KVTool.GetPagedTable(dt, page, limit);
                     r["total"] = dt.Rows.Count;                   
                 }
                 else

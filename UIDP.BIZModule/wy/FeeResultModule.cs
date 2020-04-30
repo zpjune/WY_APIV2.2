@@ -1,16 +1,38 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using House.IService.Common.Message;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using UIDP.ODS.wy;
 using UIDP.UTILITY;
+using UIDP.UTILITY.JWTHelper;
 
 namespace UIDP.BIZModule.wy
 {
     public class FeeResultModule
     {
         FeeResultDB db = new FeeResultDB();
+
+        public static IConfiguration Configuration { get; set; }
+        public string url;
+        public FeeResultModule()
+        {
+            url = GetSendUrl();
+        }
+
+        public string GetSendUrl()
+        {
+            var builder = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json");
+            Configuration = builder.Build();
+            return Configuration.GetSection("msgUrl").GetSection("url").Value;
+        }
 
         public Dictionary<string,object> GetFeeResult(string JFLX, string FWMC, string FWBH, string JFSTATUS,int page,int limit)
         {
@@ -150,8 +172,8 @@ namespace UIDP.BIZModule.wy
                             sql += GetSqlStr(0, 1);//是否通知 0 否
                             sql += GetSqlStr(0, 1);//催缴次数 0 
                             sql += GetSqlStr(dr["YXQZ"]);//缴费日期有效期起 最新一条已缴费记录的有效期止就是新一条的有效期起
-                            sql += GetSqlStr(EndTime);
-                            sql += GetSqlStr(datetime);
+                            sql += GetSqlStr(EndTime.ToString("yyyyMMdd"));
+                            sql += GetSqlStr(datetime.ToString("yyyyMMdd"));
                             sql += GetSqlStr(dr["CZ_SHID"]);
                             sql += GetSqlStr(dr["OPEN_ID"]);
                             sql += GetSqlStr(0, 1);
@@ -199,9 +221,9 @@ namespace UIDP.BIZModule.wy
                         sql += GetSqlStr(0, 1);//缴费状态 0 否
                         sql += GetSqlStr(0, 1);//是否通知 0 否
                         sql += GetSqlStr(0, 1);//催缴次数 0 
-                        sql += GetSqlStr(JZR);//首次提醒的开始时间应该是根据物业缴费方式和物业基准日期推算出的一个日子
-                        sql += GetSqlStr(EndTime);//结束时间应该为根据缴费方式和开始时间推算出的一个日子
-                        sql += GetSqlStr(datetime);
+                        sql += GetSqlStr(JZR.ToString("yyyyMMdd"));//首次提醒的开始时间应该是根据物业缴费方式和物业基准日期推算出的一个日子
+                        sql += GetSqlStr(EndTime.ToString("yyyyMMdd"));//结束时间应该为根据缴费方式和开始时间推算出的一个日子
+                        sql += GetSqlStr(datetime.ToString("yyyyMMdd"));
                         sql += GetSqlStr(dr["CZ_SHID"]);
                         sql += GetSqlStr(dr["OPEN_ID"]);
                         sql += GetSqlStr(0, 1);
@@ -214,11 +236,28 @@ namespace UIDP.BIZModule.wy
             return list;
         }
 
-        public Dictionary<string,object> ConfirmNotificationList(List<Dictionary<string,object>> list)
+        public Dictionary<string, object> ConfirmNotificationList(List<Dictionary<string,object>> list)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
+                MsgHelper mh = new MsgHelper();
+                var builder = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json");
+                Configuration = builder.Build();
+                string templateid = Configuration.GetSection("template").GetSection("confirm").Value;
+                foreach (Dictionary<string, object> d in list)
+                {
+                    if (d["OPEN_ID"].ToString() != "")
+                    {
+                        Task.Run(async () =>
+                        {
+                           await mh.SendMsg(url, d["OPEN_ID"].ToString(), d, templateid);
+                        });
+                    }
+                    
+                };       
                 //do something 需要加入缴费通知
                 string b = db.ConfirmNotificationList(list);
                 if (b == "")
@@ -246,6 +285,23 @@ namespace UIDP.BIZModule.wy
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
+                MsgHelper mh = new MsgHelper();
+                var builder = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json");
+                Configuration = builder.Build();
+                string templateid = Configuration.GetSection("template").GetSection("PushNotification").Value;
+                foreach (Dictionary<string, object> d in list)
+                {
+                    if (d["OPEN_ID"].ToString() != "")
+                    {
+                        Task.Run(async () =>
+                        {
+                            await mh.SendMsg(url, d["OPEN_ID"].ToString(), d, templateid);
+                        });
+                    }
+
+                };
                 //do something 需要加入推送欠费通知
                 string b = db.PushNotification(list);
                 if (b == "")
@@ -353,6 +409,23 @@ namespace UIDP.BIZModule.wy
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
+                MsgHelper mh = new MsgHelper();
+                var builder = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json");
+                Configuration = builder.Build();
+                string templateid = Configuration.GetSection("template").GetSection("ConfirmReciveMoney").Value;
+                foreach (Dictionary<string, object> d in list)
+                {
+                    if (d["OPEN_ID"].ToString() != "")
+                    {
+                        Task.Run(async () =>
+                        {
+                            await mh.SendMsg(url, d["OPEN_ID"].ToString(), d, templateid);
+                        });
+                    }
+
+                };
                 //do something 需要加入确认收据推送功能
                 string b = db.ConfirmReciveMoney(list);
                 if (b == "")
