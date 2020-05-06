@@ -249,7 +249,7 @@ namespace UIDP.ODS.wy
                 LeaseSql += "ZLYS=" + GetSqlStr(d["ZLYS"], 1);
                 LeaseSql += "ZJJFFS=" + GetSqlStr(d["ZJJFFS"]);
                 LeaseSql += "BJR=" + GetSqlStr(d["userId"]);
-                LeaseSql += "BJSJ=" + GetSqlStr(DateTime.Now);
+                LeaseSql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
                 
                 LeaseSql = LeaseSql.TrimEnd(',') + " WHERE LEASE_ID='" + d["LEASE_ID"] + "'";
                 list.Add(LeaseSql);
@@ -263,7 +263,7 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += "TELEPHONE=" + GetSqlStr(d["TELEPHONE"]);
                 ShopInfoSql += "E_MAIL=" + GetSqlStr(d["E_MAIL"]);
                 ShopInfoSql += "BJR=" + GetSqlStr(d["userId"]);
-                ShopInfoSql += "BJSJ=" + GetSqlStr(DateTime.Now);
+                ShopInfoSql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
                 ShopInfoSql += "SHOP_NAME=" + GetSqlStr(d["SHOP_NAME"]);
                 ShopInfoSql += "SHOPBH=" + GetSqlStr(d["SHOPBH"]);
                 ShopInfoSql += "ZHLX=" + GetSqlStr(d["ZHLX"], 1);
@@ -301,7 +301,7 @@ namespace UIDP.ODS.wy
                         SuletSql += "TELEPHONE=" + GetSqlStr(d["TELEPHONE1"]);
                         SuletSql += "E_MAIL=" + GetSqlStr(d["E_MAIL1"]);
                         SuletSql += "BJR=" + GetSqlStr(d["userId"]);
-                        SuletSql += "BJSJ=" + GetSqlStr(DateTime.Now);
+                        SuletSql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
                         SuletSql += "SHOP_NAME=" + GetSqlStr(d["SHOP_NAME1"]);
                         SuletSql += "SHOPBH=" + GetSqlStr(d["SHOPBH1"]);
                         SuletSql += "ZHLX=" + GetSqlStr(d["ZHLX1"], 1);
@@ -323,7 +323,7 @@ namespace UIDP.ODS.wy
                         SuletSql += GetSqlStr(d["E_MAIL1"]);
                         SuletSql += GetSqlStr(0, 1);
                         SuletSql += GetSqlStr(d["userId"]);
-                        SuletSql += GetSqlStr(DateTime.Now);
+                        SuletSql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
                         SuletSql += GetSqlStr(d["SHOP_NAME1"]);
                         SuletSql += GetSqlStr(d["SHOPBH1"]);
                         SuletSql += GetSqlStr(d["ZHLX1"], 1);
@@ -349,7 +349,7 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += "TELEPHONE=" + GetSqlStr(d["TELEPHONE"]);
                 ShopInfoSql += "E_MAIL=" + GetSqlStr(d["E_MAIL"]);
                 ShopInfoSql += "BJR=" + GetSqlStr(d["userId"]);
-                ShopInfoSql += "BJSJ=" + GetSqlStr(DateTime.Now);
+                ShopInfoSql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
                 ShopInfoSql += "SHOP_NAME=" + GetSqlStr(d["SHOP_NAME"]);
                 ShopInfoSql += "SHOPBH=" + GetSqlStr(d["SHOPBH"]);
                 ShopInfoSql += "ZHLX=" + GetSqlStr(d["ZHLX"], 1);
@@ -429,7 +429,7 @@ namespace UIDP.ODS.wy
             NewShopInfoSql += GetSqlStr(d["E_MAIL1"]);
             NewShopInfoSql += GetSqlStr(0, 1);
             NewShopInfoSql += GetSqlStr(d["userId"]);
-            NewShopInfoSql += GetSqlStr(DateTime.Now);
+            NewShopInfoSql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             NewShopInfoSql += GetSqlStr(d["SHOP_NAME1"]);
             NewShopInfoSql += GetSqlStr(d["SHOPBH1"]);
             NewShopInfoSql += GetSqlStr(d["ZHLX1"], 1);
@@ -798,7 +798,7 @@ namespace UIDP.ODS.wy
             LeaseSql += GetSqlStr(d["ZLYS"],1);
             LeaseSql += GetSqlStr(d["ZJJFFS"]);
             LeaseSql += GetSqlStr(d["userId"]);
-            LeaseSql += GetSqlStr(DateTime.Now);
+            LeaseSql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             LeaseSql += GetSqlStr(0,1);
             LeaseSql += GetSqlStr(d["CZ_SHID"]);
             LeaseSql = LeaseSql.TrimEnd(',') + ")";

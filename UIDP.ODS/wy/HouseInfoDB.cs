@@ -64,7 +64,7 @@ namespace UIDP.ODS.wy
             sql += GetSqlStr(d["WATER_NUMBER"]);
             sql += GetSqlStr(d["ELE_NUMBER"]);
             sql += GetSqlStr(d["userId"]);
-            sql += GetSqlStr(DateTime.Now);
+            sql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             sql += GetSqlStr(d["ZFK"],1);
             sql += GetSqlStr(d["CID"], 1);
             sql += GetSqlStr(d["ORG_CODE"], 1);
@@ -87,7 +87,7 @@ namespace UIDP.ODS.wy
             sql += "WATER_NUMBER=" + GetSqlStr(d["WATER_NUMBER"]);
             sql += "ELE_NUMBER=" + GetSqlStr(d["ELE_NUMBER"]);
             sql += "BJR=" + GetSqlStr(d["BJR"]);
-            sql += "BJSJ=" + GetSqlStr(DateTime.Now);
+            sql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             sql += "ZFK=" + GetSqlStr(d["ZFK"],1);
             sql += "CID=" + GetSqlStr(d["CID"]);
             sql = sql.TrimEnd(',');
@@ -125,7 +125,7 @@ namespace UIDP.ODS.wy
                 sql += GetSqlStr(0, 1);
                 sql += GetSqlStr(dr["电表采集器ID"]);
                 sql += GetSqlStr(userinfo["userId"]);
-                sql += GetSqlStr(DateTime.Now);
+                sql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
                 sql += GetSqlStr(userinfo["ORG_CODE"]);
                 sql = sql.TrimEnd(',') + ")";
                 list.Add(sql);

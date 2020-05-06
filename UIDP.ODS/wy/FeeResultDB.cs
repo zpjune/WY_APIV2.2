@@ -95,7 +95,7 @@ namespace UIDP.ODS.wy
             List<string> list = new List<string>();
             foreach (Dictionary<string, object> d in datalist)
             {
-                string sql = "UPDATE wy_pay_record SET JFCS=(JFCS+1),JFRQ='" + DateTime.Now + "'" +
+                string sql = "UPDATE wy_pay_record SET JFCS=(JFCS+1),JFRQ='" + DateTime.Now.ToString("yyyyMMdd") + "'" +
                " WHERE RECORD_ID='" + d["RECORD_ID"] + "'";
                 list.Add(sql);
             }

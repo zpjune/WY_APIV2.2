@@ -43,7 +43,7 @@ namespace UIDP.ODS.wy
             sql += GetSqlStr(d["RWFW"]);
             sql += GetSqlStr(d["REMARK"]);
             sql += GetSqlStr(d["userId"]);
-            sql += GetSqlStr(DateTime.Now);
+            sql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             sql += GetSqlStr(0,1);
             sql += GetSqlStr(0, 1);
             sql = sql.TrimEnd(',') + ")";
@@ -72,7 +72,7 @@ namespace UIDP.ODS.wy
             Updatesql += "RWFW=" + GetSqlStr(d["RWFW"]);
             Updatesql += "REMARK=" + GetSqlStr(d["REMARK"]);
             Updatesql += "BJR=" + GetSqlStr(d["userId"]);
-            Updatesql += "BJSJ=" + GetSqlStr(DateTime.Now);
+            Updatesql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             Updatesql = Updatesql.TrimEnd(',');
             Updatesql += " WHERE TASK_ID='" + d["TASK_ID"] + "'";
             sqllist.Add(Updatesql);

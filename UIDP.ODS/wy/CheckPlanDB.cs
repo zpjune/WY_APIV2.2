@@ -45,7 +45,7 @@ namespace UIDP.ODS.wy
             CheckPlanSql += GetSqlStr(d["JHSJ"]);
             CheckPlanSql += GetSqlStr(d["REMARK"]);
             CheckPlanSql += GetSqlStr(d["userId"]);
-            CheckPlanSql += GetSqlStr(DateTime.Now);
+            CheckPlanSql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             CheckPlanSql += GetSqlStr(0,1);
             CheckPlanSql = CheckPlanSql.TrimEnd(',') + ")";
             SqlList.Add(CheckPlanSql);
@@ -76,7 +76,7 @@ namespace UIDP.ODS.wy
                     DetailSql += GetSqlStr(CheckPlanDetail["JCLX"]);
                     DetailSql += GetSqlStr(CheckPlanDetail["PCCS"], 1);
                     DetailSql += GetSqlStr(d["userId"]);
-                    DetailSql += GetSqlStr(DateTime.Now);
+                    DetailSql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
                     DetailSql += GetSqlStr(0, 1);
                     DetailSql = DetailSql.TrimEnd(',') + ")";
                     SqlList.Add(DetailSql);
@@ -96,7 +96,7 @@ namespace UIDP.ODS.wy
             CheckPlanSql += "JHSJ=" + GetSqlStr(d["JHSJ"]);
             CheckPlanSql += "REMARK=" + GetSqlStr(d["REMARK"]);
             CheckPlanSql += "BJR=" + GetSqlStr(d["userId"]);
-            CheckPlanSql += "BJSJ=" + GetSqlStr(DateTime.Now);
+            CheckPlanSql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             CheckPlanSql += "IS_DELETE=" + GetSqlStr(0,1);
             CheckPlanSql = CheckPlanSql.TrimEnd(',');
             CheckPlanSql += " WHERE PLAN_ID='" + d["PLAN_ID"] + "'";
@@ -130,7 +130,7 @@ namespace UIDP.ODS.wy
                         DetailSql += GetSqlStr(CheckPlanDetail["JCLX"]);
                         DetailSql += GetSqlStr(CheckPlanDetail["PCCS"], 1);
                         DetailSql += GetSqlStr(d["userId"]);
-                        DetailSql += GetSqlStr(DateTime.Now);
+                        DetailSql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
                         DetailSql += GetSqlStr(0, 1);
                         DetailSql = DetailSql.TrimEnd(',') + ")";
                         SqlList.Add(DetailSql);
@@ -163,7 +163,7 @@ namespace UIDP.ODS.wy
                         DetailSql += " JCLX=" + GetSqlStr(CheckPlanDetail["JCLX"]);
                         DetailSql += " PCCS=" + GetSqlStr(CheckPlanDetail["PCCS"], 1);
                         DetailSql += " BJR=" + GetSqlStr(d["userId"]);
-                        DetailSql += " BJSJ=" + GetSqlStr(DateTime.Now);
+                        DetailSql += " BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
                         DetailSql = DetailSql.TrimEnd(',') + " where PLAN_DETAIL_ID='" + CheckPlanDetail["PLAN_DETAIL_ID"] + "'";
                         SqlList.Add(DetailSql);
                     }

@@ -34,7 +34,7 @@ namespace UIDP.ODS.wy
             sql += GetSqlStr(d["FZR"]);
             sql += GetSqlStr(d["MOBILE"]);
             sql += GetSqlStr(d["userId"]);
-            sql += GetSqlStr(DateTime.Now);
+            sql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             sql += GetSqlStr(0,1);
             sql = sql.TrimEnd(',') + ")";
             return db.ExecutByStringResult(sql);
@@ -46,7 +46,7 @@ namespace UIDP.ODS.wy
             sql += "FZR=" + GetSqlStr(d["FZR"]);
             sql += "MOBILE=" + GetSqlStr(d["MOBILE"]);
             sql += "BJR=" + GetSqlStr(d["userId"]);
-            sql += "BJSJ=" + GetSqlStr(DateTime.Now);
+            sql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             sql = sql.TrimEnd(',');
             sql += " WHERE RD_ID='" + d["RD_ID"] + "'";
             return db.ExecutByStringResult(sql);
