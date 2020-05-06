@@ -50,7 +50,7 @@ namespace UIDP.BIZModule
         public Dictionary<string,object> editConfig(Dictionary<string,object> d)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
-            d["S_UpdateDate"] = DateTime.Now;
+            d["S_UpdateDate"] = DateTime.Now.ToString("yyyy-MM-dd");
             try
             {
                 DataTable dt = db.judgeEditTaxLevel(d);
@@ -137,7 +137,7 @@ namespace UIDP.BIZModule
         public Dictionary<string, object> createConfig(Dictionary<string, object> d)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
-            d["S_CreateDate"] = DateTime.Now;
+            d["S_CreateDate"] = DateTime.Now.ToString("yyyy-MM-dd");
             d["S_Id"] = Guid.NewGuid();
             try
             {
@@ -216,7 +216,7 @@ namespace UIDP.BIZModule
         public Dictionary<string, object> createDecreasingConfig(Dictionary<string, object> d)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
-            d["S_CreateDate"] = DateTime.Now;
+            d["S_CreateDate"] = DateTime.Now.ToString("yyyy-MM-dd");
             d["S_Id"] = Guid.NewGuid();
             try
             {
@@ -277,7 +277,7 @@ namespace UIDP.BIZModule
         public Dictionary<string, object> editDecreasingConfig(Dictionary<string, object> d)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
-            d["S_UpdateDate"] = DateTime.Now;
+            d["S_UpdateDate"] = DateTime.Now.ToString("yyyy-MM-dd");
             d["S_OrgCode"] = "";
             d["S_OrgName"] = "";
             try
@@ -373,7 +373,7 @@ namespace UIDP.BIZModule
             Dictionary<string, object> d = new Dictionary<string, object>();
             d = arr[arr.Count - 1];
             arr.RemoveAt(arr.Count - 1);
-            d["S_UpdateDate"] = DateTime.Now;
+            d["S_UpdateDate"] = DateTime.Now.ToString("yyyy-MM-dd");
             try
             {
                 string b = db.updateTaxComputeconfig(arr,d);

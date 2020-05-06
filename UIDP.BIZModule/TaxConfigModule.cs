@@ -59,7 +59,7 @@ namespace UIDP.BIZModule
         public Dictionary<string,object> editNode(Dictionary<string,object> d)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
-            d["S_UpdateDate"] = DateTime.Now;
+            d["S_UpdateDate"] = DateTime.Now.ToString("yyyy-MM-dd") ;
             d["S_UpdateBy"] = d["username"];
             try
             {
@@ -86,7 +86,7 @@ namespace UIDP.BIZModule
         public Dictionary<string,object> createNode(Dictionary<string,object> d)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
-            d["S_CreateDate"] = DateTime.Now;
+            d["S_CreateDate"] = DateTime.Now.ToString("yyyy-MM-dd");
             d["S_CreateBy"] = d["username"];
             d["S_Id"] = Guid.NewGuid();
             try
