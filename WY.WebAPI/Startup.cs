@@ -42,8 +42,13 @@ namespace WY.WebAPI
                      //opt.UseCentralRoutePrefix(new RouteAttribute("WY_API/"));
                      //opt.UseCentralRoutePrefix(new RouteAttribute("api/[controller]/[action]"));
 
-                 }).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver()
-                ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                 })
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+                });
             services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(x =>
             {
 
