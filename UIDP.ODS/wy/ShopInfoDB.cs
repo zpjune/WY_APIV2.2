@@ -75,7 +75,7 @@ namespace UIDP.ODS.wy
             string FEE_ID = Guid.NewGuid().ToString();//物业费ID
             string LEASE_ID = Guid.NewGuid().ToString();//租赁信息ID
             string SUBLET_ID = Guid.NewGuid().ToString();//转租用户的ID
-            DateTime DateTime = DateTime.Now;//获取时间
+            string DateTime = System.DateTime.Now.ToString("yyyyMMdd");//获取时间
             string SuletSql = string.Empty;//转租语句
             string LeaseSql = string.Empty;//租赁语句
             string FeeSql = string.Empty;//物业费语句
@@ -366,7 +366,7 @@ namespace UIDP.ODS.wy
             string FeeSql = "UPDATE wy_RopertyCosts SET WYJFFS=" + GetSqlStr(d["WYJFFS"]);
             FeeSql += "WYJZSJ=" + GetSqlStr(d["WYJZSJ"]);
             //FeeSql += "WYJZ=" + GetSqlStr(d["WYJZ"], 1);
-            FeeSql += "WYJZ=(SELECT JZMJ* " + d["WYDJ"] +
+            FeeSql += "WYJZ=(SELECT JZMJ * " + d["WYDJ"] +
                 "FROM wy_houseinfo where FWID='" + d["FWID"] + "'),";
             FeeSql += "WYDJ=" + GetSqlStr(d["WYDJ"]);
             FeeSql = FeeSql.TrimEnd(',') + " WHERE FEE_ID='" + d["FEE_ID"] + "'";

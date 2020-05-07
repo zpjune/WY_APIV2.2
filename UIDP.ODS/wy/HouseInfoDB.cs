@@ -67,8 +67,8 @@ namespace UIDP.ODS.wy
             sql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             sql += GetSqlStr(d["ZFK"],1);
             sql += GetSqlStr(d["CID"], 1);
-            sql += GetSqlStr(d["ORG_CODE"], 1);
-            sql += GetSqlStr(0,1);
+            sql += GetSqlStr(0, 1);
+            sql += GetSqlStr(d["ORG_CODE"]);
             return db.ExecutByStringResult(sql.TrimEnd(',')+")");
         }
 

@@ -16,8 +16,8 @@ namespace WY.WebAPI.Controllers.wy
         [HttpGet("GetCheckResult")]
         public IActionResult GetCheckResult(string year, string FWBH, string RWMC,string JCJG,int page, int limit) => Ok(CRM.GetCheckResult(year, FWBH, RWMC,JCJG,page, limit));
 
-
-
+        [HttpGet("GetCheckResultDetail")]
+        public IActionResult GetCheckResultDetail(string RESULT_ID) => Ok(CRM.GetCheckResultDetail(RESULT_ID));
 
 
         [HttpGet("GetTaskProcessInfo")]

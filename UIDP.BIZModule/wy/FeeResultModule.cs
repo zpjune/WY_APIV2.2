@@ -249,11 +249,11 @@ namespace UIDP.BIZModule.wy
                 string templateid = Configuration.GetSection("template").GetSection("confirm").Value;
                 foreach (Dictionary<string, object> d in list)
                 {
-                    if (d["OPEN_ID"].ToString() != "")
+                    if (d["OPEN_ID"]!= null)
                     {
                         Task.Run(async () =>
                         {
-                           await mh.SendMsg(url, d["OPEN_ID"].ToString(), d, templateid);
+                           string str=await mh.SendMsg(url, d["OPEN_ID"].ToString(), d, templateid);
                         });
                     }
                     

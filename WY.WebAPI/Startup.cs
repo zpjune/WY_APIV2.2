@@ -43,12 +43,12 @@ namespace WY.WebAPI
                      //opt.UseCentralRoutePrefix(new RouteAttribute("api/[controller]/[action]"));
 
                  })
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options =>
-                {
+                .AddJsonOptions(options => {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    options.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.MicrosoftDateFormat;
                     options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
-                });
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(x =>
             {
 

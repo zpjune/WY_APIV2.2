@@ -45,6 +45,22 @@ namespace UIDP.ODS.wy
             return db.GetDataTable(sql);
         }
 
+        public DataTable GetCheckResultDetail(string RESULT_ID)
+        {
+            string sql = "SELECT DISTINCT e.`Name` AS DL,f.`Name` AS XL," +
+                " (CASE h.CHECK_DETAIL_RESULT WHEN 0 THEN '不合格' WHEN  1 THEN '合格' ELSE '未检查'END ) AS result" +
+                " FROM wy_check_task a " +
+                " JOIN wy_map_checkplandetail b ON a.TASK_ID=b.TASK_ID" +
+                " JOIN wy_checkplan_detail c ON b.PLAN_DETAIL_ID=c.PLAN_DETAIL_ID" +
+                " JOIN wy_map_region d ON c.PLAN_DETAIL_ID=d.PLAN_DETAIL_ID" +
+                " JOIN wy_task_detail_config e ON e.`Code`=c.JCLX AND e.ParentID is NULL" +
+                " JOIN wy_task_detail_config f ON f.ParentID=e.ID" +
+                " JOIN wy_check_result g ON a.TASK_ID=g.TASK_ID" +
+                " JOIN wy_check_result_detail h ON f.`Code`=h.DETAIL_CODE AND h.RESULT_ID=g.RESULT_ID" +
+                " AND g.RESULT_ID='" + RESULT_ID + "' ORDER BY e.`Name`";
+            return db.GetDataTable(sql);
+        }
+
        public DataTable GetTaskProcessInfo(string year,string RWMC,string RWBH)
         {
             string sql= "select *,(t.total-t.complete) AS incomplete from" +
