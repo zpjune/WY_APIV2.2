@@ -366,8 +366,8 @@ namespace UIDP.ODS.wy
             string FeeSql = "UPDATE wy_RopertyCosts SET WYJFFS=" + GetSqlStr(d["WYJFFS"]);
             FeeSql += "WYJZSJ=" + GetSqlStr(d["WYJZSJ"]);
             //FeeSql += "WYJZ=" + GetSqlStr(d["WYJZ"], 1);
-            FeeSql += "WYJZ=(SELECT JZMJ * " + d["WYDJ"] +
-                "FROM wy_houseinfo where FWID='" + d["FWID"] + "'),";
+            FeeSql += "WYJZ=(SELECT JZMJ *  " + d["WYDJ"] +
+                " FROM wy_houseinfo where FWID='" + d["FWID"] + "'),";
             FeeSql += "WYDJ=" + GetSqlStr(d["WYDJ"]);
             FeeSql = FeeSql.TrimEnd(',') + " WHERE FEE_ID='" + d["FEE_ID"] + "'";
             list.Add(FeeSql);
