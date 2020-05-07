@@ -37,7 +37,7 @@ namespace WY.WebAPI
                  {
                      if (!CurrentEnvironment.IsDevelopment())
                      {
-                         opt.UseCentralRoutePrefix(new RouteAttribute("WY_API/"));
+                         //opt.UseCentralRoutePrefix(new RouteAttribute("WY_API/"));
                      }
                      //opt.UseCentralRoutePrefix(new RouteAttribute("WY_API/"));
                      //opt.UseCentralRoutePrefix(new RouteAttribute("api/[controller]/[action]"));
@@ -74,26 +74,26 @@ namespace WY.WebAPI
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-      System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "ExcelModel")),
-                RequestPath = "/ExcelModel"
+      System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "WY_API/ExcelModel")),
+                RequestPath = "/WY_API/ExcelModel"
             });
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-       System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "ExcelModel/Templates")),
-                RequestPath = "/ExcelModel/Templates"
+       System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "WY_API/ExcelModel/Templates")),
+                RequestPath = "/WY_API/ExcelModel/Templates"
             });
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Files/export")),
-                RequestPath = "/Files/export"
+System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "WY_API/Files/export")),
+                RequestPath = "/WY_API/Files/export"
             });
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-               System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "UploadFiles/img")),
-                RequestPath = "/UploadFiles/img",
+               System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "WY_API/UploadFiles/img")),
+                RequestPath = "/WY_API/UploadFiles/img",
                 OnPrepareResponse = ctx =>
                 {
                     ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=36000");
@@ -102,8 +102,8 @@ System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Files/export"
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-               System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "UploadFiles/HouseImg")),
-                RequestPath = "/UploadFiles/HouseImg",
+               System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "WY_API/UploadFiles/HouseImg")),
+                RequestPath = "/WY_API/UploadFiles/HouseImg",
                 //OnPrepareResponse = ctx =>
                 //{
                 //    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=36000");
@@ -112,8 +112,8 @@ System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Files/export"
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-                System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "UploadFiles/notice")),
-                RequestPath = "/UploadFiles/notice",
+                System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "WY_API/UploadFiles/notice")),
+                RequestPath = "/WY_API/UploadFiles/notice",
                 OnPrepareResponse = ctx =>
                 {
                     ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=36000");

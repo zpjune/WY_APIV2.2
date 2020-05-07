@@ -131,7 +131,7 @@ namespace WY.WebAPI.Controllers.wy
                     String content = reader.ReadToEnd();
                     String name = file.FileName;
                     Random ran = new Random();
-                    String filename = System.IO.Directory.GetCurrentDirectory() + "\\Files\\" + DateTime.Now.ToString("yyyyMMddhhmmss") + ran.Next(100, 999).ToString() + name;
+                    String filename = System.IO.Directory.GetCurrentDirectory() + "/WY_API/Files/" + DateTime.Now.ToString("yyyyMMddhhmmss") + ran.Next(100, 999).ToString() + name;
                     if (System.IO.File.Exists(filename))
                     {
                         System.IO.File.Delete(filename);
@@ -182,7 +182,7 @@ namespace WY.WebAPI.Controllers.wy
                     String content = reader.ReadToEnd();
                     String name = file.FileName;
                     Random ran = new Random();
-                    String filename = System.IO.Directory.GetCurrentDirectory() + "\\Files\\" + DateTime.Now.ToString("yyyyMMddhhmmss") + ran.Next(100, 999).ToString() + name;
+                    String filename = System.IO.Directory.GetCurrentDirectory() + "/WY_API/Files/" + DateTime.Now.ToString("yyyyMMddhhmmss") + ran.Next(100, 999).ToString() + name;
                     if (System.IO.File.Exists(filename))
                     {
                         System.IO.File.Delete(filename);

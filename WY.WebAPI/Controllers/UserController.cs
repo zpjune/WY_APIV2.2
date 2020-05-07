@@ -434,7 +434,7 @@ namespace WY.WebAPI.Controllers
                     StreamReader reader = new StreamReader(file.OpenReadStream());
                     String content = reader.ReadToEnd();
                     String name = file.FileName;
-                    String filename = System.IO.Directory.GetCurrentDirectory() + "\\Files\\" + Guid.NewGuid() + name;
+                    String filename = System.IO.Directory.GetCurrentDirectory() + "/WY_API/Files/" + Guid.NewGuid() + name;
                     if (System.IO.File.Exists(filename))
                     {
                         System.IO.File.Delete(filename);

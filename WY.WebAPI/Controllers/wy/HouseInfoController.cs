@@ -38,7 +38,7 @@ namespace WY.WebAPI.Controllers.wy
                     string suffix = name.Substring(name.LastIndexOf("."), (name.Length - name.LastIndexOf("."))); //扩展名
                     //double filesize = Math.Round(Convert.ToDouble(file.Length / 1024.00 / 1024.00), 2);
                     string GUID = Guid.NewGuid().ToString();
-                    string filepath = @"\\UploadFiles\\HouseImg\\" + GUID + suffix;
+                    string filepath = @"/WY_API/UploadFiles/HouseImg/" + GUID + suffix;
                     string filename = System.IO.Directory.GetCurrentDirectory() + filepath;
                     if (System.IO.File.Exists(filename))
                     {
@@ -123,7 +123,7 @@ namespace WY.WebAPI.Controllers.wy
                     String content = reader.ReadToEnd();
                     String name = file.FileName;
                     Random ran = new Random();
-                    String filename = System.IO.Directory.GetCurrentDirectory() + "\\Files\\" + DateTime.Now.ToString("yyyyMMddhhmmss") + ran.Next(100, 999).ToString() + name;
+                    String filename = System.IO.Directory.GetCurrentDirectory() + "/WY_API/Files/" + DateTime.Now.ToString("yyyyMMddhhmmss") + ran.Next(100, 999).ToString() + name;
                     if (System.IO.File.Exists(filename))
                     {
                         System.IO.File.Delete(filename);

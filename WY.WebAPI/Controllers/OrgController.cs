@@ -320,7 +320,7 @@ namespace WY.WebAPI.Controllers
                 //HttpFileCollection
                 Stream aa = file.OpenReadStream();
                 Stream BB = dd[0].OpenReadStream();
-                string modePath = System.IO.Directory.GetCurrentDirectory() + "\\ExcelModel\\组织结构模板.xlsx";//原始文件
+                string modePath = System.IO.Directory.GetCurrentDirectory() + "/WY_API/ExcelModel/组织结构模板.xlsx";//原始文件
                 string mes = "";
                 DataTable dt = new DataTable();
                 ExcelTools tool = new ExcelTools();
@@ -355,8 +355,8 @@ namespace WY.WebAPI.Controllers
                         string fileExt = Path.GetExtension(formFile.FileName); //文件扩展名，含“.”
                         long fileSize = formFile.Length; //获得文件大小，以字节为单位
                         string newFileName = System.Guid.NewGuid().ToString() + fileExt; //随机生成新的文件名
-                        var filePath = contentRootPath + "\\files\\" + newFileName;
-                        string modePath = System.IO.Directory.GetCurrentDirectory() + "\\ExcelModel\\组织结构模板.xlsx";//原始文件
+                        var filePath = contentRootPath + "/WY_API/files/" + newFileName;
+                        string modePath = System.IO.Directory.GetCurrentDirectory() + "/WY_API/ExcelModel/组织结构模板.xlsx";//原始文件
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
                             await formFile.CopyToAsync(stream);
@@ -389,7 +389,7 @@ namespace WY.WebAPI.Controllers
                     StreamReader reader = new StreamReader(file.OpenReadStream());
                     String content = reader.ReadToEnd();
                     String name = file.FileName;
-                    String filename = System.IO.Directory.GetCurrentDirectory() + "\\Files\\" + Guid.NewGuid() + name;
+                    String filename = System.IO.Directory.GetCurrentDirectory() + "/WY_API/Files/" + Guid.NewGuid() + name;
                     if (System.IO.File.Exists(filename))
                     {
                         System.IO.File.Delete(filename);

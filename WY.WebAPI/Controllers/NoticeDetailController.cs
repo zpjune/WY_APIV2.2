@@ -113,10 +113,11 @@ namespace WY.WebAPI.Controllers
                     StreamReader reader = new StreamReader(file.OpenReadStream());
                     String content = reader.ReadToEnd();
                     String name = file.FileName;
+                    string Now = DateTime.Now.ToString("yyyymmddHHmmss");
                     string suffix = name.Substring(name.LastIndexOf("."), (name.Length - name.LastIndexOf("."))); //扩展名
                     double filesize = Math.Round(Convert.ToDouble(file.Length / 1024.00 / 1024.00), 2);
-                    string filepath = "/WY_API/UploadFiles/notice/" + DateTime.Now.ToString("yyyymmddHHmmss") +"-"+ name;
-                    string filename =System.IO.Directory.GetCurrentDirectory().Replace("\\","/") + filepath;
+                    string filepath = "/WY_API/UploadFiles/notice/" + Now +"-"+ name;
+                    string filename =System.IO.Directory.GetCurrentDirectory()+ "/WY_API/UploadFiles/notice/" + Now+ "-" + name;
                     //string aa = System.IO.Directory.GetCurrentDirectory();
                     //string filename = System.IO.Path.Combine(aa, filepath);
                     if (System.IO.File.Exists(filename))
