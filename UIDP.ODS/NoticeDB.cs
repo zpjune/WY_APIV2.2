@@ -69,7 +69,7 @@ namespace UIDP.ODS
             sql += "'" + GetIsNullStr(d["NOTICE_CODE"]) + "',";
             sql += "'" + GetIsNullStr(d["NOTICE_TITLE"]) + "',";
             sql += "'" + GetIsNullStr(d["NOTICE_CONTENT"]) + "',";
-            sql += "'" + GetIsNullStr(d["NOTICE_DATETIME"]) + "',";
+            sql += "'" + Convert.ToDateTime(d["NOTICE_DATETIME"]).ToString("yyyy-MM-dd HH:mm:ss") + "',";
             sql += "'" + GetIsNullStr(d["NOTICE_ORGID"]) + "',";
             sql += "'" + GetIsNullStr(d["NOTICE_ORGNAME"]) + "',";
             sql += "'" + GetIsNullStr(d["CREATER"]) + "',";
@@ -102,7 +102,7 @@ namespace UIDP.ODS
             sb.Append(d["NOTICE_CONTENT"] == null ? "" : GetIsNullStr(d["NOTICE_CONTENT"]) + "', ");
 
             sb.Append(" NOTICE_DATETIME='");
-            sb.Append(d["NOTICE_DATETIME"] == null ? "" : GetIsNullStr(d["NOTICE_DATETIME"]) + "', ");
+            sb.Append(d["NOTICE_DATETIME"] == null ? "" : Convert.ToDateTime(d["NOTICE_DATETIME"]).ToString("yyyy-MM-dd HH:mm:ss") + "', ");
             //sb.Append(" NOTICE_ORGID='");
             //sb.Append(d["NOTICE_ORGID"] == null ? "" : GetIsNullStr(d["NOTICE_ORGID"]) + "', ");
             //sb.Append(" NOTICE_ORGNAME='");

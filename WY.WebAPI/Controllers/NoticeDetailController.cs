@@ -13,7 +13,7 @@ namespace WY.WebAPI.Controllers
 {
     [Produces("application/json")]
     [Consumes("application/json", "multipart/form-data")]
-    [Route("noticedetail")]
+    [Route("[controller]")]
     public class NoticeDetailController : WebApiBaseController
     {
         NoticeDetailModule mm = new NoticeDetailModule();
@@ -115,8 +115,10 @@ namespace WY.WebAPI.Controllers
                     String name = file.FileName;
                     string suffix = name.Substring(name.LastIndexOf("."), (name.Length - name.LastIndexOf("."))); //扩展名
                     double filesize = Math.Round(Convert.ToDouble(file.Length / 1024.00 / 1024.00), 2);
-                    string filepath = @"\\UploadFiles\\notice\\" + Guid.NewGuid().ToString() + suffix;
-                    string filename = System.IO.Directory.GetCurrentDirectory() + filepath;
+                    string filepath = "/WY_API/UploadFiles/notice/" + DateTime.Now.ToString("yyyymmddHHmmss") +"-"+ name;
+                    string filename =System.IO.Directory.GetCurrentDirectory().Replace("\\","/") + filepath;
+                    //string aa = System.IO.Directory.GetCurrentDirectory();
+                    //string filename = System.IO.Path.Combine(aa, filepath);
                     if (System.IO.File.Exists(filename))
                     {
                         System.IO.File.Delete(filename);
@@ -130,7 +132,7 @@ namespace WY.WebAPI.Controllers
                     }
                     Dictionary<string, object> d = new Dictionary<string, object>();
                     d["NOTICE_ID"] = noticeId;
-                    d["FILE_URL"] = filepath;
+                    d["FILE_URL"] = filepath.ToString().Substring(1);
                     d["FILE_NAME"] = name;
                     d["FILE_SIZE"] = filesize;
                     d["CREATER"] = creater;
