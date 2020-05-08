@@ -171,9 +171,9 @@ namespace UIDP.BIZModule.wy
                             sql += GetSqlStr(0,1);//缴费状态 0 否
                             sql += GetSqlStr(0, 1);//是否通知 0 否
                             sql += GetSqlStr(0, 1);//催缴次数 0 
-                            sql += GetSqlStr(dr["YXQZ"]);//缴费日期有效期起 最新一条已缴费记录的有效期止就是新一条的有效期起
-                            sql += GetSqlStr(EndTime.ToString("yyyyMMdd"));
-                            sql += GetSqlStr(datetime.ToString("yyyyMMdd"));
+                            sql += GetSqlStr(Convert.ToDateTime(dr["YXQZ"]).ToString("yyyy-MM-dd HH:mm:ss"));//缴费日期有效期起 最新一条已缴费记录的有效期止就是新一条的有效期起
+                            sql += GetSqlStr(EndTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                            sql += GetSqlStr(datetime.ToString("yyyy-MM-dd HH:mm:ss"));
                             sql += GetSqlStr(dr["CZ_SHID"]);
                             sql += GetSqlStr(dr["OPEN_ID"]);
                             sql += GetSqlStr(0, 1);
@@ -221,9 +221,9 @@ namespace UIDP.BIZModule.wy
                         sql += GetSqlStr(0, 1);//缴费状态 0 否
                         sql += GetSqlStr(0, 1);//是否通知 0 否
                         sql += GetSqlStr(0, 1);//催缴次数 0 
-                        sql += GetSqlStr(JZR.ToString("yyyyMMdd"));//首次提醒的开始时间应该是根据物业缴费方式和物业基准日期推算出的一个日子
-                        sql += GetSqlStr(EndTime.ToString("yyyyMMdd"));//结束时间应该为根据缴费方式和开始时间推算出的一个日子
-                        sql += GetSqlStr(datetime.ToString("yyyyMMdd"));
+                        sql += GetSqlStr(JZR.ToString("yyyy-MM-dd HH:mm:ss"));//首次提醒的开始时间应该是根据物业缴费方式和物业基准日期推算出的一个日子
+                        sql += GetSqlStr(EndTime.ToString("yyyy-MM-dd HH:mm:ss"));//结束时间应该为根据缴费方式和开始时间推算出的一个日子
+                        sql += GetSqlStr(datetime.ToString("yyyy-MM-dd HH:mm:ss"));
                         sql += GetSqlStr(dr["CZ_SHID"]);
                         sql += GetSqlStr(dr["OPEN_ID"]);
                         sql += GetSqlStr(0, 1);
