@@ -79,7 +79,6 @@ namespace UIDP.BIZModule.wy
             try
             {
                 DataSet ds = db.Rectification(arr);
-                MsgHelper mh = new MsgHelper();
                 var builder = new ConfigurationBuilder()
                         .SetBasePath(Directory.GetCurrentDirectory())
                         .AddJsonFile("appsettings.json");
@@ -94,7 +93,7 @@ namespace UIDP.BIZModule.wy
                     d["keyword1"] = dr["FWBH"]+"-"+dr["FWMC"];
                     d["keyword2"] = dr["JCSJ"];
                     d["keyword3"] = "总体检查不合格,检查明细如下:";
-                    foreach(DataRow ddr in ds.Tables[1].Select("RESULT_ID='" + dr["RESULT_ID"] + "'"))
+                    foreach (DataRow ddr in ds.Tables[1].Select("RESULT_ID='" + dr["RESULT_ID"] + "'"))
                     {     
                         if (ddr["CHECK_DETAIL_RESULT"].ToString().Trim() == "0")
                         {
@@ -108,7 +107,8 @@ namespace UIDP.BIZModule.wy
                     d["keyword3"] += detailstr;
                     Task.Run(async () =>
                     {
-                        await mh.SendMsg(url, dr["OPEN_ID"].ToString(), d, templateid);
+                        string str= await MsgHelper.Msg.SendMsg(url, dr["OPEN_ID"].ToString(), d, templateid);
+                        db.InsertLog(str, "检查请求");
                     });
                     //var str= MsgHelper.Msg.SendMsg(url, dr["OPEN_ID"].ToString(), d, templateid).Result;
                 }

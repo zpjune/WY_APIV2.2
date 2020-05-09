@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -127,6 +127,13 @@ namespace UIDP.ODS.wy
             }
             sql += " GROUP BY a.RWBH,a.RWMC,a.RWKSSJ,a.RWJSSJ,a.RWFW,a.TASK_ID,a.PLAN_DETAIL_ID)t";
             return db.GetDataTable(sql);
+        }
+
+        public string InsertLog(string mes, string remark)
+        {
+            string sql = "INSERT INTO ts_uidp_loginfo (ACCESS_TIME,LOG_CONTENT,REMARK)values('" + DateTime.Now.ToString("yyyyMMdd") + "','" + mes +
+                " ','" + remark + "')";
+            return db.ExecutByStringResult(sql);
         }
     }
 }

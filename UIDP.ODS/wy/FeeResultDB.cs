@@ -176,5 +176,12 @@ namespace UIDP.ODS.wy
             return db.Executs(list);
         }
 
+        public string InsertLog(string mes,string remark)
+        {
+            string sql = "INSERT INTO ts_uidp_loginfo (ACCESS_TIME,LOG_CONTENT,REMARK)values('" + DateTime.Now.ToString("yyyyMMdd") + "','" + mes +
+                " ','" + remark + "')";
+            return db.ExecutByStringResult(sql);
+        }
+
     }
 }
