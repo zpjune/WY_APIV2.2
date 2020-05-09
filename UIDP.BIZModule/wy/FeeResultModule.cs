@@ -241,23 +241,7 @@ namespace UIDP.BIZModule.wy
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                MsgHelper mh = new MsgHelper();
-                var builder = new ConfigurationBuilder()
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json");
-                Configuration = builder.Build();
-                string templateid = Configuration.GetSection("template").GetSection("confirm").Value;
-                foreach (Dictionary<string, object> d in list)
-                {
-                    if (d["OPEN_ID"]!= null)
-                    {
-                        Task.Run(async () =>
-                        {
-                           string str=await mh.SendMsg(url, d["OPEN_ID"].ToString(), d, templateid);
-                        });
-                    }
-                    
-                };       
+                SendMessage(list);
                 //do something 需要加入缴费通知
                 string b = db.ConfirmNotificationList(list);
                 if (b == "")
@@ -280,28 +264,13 @@ namespace UIDP.BIZModule.wy
             return r;
         }
 
+        
         public Dictionary<string, object> PushNotification(List<Dictionary<string,object>> list)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                MsgHelper mh = new MsgHelper();
-                var builder = new ConfigurationBuilder()
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json");
-                Configuration = builder.Build();
-                string templateid = Configuration.GetSection("template").GetSection("PushNotification").Value;
-                foreach (Dictionary<string, object> d in list)
-                {
-                    if (d["OPEN_ID"].ToString() != "")
-                    {
-                        Task.Run(async () =>
-                        {
-                            await mh.SendMsg(url, d["OPEN_ID"].ToString(), d, templateid);
-                        });
-                    }
-
-                };
+                SendMessage(list);
                 //do something 需要加入推送欠费通知
                 string b = db.PushNotification(list);
                 if (b == "")
@@ -453,6 +422,7 @@ namespace UIDP.BIZModule.wy
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
+                SendMessage(list, 1);
                 //do something 需要加入确认收据推送功能
                 string b = db.PayOff(list);
                 if (b == "")
@@ -505,8 +475,101 @@ namespace UIDP.BIZModule.wy
             }
             return r;
         }
+        /// <summary>
+        /// 发送通知方法
+        /// </summary>
+        /// <param name="list">数据list</param>
+        /// <param name="SendType">发送类型 0是通知和催缴，1是法律诉讼</param>
+        public void SendMessage(List<Dictionary<string, object>> list,int SendType=0)
+        {
+            var builder = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json");
+            Configuration = builder.Build();
+            Dictionary<string, string> MapDicName = new Dictionary<string, string>()
+            {
+                {"0","物业费" },
+                {"1","水费" },
+                {"2","电费" }
+            };
+            Dictionary<string, string> MapDicUnit = new Dictionary<string, string>()
+            {
+                {"0","元" },
+                {"1","吨" },
+                {"2","元" }
+            };
+            //string templateid = Configuration.GetSection("template").GetSection("confirm").Value;
+            switch (SendType)
+            {
+                case 0:
+                    foreach (Dictionary<string, object> d in list)
+                    {
+                        if (d["JFLX"].ToString() == "0")
+                        {
+                            Dictionary<string, object> jsondata = new Dictionary<string, object>()
+                            {
+                                {"first", "尊敬的业主" + d["ZHXM"] + "您好！您的物业费已出。" },
+                                { "userName", d["ZHXM"]},
+                                { "address",d["FWBH"] + "-" + d["FWMC"]},
+                                { "pay",d["JFJE"]},
+                                { "remark","您本次缴纳的物业费有效期为" + d["YXQS"] + "到" + d["YXQZ"] + "请按时缴纳物业费"}
+                            };
+                            if (d["OPEN_ID"] != null)
+                            {
+                                Task.Run(async () =>
+                                {
+                                    await MsgHelper.Msg.SendMsg(url, d["OPEN_ID"].ToString(), jsondata, Configuration.GetSection("template").GetSection("confirm").Value);
+                                });
+                            }
+                        }
+                        else
+                        {
 
+                            Dictionary<string, object> jsondata = new Dictionary<string, object>()
+                            {
+                                {"first","尊敬的用户您好,您的"+MapDicName[d["JFLX"].ToString()]+"余额不足,为了避免您的使用，请尽快充值！" },
+                                {"keyword1",d["ZHXM"] },
+                                {"keyword2",d["FWBH"].ToString()+d["FWMC"].ToString() },
+                                {"keyword3",d["SURPLUSVALUE"]+ MapDicUnit[d["JFLX"].ToString()]},
+                                {"remark","您的"+MapDicName[d["JFLX"].ToString()]+"余额已经不足,请尽快充值！" }
+                            };
+                            if (d["OPEN_ID"] != null)
+                            {
+                                Task.Run(async () =>
+                                {
+                                    await MsgHelper.Msg.SendMsg(url, d["OPEN_ID"].ToString(), jsondata, Configuration.GetSection("template").GetSection("WaterAndEleNotice").Value);
+                                });
+                            }
+                        }
+                    };
+                    break;
+                case 1:
+                    foreach (Dictionary<string, object> d in list)
+                    {
+                        Dictionary<string, object> jsondata = new Dictionary<string, object>()
 
+                        {
+                            {"first", "尊敬的业主" + d["ZHXM"] + "您好！您有一项新的欠费记录。" },
+                            { "keyword1", d["ZHXM"]},
+                            { "keyword2",d["FWBH"] + "-" + d["FWMC"]},
+                            { "keyword3",MapDicName[d["JFLX"].ToString()]},
+                            { "keyword4",d["JFJE"].ToString()+MapDicUnit[d["JFLX"].ToString()]},
+                            { "remark","您的欠费账单已经进入法律诉讼状态！"}
+                        };
+                        if (d["OPEN_ID"] != null)
+                        {
+                            Task.Run(async () =>
+                            {
+                                string str = await MsgHelper.Msg.SendMsg(url, d["OPEN_ID"].ToString(), jsondata, Configuration.GetSection("template").GetSection("LawyerNotice").Value);
+                            });
+                        }
+                    }
+                    break;
+                default:
+                    throw new Exception("未检测到的缴费类型！");
+                    }
+            
+        }
         public string GetSqlStr(object t, int type = 0)
         {
             if (t == null || t.ToString() == "")

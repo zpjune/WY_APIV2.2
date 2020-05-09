@@ -106,11 +106,11 @@ namespace UIDP.BIZModule.wy
                         }
                     }
                     d["keyword3"] += detailstr;
-                    string str ="";
                     Task.Run(async () =>
                     {
-                       str=await mh.SendMsg(url, dr["OPEN_ID"].ToString(), d, templateid);
+                        await mh.SendMsg(url, dr["OPEN_ID"].ToString(), d, templateid);
                     });
+                    //var str= MsgHelper.Msg.SendMsg(url, dr["OPEN_ID"].ToString(), d, templateid).Result;
                 }
                 r["code"] = 2000;
                 r["message"] = "成功!";
