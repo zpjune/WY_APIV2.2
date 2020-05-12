@@ -21,7 +21,7 @@ namespace WY.WebAPI.Controllers.wy
         EleReceiveModule md = new EleReceiveModule();
         public static IConfiguration Configuration { get; set; }
         /// <summary>
-        /// 批量接收余额
+        /// 批量接收电能
         /// </summary>
         /// <param name="response_content"></param>
         /// <param name="timestamp"></param>
@@ -29,10 +29,10 @@ namespace WY.WebAPI.Controllers.wy
         /// <returns></returns>
         [HttpPost("getEleActiveEnergyBatch")]
         public IActionResult GetEleActiveEnergyBatch(string response_content, string timestamp, string sign) {
-            if (!CheckSign(response_content, timestamp, sign))
-            {
-                return Ok("sign check failed");
-            }
+            //if (!CheckSign(response_content, timestamp, sign))
+            //{
+            //    return Ok("sign check failed");
+            //}
             //string res = "[{\"opr_id\": \"e3dfb115 - 2f07 - 46eb - a36f - 0b6442bb1d1e\",\"resolve_time\": \"2020-03-27 17:14:02\",\"status\": \"SUCCESS\",\"data\": [{\"type\": 3,\"value\": [\"0.00\", \"0.00\", \"0.00\", \"0.00\", \"0.00\"],\"dsp\": \"总 : 0.00 kWh 尖 : 0.00 kWh 峰 : 0.00 kWh 平 : 0.00 kWh 谷 : 0.00 kWh\"}]}]";
             //List<EleResModle> list= Newtonsoft.Json.JsonConvert.DeserializeObject<List<EleResModle>>(res);
             //if (list!=null&&list.Count>0) {=
@@ -49,10 +49,10 @@ namespace WY.WebAPI.Controllers.wy
         [HttpPost("getEleRemainMoneyBatch")]
         public IActionResult GetEleRemainMoneyBatch(string response_content, string timestamp, string sign)
         {
-            if (!CheckSign(response_content, timestamp, sign))
-            {
-                return Ok("sign check failed");
-            }
+            //if (!CheckSign(response_content, timestamp, sign))
+            //{
+            //    return Ok("sign check failed");
+            //}
             //string res = "[{\"opr_id\": \"e3dfb115 - 2f07 - 46eb - a36f - 0b6442bb1d1e\",\"resolve_time\": \"2020-03-27 17:14:02\",\"status\": \"SUCCESS\",\"data\": [{\"type\": 3,\"value\": [\"0.00\", \"0.00\", \"0.00\", \"0.00\", \"0.00\"],\"dsp\": \"总 : 0.00 kWh 尖 : 0.00 kWh 峰 : 0.00 kWh 平 : 0.00 kWh 谷 : 0.00 kWh\"}]}]";
             //List<EleResModle> list= Newtonsoft.Json.JsonConvert.DeserializeObject<List<EleResModle>>(res);
             //if (list!=null&&list.Count>0) {=
@@ -60,7 +60,7 @@ namespace WY.WebAPI.Controllers.wy
             return Ok(md.GetEleRemainMoneyBatch(response_content));
         }
         /// <summary>
-        /// 批量接收余额
+        /// 批量接收充值结果
         /// </summary>
         /// <param name="response_content"></param>
         /// <param name="timestamp"></param>
@@ -69,10 +69,10 @@ namespace WY.WebAPI.Controllers.wy
         [HttpPost("getEleRechargeMoneyBatch")]
         public IActionResult GetEleRechargeMoneyBatch(string response_content, string timestamp, string sign)
         {
-            if (!CheckSign(response_content, timestamp, sign))
-            {
-                return Ok("sign check failed");
-            }
+            //if (!CheckSign(response_content, timestamp, sign))
+            //{
+            //    return Ok("sign check failed");
+            //}
             //string res = "[{\"opr_id\": \"e3dfb115 - 2f07 - 46eb - a36f - 0b6442bb1d1e\",\"resolve_time\": \"2020-03-27 17:14:02\",\"status\": \"SUCCESS\",\"data\": [{\"type\": 3,\"value\": [\"0.00\", \"0.00\", \"0.00\", \"0.00\", \"0.00\"],\"dsp\": \"总 : 0.00 kWh 尖 : 0.00 kWh 峰 : 0.00 kWh 平 : 0.00 kWh 谷 : 0.00 kWh\"}]}]";
             //List<EleResModle> list= Newtonsoft.Json.JsonConvert.DeserializeObject<List<EleResModle>>(res);
             //if (list!=null&&list.Count>0) {=

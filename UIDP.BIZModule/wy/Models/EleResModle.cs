@@ -10,7 +10,7 @@ namespace UIDP.BIZModule.wy.Models
         public string resolve_time { get; set; }
         public string status { get; set; }
         public List<ResModel> data { get; set; }
-        public string error_msg { get; set; }
+        public string err_msg { get; set; }
 
         /* [{
         "opr_id": "e3dfb115-2f07-46eb-a36f-0b6442bb1d1e",

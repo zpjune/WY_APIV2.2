@@ -23,8 +23,11 @@ namespace UIDP.BIZModule
                     foreach (EleResModle m in list)
                     {
                         total++;
-                        sb.Append("update wy_ele_Energy set Ustatus='" + m.status + "',Umessage='" + m.error_msg?.ToString() + "',UpdateDate='" + dtNow + "',");
-                        sb.Append(" TotalEle=" + m.data[0].value[0] + " where opr_id='" + m.opr_id + "';");
+                        sb.Append("update wy_ele_Energy set Ustatus='" + m.status + "',Umessage='" + m.err_msg?.ToString() + "',UpdateDate='" + dtNow + "' ");
+                        if (m.data!=null&& m.data.Count>0) {
+                            sb.Append(" ,TotalEle=" + m.data[0].value[0]);
+                        }
+                        sb.Append("  where opr_id='" + m.opr_id + "';");
                         if (total == 998)
                         {
                             db.UpdateEle(sb.ToString());
@@ -65,8 +68,12 @@ namespace UIDP.BIZModule
                     foreach (EleResModle m in list)
                     {
                         total++;
-                        sb.Append("update wy_ele_Balance set Ustatus='" + m.status + "',Umessage='" + m.error_msg?.ToString() + "',UpdateDate='" + dtNow + "',");
-                        sb.Append(" EleBalance=" + m.data[0].value[0] + " where opr_id='" + m.opr_id + "';");
+                        sb.Append("update wy_ele_Balance set Ustatus='" + m.status + "',Umessage='" + m.err_msg?.ToString() + "',UpdateDate='" + dtNow + "' ");
+                        if (m.data != null && m.data.Count > 0)
+                        {
+                            sb.Append(" ,EleBalance=" + m.data[0].value[0]);
+                        }
+                        sb.Append("  where opr_id='" + m.opr_id + "';");
                         if (total == 998)
                         {
                             db.UpdateEle(sb.ToString());
@@ -107,7 +114,7 @@ namespace UIDP.BIZModule
                     foreach (EleResModle m in list)
                     {
                         total++;
-                        sb.Append("update wy_ele_recharge set Pstatus='" + m.status + "',Pmessage='" + m.error_msg?.ToString() + "',PUpdateDate='" + dtNow + "' ");
+                        sb.Append("update wy_ele_recharge set Pstatus='" + m.status + "',Pmessage='" + m.err_msg?.ToString() + "',PUpdateDate='" + dtNow + "' ");
                         sb.Append("  where opr_id='" + m.opr_id + "';");
                         if (total == 998)
                         {
