@@ -27,7 +27,7 @@ namespace UIDP.BIZModule.wy
 
                     r["message"] = "成功";
                     r["total"] = dt.Rows.Count;
-                    r["items"] = KVTool.GetPagedTable(dt, page, limit); ;
+                    r["items"] = KVTool.GetPagedTable(dt, page, limit); 
                     r["code"] = 2000;
                 }
                 else
@@ -313,6 +313,125 @@ namespace UIDP.BIZModule.wy
                         r["message"] = " 请选择数据";
                         r["code"] = -1;
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                r["message"] = e.Message;
+                r["code"] = -1;
+            }
+            return r;
+        }
+        /// <summary>
+        /// 水表报表查询
+        /// </summary>
+        /// <param name="yjstate">是否预警</param>
+        /// <param name="month"></param>
+        /// <param name="HouseName"></param>
+        /// <param name="YeZhuName"></param>
+        /// <param name="ZhuanZuName"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        public Dictionary<string, object> GetWaterData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName, int page, int limit)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.GetWaterData( yjstate, month,  HouseName,  YeZhuName,  ZhuanZuName);
+                if (dt.Rows.Count > 0)
+                {
+                    r["message"] = "成功";
+                    r["total"] = dt.Rows.Count;
+                    r["items"] = KVTool.GetPagedTable(dt, page, limit); 
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = 2000;
+                    r["items"] = new DataTable();
+                    r["message"] = "成功，但是没有数据";
+                }
+            }
+            catch (Exception e)
+            {
+                r["message"] = e.Message;
+                r["code"] = -1;
+            }
+            return r;
+        }
+        public Dictionary<string, object> ExportWaterData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName, int page, int limit)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.GetWaterData(yjstate, month, HouseName, YeZhuName, ZhuanZuName);
+                if (dt.Rows.Count > 0)
+                {
+                    r["message"] = "成功";
+                    r["total"] = dt.Rows.Count;
+                    r["items"] = dt;
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = 2000;
+                    r["items"] = new DataTable();
+                    r["message"] = "成功，但是没有数据";
+                }
+            }
+            catch (Exception e)
+            {
+                r["message"] = e.Message;
+                r["code"] = -1;
+            }
+            return r;
+        }
+        public Dictionary<string, object> GetEleData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName, int page, int limit)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.GetEleData(yjstate, month, HouseName, YeZhuName, ZhuanZuName);
+                if (dt.Rows.Count > 0)
+                {
+                    r["message"] = "成功";
+                    r["total"] = dt.Rows.Count;
+                    r["items"] = KVTool.GetPagedTable(dt, page, limit);
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = 2000;
+                    r["items"] = new DataTable();
+                    r["message"] = "成功，但是没有数据";
+                }
+            }
+            catch (Exception e)
+            {
+                r["message"] = e.Message;
+                r["code"] = -1;
+            }
+            return r;
+        }
+        public Dictionary<string, object> ExportEleData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName, int page, int limit)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.GetEleData(yjstate, month, HouseName, YeZhuName, ZhuanZuName);
+                if (dt.Rows.Count > 0)
+                {
+                    r["message"] = "成功";
+                    r["total"] = dt.Rows.Count;
+                    r["items"] = dt;
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = 2000;
+                    r["items"] = new DataTable();
+                    r["message"] = "成功，但是没有数据";
                 }
             }
             catch (Exception e)

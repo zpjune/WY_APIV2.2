@@ -18,5 +18,14 @@ namespace WY.WebAPI.Controllers.wy
         public IActionResult QingLing([FromBody]JObject value) => Ok(md.QingLing(value.ToObject<Dictionary<string, object>>()));
         [HttpPost("KaiHu")]
         public IActionResult KaiHu([FromBody]JObject value) => Ok(md.KaiHu(value.ToObject<Dictionary<string, object>>()));
+        [HttpGet("GetWaterData")]
+        public IActionResult GetWaterData(string yjstate, string month,string HouseName, string YeZhuName,string ZhuanZuName,int page, int limit) => Ok(md.GetWaterData( yjstate, month,  HouseName,  YeZhuName,  ZhuanZuName, page, limit));
+        [HttpGet("ExportWaterData")]
+        public IActionResult ExportWaterData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName, int page, int limit) => Ok(md.ExportWaterData(yjstate, month, HouseName, YeZhuName, ZhuanZuName, page, limit));
+        [HttpGet("GetEleData")]
+        public IActionResult GetEleData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName, int page, int limit) => Ok(md.GetEleData(yjstate, month, HouseName, YeZhuName, ZhuanZuName, page, limit));
+        [HttpGet("ExportEleData")]
+        public IActionResult ExportEleData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName, int page, int limit) => Ok(md.ExportEleData(yjstate, month, HouseName, YeZhuName, ZhuanZuName, page, limit));
+
     }
 }
