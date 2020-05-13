@@ -158,7 +158,7 @@ namespace UIDP.BIZModule.wy
                                 WYJZ = WYJZ * 12;
                                 break;
                             default:
-                                throw new Exception("参数不正确!");
+                                throw new Exception("参数不正确!"); 
                         }
                         if (datetime.AddMonths(MonthNum) > JZR)
                         {
@@ -167,7 +167,7 @@ namespace UIDP.BIZModule.wy
                             sql += GetSqlStr(Guid.NewGuid());
                             sql += GetSqlStr(0, 1);//物业费
                             sql += GetSqlStr(dr["FWID"]);
-                            sql += GetSqlStr(WYJZ);
+                            sql += GetSqlStr(Math.Round(WYJZ*100)/100);//保留两位小数，向上取
                             sql += GetSqlStr(0,1);//缴费状态 0 否
                             sql += GetSqlStr(0, 1);//是否通知 0 否
                             sql += GetSqlStr(0, 1);//催缴次数 0 
@@ -217,7 +217,7 @@ namespace UIDP.BIZModule.wy
                         sql += GetSqlStr(Guid.NewGuid());
                         sql += GetSqlStr(0, 1);//物业费
                         sql += GetSqlStr(dr["FWID"]);
-                        sql += GetSqlStr(WYJZ);
+                        sql += GetSqlStr(Math.Round(WYJZ * 100) / 100);//保留两位小数，向上取
                         sql += GetSqlStr(0, 1);//缴费状态 0 否
                         sql += GetSqlStr(0, 1);//是否通知 0 否
                         sql += GetSqlStr(0, 1);//催缴次数 0 
@@ -236,6 +236,31 @@ namespace UIDP.BIZModule.wy
             return list;
         }
 
+        public Dictionary<string,object> DeleteRecord(string RECORD_ID)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                string b = db.DeleteRecord(RECORD_ID);
+                if (b == "")
+                {
+                    r["code"] = 2000;
+                    r["message"] = "成功";
+                }
+                else
+                {
+                    r["code"] = -1;
+                    r["message"] = b;
+                }
+                
+            }
+            catch(Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return r;
+        }
         public Dictionary<string, object> ConfirmNotificationList(List<Dictionary<string,object>> list)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
@@ -573,6 +598,12 @@ namespace UIDP.BIZModule.wy
                 db.InsertLog(e.Message,"异常插入");
             }
         }
+        /// <summary>
+        /// 构造sql方法
+        /// </summary>
+        /// <param name="t">对象值</param>
+        /// <param name="type">类型，0字符串 其他为数字</param>
+        /// <returns></returns>
         public string GetSqlStr(object t, int type = 0)
         {
             if (t == null || t.ToString() == "")
@@ -584,6 +615,10 @@ namespace UIDP.BIZModule.wy
             {
                 if (type == 0)
                 {
+                    if (t.GetType().FullName.Trim().ToLower() == "system.datetime")
+                    {
+                        t = Convert.ToDateTime(t).ToString("yyyyMMdd");
+                    }
                     return "'" + t + "',";
                 }
                 else

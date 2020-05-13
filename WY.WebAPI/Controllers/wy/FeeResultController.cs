@@ -44,6 +44,13 @@ namespace WY.WebAPI.Controllers.wy
         [HttpGet("CreateNotification")]
         public IActionResult CreateNotification(string type) => Ok(FR.CreateNotification(type));
         /// <summary>
+        /// 删除通知单功能 此功能是为了解除因特殊情况提前生成了部分商户的通知单信息，但是无法解除物业关系的情况
+        /// </summary>
+        /// <param name="RECORD_ID">通知单ID</param>
+        /// <returns></returns>
+        [HttpGet("DeleteRecord")]
+        public IActionResult DeleteRecord(string RECORD_ID) => Ok(FR.DeleteRecord(RECORD_ID));
+        /// <summary>
         /// 批量确认通知单
         /// </summary>
         /// <param name="arrList"></param>

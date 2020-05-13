@@ -55,6 +55,10 @@ namespace UIDP.ODS.wy
             {
                 if (type == 0)
                 {
+                    if (t.GetType().FullName.Trim().ToLower() == "system.datetime")
+                    {
+                        t = Convert.ToDateTime(t).ToString("yyyy-MM-dd");
+                    }
                     return "'" + t + "',";
                 }
                 else

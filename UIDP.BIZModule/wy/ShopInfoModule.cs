@@ -121,6 +121,7 @@ namespace UIDP.BIZModule.wy
 
         public Dictionary<string,object> UpdateShopInfo(Dictionary<string,object> d)
         {
+            DateTime dt = DateTime.Now;
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
@@ -373,7 +374,7 @@ namespace UIDP.BIZModule.wy
                         {
                             if (!(Convert.ToDateTime(dr["YXQZ"]) > DateTime.Now))
                             {
-                                mes += "当前商户存在物业费欠缴情况!";
+                                mes += "虽然当前商户已经清缴上一季物业费,新的物业通知单还未生成,但是本季已属于欠费状态,请提示商户清缴本季物业费后再来解除物业关系！";
                             }
                         }
                     }
