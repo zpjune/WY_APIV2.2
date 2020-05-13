@@ -82,7 +82,7 @@ namespace UIDP.ODS.wy
                 " JOIN wy_task_detail_config e ON e.`Code`=c.JCLX AND e.ParentID is NULL" +
                 " JOIN wy_task_detail_config f ON f.ParentID=e.ID" +
                 " JOIN wy_check_result g ON a.TASK_ID=g.TASK_ID" +
-                " JOIN wy_check_result_detail h ON f.`Code`=h.DETAIL_CODE AND h.RESULT_ID=g.RESULT_ID" +
+                " LEFT JOIN wy_check_result_detail h ON f.`Code`=h.DETAIL_CODE AND h.RESULT_ID=g.RESULT_ID" +
                 " AND g.RESULT_ID='" + RESULT_ID + "' ORDER BY e.`Name`";
             return db.GetDataTable(sql);
         }

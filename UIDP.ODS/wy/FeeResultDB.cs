@@ -78,7 +78,10 @@ namespace UIDP.ODS.wy
         {
             return db.Executs(list);
         }
-
+        public string DeleteRecord(string RECORD_ID)
+        {
+            return db.ExecutByStringResult("DELETE FROM wy_pay_record where RECORD_ID='" + RECORD_ID + "'");
+        }
         public string ConfirmNotificationList(List<Dictionary<string,object>> datalist)
         {
             List<string> list = new List<string>();
