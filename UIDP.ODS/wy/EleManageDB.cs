@@ -56,7 +56,7 @@ case when (d.maxMeterSurflow-d.minMeterSurflow)>=(case when isnull(e.WaterAmount
             {
                 sql = sql + " c.ZHXM like '%" + ZhuanZuName + "%' ";
             }
-            sql = sql + "order by a.FWMC ";
+            sql = sql + "order by d.CreateMonth desc,a.FWMC ";
             return db.GetDataTable(sql);
         }
         public DataTable GetEleData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName)
@@ -100,7 +100,7 @@ d.UpdateDateMonth
             {
                 sql = sql + " c.ZHXM like '%" + ZhuanZuName + "%' ";
             }
-            sql = sql + "order by a.FWMC ";
+            sql = sql + "order by d.UpdateDateMonth desc,a.FWMC ";
             return db.GetDataTable(sql);
         }
         public DataTable GetEleDatabak(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName)
