@@ -441,5 +441,40 @@ namespace UIDP.BIZModule.wy
             }
             return r;
         }
+        public Dictionary<string, object> getEleWaterWarningMsg()
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dtEle = db.GetEleData("1", DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd"), "", "", "");
+                DataTable dtWater = db.GetEleData("1", DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd"), "", "", "");
+                int elecount = 0;
+                int watercount = 0;
+                if (dtEle != null&& dtEle.Rows.Count > 0)
+                {
+                    elecount = dtEle.Rows.Count;
+                }
+                if (dtWater != null && dtWater.Rows.Count > 0)
+                {
+                    watercount = dtWater.Rows.Count;
+                }
+                if (elecount>0|| watercount>0) {
+                    string resl = "上个月有"+ elecount + "家商铺电表用电过高，"+ watercount+"家商铺水表用水量过高，详情请去水电报表页面查看！";
+                    r["items"] = resl;
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = 2000;
+                    r["items"] = "";
+                }
+            }
+            catch (Exception e)
+            {
+                r["message"] = e.Message;
+                r["code"] = -1;
+            }
+            return r;
+        }
     }
 }

@@ -26,6 +26,8 @@ namespace WY.WebAPI.Controllers.wy
         public IActionResult GetEleData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName, int page, int limit) => Ok(md.GetEleData(yjstate, month, HouseName, YeZhuName, ZhuanZuName, page, limit));
         [HttpGet("ExportEleData")]
         public IActionResult ExportEleData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName, int page, int limit) => Ok(md.ExportEleData(yjstate, month, HouseName, YeZhuName, ZhuanZuName, page, limit));
+        [HttpGet("getEleWaterWarningMsg")]
+        public IActionResult getEleWaterWarningMsg() => Ok(md.getEleWaterWarningMsg());
 
     }
 }
