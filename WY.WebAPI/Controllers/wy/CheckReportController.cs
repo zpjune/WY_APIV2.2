@@ -52,5 +52,28 @@ namespace WY.WebAPI.Controllers.wy
         [HttpGet("ExportTotalCheckReport")]
         public IActionResult ExportTotalCheckReport(string year, string FWBH, string RWMC, string JCJG, string DLID, int page, int limit)
             => Ok(CRM.ExportTotalCheckReport(year, FWBH, RWMC, JCJG, DLID, page, limit));
+
+        /// <summary>
+        /// 月度报表查询
+        /// </summary>
+        /// <param name="date">报表日期</param>
+        /// <param name="FZR">负责人</param>
+        /// <param name="page">页数</param>
+        /// <param name="limit">每页条数</param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        [HttpGet("WorkloadStatistics")]
+        public IActionResult WorkloadStatistics(string date, string FZR, int page, int limit, int type = 0) =>
+            Ok(CRM.WorkloadStatistics(date, FZR, page, limit, type));
+        /// <summary>
+        /// 检查人员工作量详情
+        /// </summary>
+        /// <param name="RD_ID">检查人ID</param>
+        /// <param name="yyyy">年</param>
+        /// <param name="mon">月</param>
+        /// <returns></returns>
+        [HttpGet("WorkloadStatisticsDetail")]
+        public IActionResult WorkloadStatisticsDetail(string RD_ID, string yyyy, string mon) =>
+            Ok(CRM.WorkloadStatisticsDetail(RD_ID, yyyy, mon));
     }
 }

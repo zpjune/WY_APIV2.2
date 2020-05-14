@@ -128,5 +128,76 @@ namespace UIDP.ODS.wy
             TotalSql = string.Format(TotalSql, CheckResult, CheckDetail);
             return db.GetDataTable(TotalSql);
         }
+        /// <summary>
+        /// 日期
+        /// </summary>
+        /// <param name="date">日期</param>
+        /// <param name="FZR">负责人姓名</param>
+        /// <param name="type">报表类型 0年度 1月度</param>
+        /// <returns></returns>
+        public DataTable WorkloadStatistics(string date,string FZR,int type=0)
+        {
+            string sql = "SELECT RD_ID,FZR,count( * ) AS JCCS,MONTH ( a.JCSJ ) AS mon,YEAR ( a.JCSJ ) AS yyyy,WX_OPEN_ID," +
+                //下面子查询是查询超期任务次数
+                " ( SELECT count( * ) AS overdue FROM wy_check_result c " +
+                " JOIN wy_check_task d ON c.TASK_ID = d.TASK_ID" +
+                " JOIN wy_region_director e ON c.JCR=e.WX_OPEN_ID" +
+                " WHERE !( c.JCSJ BETWEEN d.RWKSSJ AND d.RWJSSJ)" +
+                //子查询结束
+                " AND e.RD_ID = b.RD_ID" +
+                " AND MONTH(c.JCSJ)=mon" +
+                " AND YEAR(c.JCSJ)=yyyy ) AS overdue" +
+                " FROM wy_check_result a" +
+                " JOIN wy_region_director b ON a.JCR = b.WX_OPEN_ID" +
+                " WHERE 1=1 " +
+                " {0}" +
+                " GROUP BY b.FZR,MONTH ( a.JCSJ ),YEAR ( a.JCSJ ),RD_ID,WX_OPEN_ID" +
+                " ORDER BY FZR,YEAR ( a.JCSJ ),MONTH ( a.JCSJ )";
+            string WhereCondition = string.Empty;//查询条件
+            if (type == 0)//年度查询
+            {
+                if (string.IsNullOrEmpty(date))//日期为空查当年的
+                {
+                    WhereCondition += " AND YEAR(a.JCSJ)=" + DateTime.Now.Year;
+                }
+                else//否则查所选时间的年度报表
+                {
+                    WhereCondition += " AND YEAR(a.JCSJ)=" + Convert.ToDateTime(date).Year;
+                }
+            }
+            else//月度报表
+            {
+                if (string.IsNullOrEmpty(date))//日期为空查本月的
+                {
+                    WhereCondition += " AND YEAR(a.JCSJ)=" + DateTime.Now.Year;
+                    WhereCondition += " AND MONTH(a.JCSJ)=" + DateTime.Now.Month;
+                }
+                else//否则查所选时间的月度
+                {
+                    WhereCondition += " AND YEAR(a.JCSJ)=" + Convert.ToDateTime(date).Year;
+                    WhereCondition += " AND MONTH(a.JCSJ)=" + Convert.ToDateTime(date).Month;
+                }
+            }
+            if (!string.IsNullOrEmpty(FZR))
+            {
+                WhereCondition += " AND b.FZR like '%" + FZR + "%'";
+            }
+            sql = string.Format(sql, WhereCondition);
+            return db.GetDataTable(sql);
+        }
+
+        public DataTable WorkloadStatisticsDetail(string RD_ID,string yyyy,string mon)
+        {
+            string sql = "select d.RWBH,d.RWMC,c.FWBH,c.FWMC,a.JCSJ," +
+                " (CASE a.JCJG WHEN 0 THEN '不合格' WHEN 1 THEN '合格' WHEN 2 THEN '复查不合格' WHEN 3 THEN '复查合格' END)AS JCJG," +
+                " (CASE WHEN a.JCSJ BETWEEN d.RWKSSJ AND d.RWJSSJ THEN '否' ELSE '是' END ) as  overdue" +
+                " FROM wy_check_result a" +
+                " JOIN wy_region_director b ON a.JCR=b.WX_OPEN_ID AND b.IS_DELETE=0" +
+                " JOIN wy_houseinfo c ON c.FWID=a.FWID AND c.IS_DELETE=0" +
+                " JOIN wy_check_task d ON a.TASK_ID=d.TASK_ID" +
+                " where MONTH(a.JCSJ)=" + mon + " AND YEAR(a.JCSJ)=" + yyyy + " AND b.RD_ID='" + RD_ID + "'" +
+                " ORDER BY RWBH";
+            return db.GetDataTable(sql);
+        }
     }
 }

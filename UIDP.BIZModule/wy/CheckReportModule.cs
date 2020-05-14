@@ -124,5 +124,63 @@ namespace UIDP.BIZModule.wy
             }
             return r;
         }
+
+        public Dictionary<string,object> WorkloadStatistics(string date, string FZR,int page,int limit,int type = 0)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.WorkloadStatistics(date, FZR, type);
+                if (dt.Rows.Count > 0)
+                {
+                    r["code"] = 2000;
+                    r["message"] = "成功";
+                    r["items"] = KVTool.GetPagedTable(dt, page, limit);
+                    r["total"] = dt.Rows.Count;
+                }
+                else
+                {
+                    r["code"] = 2000;
+                    r["message"] = "成功,但是没有数据！";
+                    r["total"] = 0;
+                    r["items"] = new DataTable();
+                }
+            }
+            catch(Exception e)
+            {
+                r["message"] = e.Message;
+                r["code"] = -1;
+            }
+            return r;
+        }
+
+        public Dictionary<string, object> WorkloadStatisticsDetail(string RD_ID, string yyyy, string mon)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.WorkloadStatisticsDetail(RD_ID,yyyy,mon);
+                if (dt.Rows.Count > 0)
+                {
+                    r["code"] = 2000;
+                    r["message"] = "成功";
+                    r["items"] = dt;
+                    r["total"] = dt.Rows.Count;
+                }
+                else
+                {
+                    r["code"] = 2000;
+                    r["message"] = "成功,但是没有数据！";
+                    r["total"] = 0;
+                    r["items"] = new DataTable();
+                }
+            }
+            catch (Exception e)
+            {
+                r["message"] = e.Message;
+                r["code"] = -1;
+            }
+            return r;
+        }
     }
 }
