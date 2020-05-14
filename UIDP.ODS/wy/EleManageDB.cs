@@ -62,6 +62,50 @@ case when (d.maxMeterSurflow-d.minMeterSurflow)>=(case when isnull(e.WaterAmount
         public DataTable GetEleData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName)
         {
             string sql = @"select a.FWBH,a.FWMC,b.ZHXM,b.MOBILE_PHONE,c.ZHXM ZHXM1,c.MOBILE_PHONE MOBILE_PHONE1 ,a.ELE_NUMBER,a.CID,
+                          (d.maxTotalEle-d.minTotalEle)  eleAmountDiff,
+case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end AmountLimit,
+case when (d.maxTotalEle-d.minTotalEle)>=(case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end) then 1 else 0 end yjstate,
+d.UpdateDateMonth
+                            from wy_houseinfo a 
+                            join wy_shopinfo b on a.CZ_SHID=b.CZ_SHID
+                            left join wy_shopinfo c on  c.CZ_SHID=b.SUBLET_ID
+                            join v_ele_amount_limitnew d on d.address=a.ELE_NUMBER and d.cid=a.cid  
+                            left join wy_ele_amount_config e on e.address=a.ELE_NUMBER and e.cid=a.CID
+                            where a.IS_DELETE=0 and b.IS_DELETE=0  ";
+            if ("1".Equals(yjstate))
+            {
+                sql = sql + " and   (d.maxTotalEle-d.minTotalEle)>=(case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end) ";
+            }
+            else if ("0".Equals(yjstate))
+            {
+                sql = sql + " and   (d.maxTotalEle-d.minTotalEle)<(case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end) ";
+            }
+            else
+            {
+
+            }
+            if (!string.IsNullOrWhiteSpace(month))
+            {
+                sql = sql + " and TIMESTAMPDIFF(month,CONCAT(d.UpdateDateMonth,'-01'),'" + month + "')=0 ";
+            }
+            if (!string.IsNullOrWhiteSpace(HouseName))
+            {
+                sql = sql + " and  a.FWMC like '%" + HouseName + "%' ";
+            }
+            if (!string.IsNullOrWhiteSpace(YeZhuName))
+            {
+                sql = sql + " and b.ZHXM like '%" + YeZhuName + "%' ";
+            }
+            if (!string.IsNullOrWhiteSpace(ZhuanZuName))
+            {
+                sql = sql + " c.ZHXM like '%" + ZhuanZuName + "%' ";
+            }
+            sql = sql + "order by a.FWMC ";
+            return db.GetDataTable(sql);
+        }
+        public DataTable GetEleDatabak(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName)
+        {
+            string sql = @"select a.FWBH,a.FWMC,b.ZHXM,b.MOBILE_PHONE,c.ZHXM ZHXM1,c.MOBILE_PHONE MOBILE_PHONE1 ,a.ELE_NUMBER,a.CID,
                             eleAmountDiff,case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end AmountLimit,
 case when d.eleAmountDiff>=(case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end) then 1 else 0 end yjstate,d.monthdate
                             from wy_houseinfo a 
