@@ -189,12 +189,93 @@ namespace UIDP.BIZModule
             return r;
         }
 
-    //    public DataTable Rcc(DataTable dt)
-    //    {
-    //        DataTable du = dt.DefaultView.ToTable(true, "MM");
-    //        DataTable dj = new DataTable();
-    //        DataColumn dc = new DataColumn();
-    //        dc.ColumnName=
-    //    }
+        //    public DataTable Rcc(DataTable dt)
+        //    {
+        //        DataTable du = dt.DefaultView.ToTable(true, "MM");
+        //        DataTable dj = new DataTable();
+        //        DataColumn dc = new DataColumn();
+        //        dc.ColumnName=
+        //    }
+
+        public Dictionary<string,object> GetRegionalStatistics()
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.GetRegionalStatistics();
+                if (dt.Rows.Count > 0)
+                {
+                    r["message"] = "成功";
+                    r["code"] = 2000;
+                    r["items"] = dt;
+                }
+                else
+                {
+                    r["message"] = "成功但是没有数据";
+                    r["code"] = 2000;
+                    r["items"] = new DataTable();
+                }
+            }
+            catch(Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return r;
+        }
+
+        public Dictionary<string, object> GetYearStatistics()
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.GetYearStatistics();
+                if (dt.Rows.Count > 0)
+                {
+                    r["message"] = "成功";
+                    r["code"] = 2000;
+                    r["items"] = dt;
+                }
+                else
+                {
+                    r["message"] = "成功但是没有数据";
+                    r["code"] = 2000;
+                    r["items"] = new DataTable();
+                }
+            }
+            catch (Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return r;
+        }
+
+        public Dictionary<string, object> YearHistogram()
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.YearHistogram();
+                if (dt.Rows.Count > 0)
+                {
+                    r["message"] = "成功";
+                    r["code"] = 2000;
+                    r["items"] = dt;
+                }
+                else
+                {
+                    r["message"] = "成功但是没有数据";
+                    r["code"] = 2000;
+                    r["items"] = new DataTable();
+                }
+            }
+            catch (Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return r;
+        }
     }
 }

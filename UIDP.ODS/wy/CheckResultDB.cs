@@ -12,7 +12,7 @@ namespace UIDP.ODS.wy
 
         public DataTable GetCheckResult(string year,string FWBH,string RWMC,string JCJG)
         {
-            string sql = "select a.RESULT_ID,a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,g.ZHXM,GROUP_CONCAT(h.`Name`) AS JCQY,j.Name,a.JCCS,a.IS_REVIEW" +
+            string sql = "select a.RESULT_ID,a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,f.FWMC,g.ZHXM,GROUP_CONCAT(h.`Name`) AS JCQY,j.Name,a.JCCS,a.IS_REVIEW" +
                 " from wy_check_result a" +
                 " join wy_check_task b on a.TASK_ID=b.TASK_ID AND b.IS_DELETE=0" +
                 " join wy_map_checkplandetail c ON b.TASK_ID=c.TASK_ID" +
@@ -40,7 +40,7 @@ namespace UIDP.ODS.wy
             {
                 sql += " AND a.JCJG=" + JCJG;
             }
-            sql += " GROUP BY a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,g.ZHXM,a.RESULT_ID,j.Name,a.JCCS,a.IS_REVIEW";
+            sql += " GROUP BY a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,f.FWMC,g.ZHXM,a.RESULT_ID,j.Name,a.JCCS,a.IS_REVIEW";
             sql += " ORDER BY b.RWBH,j.Name";
             return db.GetDataTable(sql);
         }
@@ -93,7 +93,7 @@ namespace UIDP.ODS.wy
             //本段查询的主要逻辑就是通过查询任务范围内应该检查的房子数量减去已经检查过的房子数量，就可以得知没有进行检查的房子数量。
             string sql= "select *,(t.total-t.complete) AS incomplete from" +
                 "(select a.RWBH,a.RWMC,a.RWKSSJ,a.RWJSSJ,a.RWFW,GROUP_CONCAT( e.`Name` )," +
-                //以下为子查询，查询当前任务内包含的所有房子数量，限制条件为是1.任务区域内的房子 2.房子不是空闲状态。
+                //以下为子查询，查询当前任务内包含的所有房子数量，限制条件为:1.任务区域内的房子 2.房子不是空闲状态。
                 "(SELECT COUNT(*)AS TOTAL FROM wy_houseinfo where SSQY IN (" +
                 " SELECT REGION_CODE FROM wy_map_region f " +
                 " JOIN wy_checkplan_detail g ON f.PLAN_DETAIL_ID = g.PLAN_DETAIL_ID AND g.IS_DELETE=0" +

@@ -75,5 +75,15 @@ namespace WY.WebAPI.Controllers.wy
         [HttpGet("WorkloadStatisticsDetail")]
         public IActionResult WorkloadStatisticsDetail(string RD_ID, string yyyy, string mon) =>
             Ok(CRM.WorkloadStatisticsDetail(RD_ID, yyyy, mon));
+
+        /// <summary>
+        /// 商铺统计报表查询
+        /// </summary>
+        /// <param name="date">年度</param>
+        /// <param name="page">页数</param>
+        /// <param name="limit">每页条数</param>
+        /// <returns></returns>
+        [HttpGet("ShopCheckSummary")]
+        public IActionResult ShopCheckSummary(string SSQY,string FWBH,string FWMC,string date, int page, int limit) => Ok(CRM.ShopCheckSummary(SSQY,FWBH,FWMC,date, page, limit));
     }
 }

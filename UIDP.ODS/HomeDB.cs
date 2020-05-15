@@ -188,5 +188,48 @@ namespace UIDP.ODS
             }
             return db.GetDataTable(sql);
         }
+
+
+        public DataTable GetRegionalStatistics()
+        {
+            string sql = "SELECT c.`Name`,count(*) AS NUM FROM wy_houseinfo a " +
+                " JOIN wy_check_result b ON a.FWID=b.FWID AND a.IS_DELETE=0" +
+                " JOIN tax_dictionary c ON a.SSQY=c.`Code` AND ParentCode='SSQY'" +
+                " JOIN wy_region_director d ON b.JCR=d.WX_OPEN_ID AND d.IS_DELETE=0" +
+                " where YEAR(b.JCSJ)=" +DateTime.Now.Year +
+                " GROUP BY c.`Name`";
+            return db.GetDataTable(sql);
+        }
+
+        public DataTable GetYearStatistics()
+        {
+            int year = DateTime.Now.Year;
+            int mon = DateTime.Now.Month;
+            string MainSql = "SELECT '{0}' {1} from wy_check_result a " +
+                " JOIN wy_region_director b ON a.JCR=b.WX_OPEN_ID" +
+                " {2}" +
+                " GROUP BY '{0}'";
+            string WhereCondition = " where YEAR(a.JCSJ)=" + year;
+            string SelectColumn = string.Empty;
+            for(int i = 1; i<= mon; i++)
+            {
+                SelectColumn += ",SUM(CASE WHEN MONTH(a.JCSJ)=" + i + " AND a.JCJG {0} THEN 1 ELSE 0 END) AS '" + i + "月'";
+            }
+            string TotalSql = string.Format(MainSql, "合格商户", string.Format(SelectColumn, "=1"), WhereCondition) +
+                " UNION ALL " + string.Format(MainSql, "不合格商户", string.Format(SelectColumn, "!=1"), WhereCondition);
+            return db.GetDataTable(TotalSql);
+        }
+
+        public DataTable YearHistogram()
+        {
+            string sql = "SELECT MONTH(PAY_TIME) AS mm," +
+                " SUM(CASE WHEN TYPES_ID=0 THEN TOTAL_FEE ELSE 0 END )/100 AS WYF," +
+                " SUM(CASE WHEN TYPES_ID=1 THEN TOTAL_FEE ELSE 0 END )/100 AS SF," +
+                " SUM(CASE WHEN TYPES_ID=2 THEN TOTAL_FEE ELSE 0 END )/100 AS DF" +
+                " FROM wy_wx_pay" +
+                " WHERE YEAR(PAY_TIME)=" + DateTime.Now.Year +
+                " GROUP BY MONTH(PAY_TIME)";
+            return db.GetDataTable(sql);
+        }
     }
 }

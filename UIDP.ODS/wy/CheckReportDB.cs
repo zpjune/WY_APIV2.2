@@ -11,7 +11,7 @@ namespace UIDP.ODS.wy
         DBTool db = new DBTool("");
         public DataTable GetCheckResult(string year, string FWBH, string RWMC, string JCJG,string DLID)
         {
-            string sql = "select a.RESULT_ID,a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,g.ZHXM,GROUP_CONCAT(h.`Name`) AS JCQY,j.Name,a.JCCS,a.IS_REVIEW" +
+            string sql = "select a.RESULT_ID,a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,f.FWMC,g.ZHXM,GROUP_CONCAT(h.`Name`) AS JCQY,j.Name,a.JCCS,a.IS_REVIEW" +
                 " from wy_check_result a" +
                 " join wy_check_task b on a.TASK_ID=b.TASK_ID AND b.IS_DELETE=0" +
                 " join wy_map_checkplandetail c ON b.TASK_ID=c.TASK_ID" +
@@ -46,7 +46,7 @@ namespace UIDP.ODS.wy
                     " JOIN wy_task_detail_config m ON l.ParentID=m.ID " +
                     " WHERE m.ID='" + DLID + "' AND k.RESULT_ID=a.RESULT_ID)";
             }
-            sql += " GROUP BY a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,g.ZHXM,a.RESULT_ID,j.Name,a.JCCS,a.IS_REVIEW";
+            sql += " GROUP BY a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,f.FWMC,g.ZHXM,a.RESULT_ID,j.Name,a.JCCS,a.IS_REVIEW";
             sql += " ORDER BY b.RWBH,j.Name";
             return db.GetDataTable(sql);
         }
@@ -197,6 +197,58 @@ namespace UIDP.ODS.wy
                 " JOIN wy_check_task d ON a.TASK_ID=d.TASK_ID" +
                 " where MONTH(a.JCSJ)=" + mon + " AND YEAR(a.JCSJ)=" + yyyy + " AND b.RD_ID='" + RD_ID + "'" +
                 " ORDER BY RWBH";
+            return db.GetDataTable(sql);
+        }
+
+        public DataSet ShopCheckSummary(string SSQY,string FWBH,string FWMC,string date)
+        {
+            string MainSql = "select a.FWBH,a.FWMC {0}" +
+                " FROM wy_houseinfo a" +
+                " JOIN wy_check_result b ON a.FWID = b.FWID AND b.IS_DELETE = 0" +
+                " JOIN wy_region_director c ON b.JCR = c.WX_OPEN_ID AND c.IS_DELETE = 0" +
+                " JOIN wy_check_result_detail d ON b.RESULT_ID=d.RESULT_ID " +
+                " JOIN wy_task_detail_config e ON d.DETAIL_CODE=e.`Code`" +
+                " JOIN wy_task_detail_config f ON e.ParentID=f.ID" +
+                " where {1}" +
+                " GROUP BY a.FWBH,a.FWMC";
+            DataTable CheckMainCategorydt = GetCheckMainCategory();
+            string SelectColumn = string.Empty;
+            foreach(DataRow dr in CheckMainCategorydt.Rows)
+            {
+                SelectColumn += ",SUM(CASE WHEN f.`Code`='" + dr["Code"] + "' AND d.CHECK_DETAIL_RESULT=0 THEN 1 ELSE 0 END) AS '" +dr["Code"].ToString().Replace(" ","")+"'";
+            }
+            string WhereCondition = string.Empty;
+            if (!string.IsNullOrEmpty(date))
+            {
+                WhereCondition = " YEAR(b.JCSJ)=" + date;
+            }
+            else
+            {
+                WhereCondition = " YEAR(b.JCSJ)=" + DateTime.Now.Year;
+            }
+            if (!string.IsNullOrEmpty(FWBH))
+            {
+                WhereCondition += " AND a.FWBH='" + FWBH + "'";
+            }
+            if (!string.IsNullOrEmpty(FWMC))
+            {
+                WhereCondition += " AND a.FWMC like '%" + FWMC + "%'";
+            }
+            if (!string.IsNullOrEmpty(SSQY))
+            {
+                WhereCondition += " AND a.SSQY='" + SSQY + "'";
+            }
+            MainSql = string.Format(MainSql, SelectColumn, WhereCondition);
+            DataTable data = db.GetDataTable(MainSql);
+            DataSet ds = new DataSet();
+            ds.Tables.Add(CheckMainCategorydt);
+            ds.Tables.Add(data);
+            return ds;
+        }
+
+        public DataTable GetCheckMainCategory()
+        {
+            string sql = "select Code,Name from wy_task_detail_config where ParentID is null or ParentID=''";
             return db.GetDataTable(sql);
         }
     }

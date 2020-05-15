@@ -182,5 +182,37 @@ namespace UIDP.BIZModule.wy
             }
             return r;
         }
+
+        public Dictionary<string,object> ShopCheckSummary(string SSQY,string FWBH,string FWMC,string date,int page,int limit)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataSet ds = db.ShopCheckSummary(SSQY,FWBH,FWMC,date);
+                if (ds.Tables[1].Rows.Count > 0)
+                {
+                    r["message"] = "成功!";
+                    r["code"] = 2000;
+                    r["ColumnInfo"] = ds.Tables[0];
+                    r["DataInfo"] = KVTool.GetPagedTable(ds.Tables[1], page, limit);
+                    r["total"] = ds.Tables[1].Rows.Count;
+                }
+                else
+                {
+                    r["code"] = 2000;
+                    r["message"] = "成功,但是没有数据!";
+                    r["ColumnInfo"] = ds.Tables[0];
+                    r["DataInfo"] = KVTool.GetPagedTable(ds.Tables[1], page, limit);
+                    r["total"] = ds.Tables[1].Rows.Count;
+                }
+                
+            }
+            catch (Exception e)
+            {
+                r["message"] = e.Message;
+                r["code"] = -1;
+            }
+            return r;
+        }
     }
 }
