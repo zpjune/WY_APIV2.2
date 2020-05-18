@@ -10,12 +10,12 @@ namespace UIDP.BIZModule.wy
     public class ShopInfoModule
     {
         ShopInfoDB db = new ShopInfoDB();
-        public Dictionary<string,object> GetShopInfo(string ORG_CODE,string ZHXM, string IS_PASS, string FWSX, string FWID,int page, int limit)
+        public Dictionary<string,object> GetShopInfo(string ORG_CODE,string ZHXM, string IS_PASS, string FWSX, string FWID, string FWBH, int page, int limit)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                DataTable dt = db.GetShopInfo(ORG_CODE,ZHXM, IS_PASS,FWSX, FWID);
+                DataTable dt = db.GetShopInfo(ORG_CODE,ZHXM, IS_PASS,FWSX, FWID, FWBH);
                 if (dt.Rows.Count > 0)
                 {
                     r["message"] = "成功！";

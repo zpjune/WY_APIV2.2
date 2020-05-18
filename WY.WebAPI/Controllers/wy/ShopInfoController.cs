@@ -25,7 +25,7 @@ namespace WY.WebAPI.Controllers.wy
         /// <param name="limit"></param>
         /// <returns></returns>
         [HttpGet("GetShopInfo")]
-        public IActionResult GetShopInfo(string ORG_CODE,string ZHXM, string IS_PASS, string FWSX, string FWID, int page, int limit) => Ok(SM.GetShopInfo(ORG_CODE,ZHXM, IS_PASS,FWSX,FWID, page, limit));
+        public IActionResult GetShopInfo(string ORG_CODE,string ZHXM, string IS_PASS, string FWSX, string FWID, string FWBH, int page, int limit) => Ok(SM.GetShopInfo(ORG_CODE,ZHXM, IS_PASS,FWSX,FWID,  FWBH, page, limit));
         /// <summary>
         /// 获取商户详情 包括房屋信息，商户信息，租赁信息，物业信息等
         /// </summary>

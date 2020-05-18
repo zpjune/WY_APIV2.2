@@ -10,12 +10,16 @@ namespace UIDP.ODS.wy
     public class ShopInfoDB
     {
         DBTool db = new DBTool("");
-        public DataTable GetShopInfo(string ORG_CODE,string ZHXM,string IS_PASS,string FWSX,string CZ_SHID)
+        public DataTable GetShopInfo(string ORG_CODE,string ZHXM,string IS_PASS,string FWSX,string CZ_SHID,string FWBH)
         {
             string sql = "select a.FWID,a.FWBH,a.FWMC,b.*,c.Name,a.FWID AS OLDID from wy_houseinfo a  " +
                 " join wy_shopinfo b ON a.CZ_SHID=b.CZ_SHID" +
                 " left join tax_dictionary c on a.LSFGS=c.Code and c.ParentCode='LSFGS'" +
                 " where a.IS_DELETE=0 AND b.IS_DELETE=0 AND a.ORG_CODE LIKE'"+ ORG_CODE+"%'";
+            if (!string.IsNullOrEmpty(FWBH))
+            {
+                sql += " AND a.FWBH='" + FWBH+"' ";
+            }
             if (!string.IsNullOrEmpty(FWSX))
             {
                 sql += " AND a.FWSX=" + FWSX;
