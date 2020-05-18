@@ -27,15 +27,42 @@ namespace UIDP.ODS.wy
             sql += " GROUP BY a.TASK_ID";
             return db.GetDataTable(sql);
         }
-
+        public string getRWBH() {
+            string rwbh = "";
+            try
+            {
+                DateTime d = DateTime.Now;
+                 rwbh = d.ToString("yyyyMMdd");
+                string dtnow = d.ToString("yyyy-MM-dd");
+                string sql = "select count(*)+1 from wy_check_task WHERE TIMESTAMPDIFF(MONTH,CJSJ,'" + dtnow + "')=0";
+                DataTable dt = db.GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    rwbh = rwbh + (dt.Rows[0][0].ToString().PadLeft(5, '0'));
+                }
+                else
+                {
+                    rwbh = rwbh + "00001";
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return rwbh;
+        }
         public string CreateTask(Dictionary<string,object>d)
         {
+            string rwbh = getRWBH();
+            if (rwbh=="") {
+                return "任务编号生成失败";
+            }
             Guid TASK_ID = Guid.NewGuid();
             List<string> list = new List<string>();
             string sql = "INSERT INTO wy_check_task (TASK_ID,PLAN_DETAIL_ID,RWBH,RWMC,RWKSSJ,RWJSSJ,RWNR,RWFW,REMARK,CJR,CJSJ,IS_DELETE,IS_PUSH)VALUES(";
             sql += GetSqlStr(TASK_ID);
             sql += GetSqlStr(d["PLAN_DETAIL_ID"]);
-            sql += GetSqlStr(d["RWBH"]);
+            sql += GetSqlStr(rwbh);
             sql += GetSqlStr(d["RWMC"]);
             sql += GetSqlStr(d["RWKSSJ"]);
             sql += GetSqlStr(d["RWJSSJ"]);
