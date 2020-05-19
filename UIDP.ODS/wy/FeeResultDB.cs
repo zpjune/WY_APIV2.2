@@ -98,7 +98,7 @@ namespace UIDP.ODS.wy
             List<string> list = new List<string>();
             foreach (Dictionary<string, object> d in datalist)
             {
-                string sql = "UPDATE wy_pay_record SET JFCS=(JFCS+1),JFRQ='" + DateTime.Now.ToString("yyyyMMdd") + "'" +
+                string sql = "UPDATE wy_pay_record SET JFCS=(JFCS+1) " +
                " WHERE RECORD_ID='" + d["RECORD_ID"] + "'";
                 list.Add(sql);
             }
@@ -152,9 +152,19 @@ namespace UIDP.ODS.wy
             return db.GetDataTable(sql);
         }
 
-        public string ConfirmFee(string RECORD_ID)
+        public string ConfirmFee(string RECORD_ID, int JFLX,string JFJE)
         {
-            return db.ExecutByStringResult("UPDATE wy_pay_record SET JFZT=1 WHERE RECORD_ID='" + RECORD_ID + "'");
+            string sql = "UPDATE wy_pay_record SET JFZT=1,JFRQ='"+DateTime.Now.ToString("yyyyMMdd")+ "',PAY_WAY=0 {0}" +
+                " WHERE RECORD_ID='" + RECORD_ID + "'";
+            if (JFLX != 0)
+            {
+                sql = string.Format(sql, ",JFJE=" + JFJE);
+            }
+            else
+            {
+                sql = string.Format(sql, "");
+            }
+            return db.ExecutByStringResult(sql);
         }
 
         public string ConfirmReciveMoney(List<Dictionary<string, object>> datalist)

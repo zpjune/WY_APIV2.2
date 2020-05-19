@@ -822,7 +822,20 @@ namespace UIDP.ODS.wy
             sqllist.Add(UpdateSql);
             return db.Executs(sqllist);
         }
-
+        public DataTable GetFeeResult(string CZ_SHID)
+        {
+            string sql = "SELECT * FROM (" +
+                " SELECT b.ZHXM,b.SHOPBH,b.SHOP_NAME,a.FEE_TYPES,a.PAY_TIME,a.USER_ID AS CZ_SHID FROM wy_wx_pay a " +
+                " JOIN wy_shopinfo b ON a.USER_ID = b.CZ_SHID " +
+                " WHERE a.PAY_TIME is NOT NULL " +
+                " UNION ALL" +
+                " SELECT b.ZHXM,b.SHOPBH,b.SHOP_NAME,a.JFLX AS FEE_TYPES,a.JFRQ AS PAY_TIME,a.CZ_SHID FROM wy_pay_record a" +
+                " JOIN wy_shopinfo b ON a.CZ_SHID = b.CZ_SHID" +
+                " where a.PAY_WAY=0 AND a.JFZT=1)t" +
+                " where t.CZ_SHID='" + CZ_SHID + "'" +
+                " ORDER BY t.PAY_TIME DESC";
+            return db.GetDataTable(sql);
+        }
         public string GetSqlStr(object t, int type = 0)
         {
             if (t == null || t.ToString() == "")

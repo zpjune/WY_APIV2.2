@@ -239,5 +239,7 @@ namespace WY.WebAPI.Controllers.wy
         public IActionResult UpdateLeaseTime([FromBody]JObject value) => Ok(SM.UpdateLeaseTime(value.ToObject<Dictionary<string,object>>()));
         #endregion
 
+        [HttpGet("GetFeeResult")]
+        public IActionResult GetFeeResult(string CZ_SHID,int page,int limit) => Ok(SM.GetFeeResult(CZ_SHID,page,limit));
     }
 }

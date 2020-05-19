@@ -375,12 +375,12 @@ namespace UIDP.BIZModule.wy
             return r;
         }
 
-        public Dictionary<string, object> ConfirmFee(string RECORD_ID)
+        public Dictionary<string, object> ConfirmFee(string RECORD_ID, int JFLX,string JFJE)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                string b = db.ConfirmFee(RECORD_ID);
+                string b = db.ConfirmFee(RECORD_ID,JFLX,JFJE);
                 if (b=="")
                 {
                     r["message"] = "成功！";

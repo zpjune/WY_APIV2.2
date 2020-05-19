@@ -97,7 +97,7 @@ namespace WY.WebAPI.Controllers.wy
         /// <param name="RECORD_ID"></param>
         /// <returns></returns>
         [HttpGet("ConfirmFee")]
-        public IActionResult ConfirmFee(string RECORD_ID) => Ok(FR.ConfirmFee(RECORD_ID));
+        public IActionResult ConfirmFee(string RECORD_ID,int JFLX,string JFJE) => Ok(FR.ConfirmFee(RECORD_ID,JFLX,JFJE));
 
         /// <summary>
         /// 确认收据
