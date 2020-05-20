@@ -190,7 +190,7 @@ namespace UIDP.ODS.wy
         }
         public DataTable GetShopMobilephone(string whereCondition)
         {
-            string sql = "select MOBILE_PHONE from wy_shopinfo where OPEN_ID in(" + whereCondition + ")";
+            string sql = "select distinct MOBILE_PHONE from wy_shopinfo where OPEN_ID in(" + whereCondition + ")";
             return db.GetDataTable(sql);
         }
 

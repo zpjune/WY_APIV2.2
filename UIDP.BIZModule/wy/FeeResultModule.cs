@@ -133,13 +133,18 @@ namespace UIDP.BIZModule.wy
             foreach (DataRow dr in dt.Rows)
             {
                 DateTime JZR;
+                DateTime EndTime;
+                decimal WYJZ = Convert.ToDecimal(dr["WYJZ"]);
+                if (WYJZ == 0)//物业基准为0不生成通知单
+                {
+                    continue;
+                }
                 if (dr["IS_CHANGEUSER"].ToString()=="1")//已经生成过缴费确认单的商户,且上个生成的通知单通知的用户和本次查询额房屋用户是同一人
                 {
                     if (dr["JFZT"].ToString() == "1")//最近一条记录为已缴费状态
                     {
                         JZR = Convert.ToDateTime(dr["YXQZ"]);
-                        DateTime EndTime;
-                        decimal WYJZ = Convert.ToDecimal(dr["WYJZ"]);
+
                         switch (dr["WYJFFS"].ToString().Trim())
                         {
                             case "PerMonth":
@@ -185,11 +190,9 @@ namespace UIDP.BIZModule.wy
                     }
                     
                 }
-                else//对于首次提醒的商户和本次查询的房屋使用者和上次生成的通知单不是一个人
+                else//对于首次提醒的商户和本次查询的房屋使用者和上次生成的通知单不是同一个物业合同
                 {
-                    DateTime EndTime;
                     JZR = Convert.ToDateTime(dr["WYJZSJ"]);
-                    decimal WYJZ = Convert.ToDecimal(dr["WYJZ"]);
                     switch (dr["WYJFFS"].ToString().Trim())
                     {
                         case "PerMonth":
@@ -498,10 +501,23 @@ namespace UIDP.BIZModule.wy
         {
             try
             {
-                string WhereCondigtion=string.Join(",", list.Select(c => c["OPEN_ID"].ToString()));
-                DataTable dt = db.GetShopMobilephone(WhereCondigtion);
-                
-                string MsgType = "收费消息";
+                string WhereCondition = string.Empty;
+                foreach(Dictionary<string,object> d in list)
+                {
+                    WhereCondition += "'" + d["OPEN_ID"] + "',";
+                }
+                WhereCondition = WhereCondition.TrimEnd(',');
+                DataTable dt = db.GetShopMobilephone(WhereCondition);
+                string UserMobilephoneNO = string.Empty;
+                foreach (DataRow dr in dt.Rows)
+                {
+                    if (dr.IsNull("MOBILE_PHONE"))
+                    {
+                        continue;
+                    }
+                    UserMobilephoneNO += dr["MOBILE_PHONE"];
+                };
+                UserMobilephoneNO = UserMobilephoneNO.TrimEnd(',');
                 var builder = new ConfigurationBuilder()
                        .SetBasePath(Directory.GetCurrentDirectory())
                        .AddJsonFile("appsettings.json");
@@ -599,13 +615,13 @@ namespace UIDP.BIZModule.wy
                     default:
                         throw new Exception("未检测到的缴费类型！");
                 }
-                //Task.Run(async () =>
-                //{
-                //    string str = await MsgHelper.Msg.SendSMS(UserMobilephoneNO, new string[2] { "", "检查通知" }, Msgurl, Msgtemplateid);
-                //    db.InsertLog(str, "检查的短信通知请求");
-                //});
+                Task.Run(async () =>
+                {
+                    string str = await MsgHelper.Msg.SendSMS(UserMobilephoneNO, new string[2] { "", "收费消息" }, Msgurl, Msgtemplateid);
+                    db.InsertLog(str, "收费消息通知请求");
+                });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 db.InsertLog(e.Message,"异常插入");
             }
