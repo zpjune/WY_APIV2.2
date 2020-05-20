@@ -370,7 +370,7 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += "XFBZJ=" + GetSqlStr(d["XFBZJ"], 1);
                 ShopInfoSql += "XFBZJJFSJ=" + GetSqlStr(d["XFBZJJFSJ"]);
                 ShopInfoSql += "XFBZJTFSJ=" + GetSqlStr(d["XFBZJTFSJ"]);
-                ShopInfoSql += "OPEN_ID=(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t)";
+                ShopInfoSql += "OPEN_ID=(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t)";
                 ShopInfoSql = ShopInfoSql.TrimEnd(',') + " WHERE CZ_SHID='" + d["CZ_SHID"] + "'";
                 list.Add(ShopInfoSql);
             }

@@ -73,6 +73,19 @@ namespace House.IService.Common.Message
             return content;
         }
 
+        public async Task<string> SendSMS(string to,string[] datas, string url,
+            string templateId = null, string appId = null)
+        {
+            string jsonData = JsonConvert.SerializeObject(new
+            {
+                to,
+                datas,
+                templateId,
+                appId
+            });
+            return await SendMsg(url, jsonData);
+        }
+
         public MsgHelper In(string u)
         {
             url = u;

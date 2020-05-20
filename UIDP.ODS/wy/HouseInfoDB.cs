@@ -105,6 +105,7 @@ namespace UIDP.ODS.wy
         {
             DataTable DicTable = db.GetDataTable("SELECT Name,Code,ParentCode from tax_dictionary");
             List<string> list = new List<string>();
+            string errMes = "";
             foreach(DataRow dr in dt.Rows)
             {
                 string sql = "INSERT INTO wy_houseinfo (FWID,FWBH,FWMC,JZMJ,LSFGS,ZLWZ,JGLX,ZCYZ,SSQY,WATER_NUMBER,ELE_NUMBER,ZFK,IS_DELETE,FWSX,CID,CJR,CJSJ,ORG_CODE)" +
@@ -113,11 +114,32 @@ namespace UIDP.ODS.wy
                 sql += GetSqlStr(dr["房屋编号"]);
                 sql += GetSqlStr(dr["房屋名称"]);
                 sql += GetSqlStr(dr["建筑面积"]);
-                sql += GetSqlStr(DicTable.Select("Name='"+ dr["隶属分公司"]+"'AND ParentCode='LSFGS'")[0]["Code"]);
+                if (DicTable.Select("Name='" + dr["隶属分公司"] + "'AND ParentCode='LSFGS'").Length==0)
+                {
+                    errMes += "第" + (dt.Rows.IndexOf(dr) + 1) + "列的隶属分公司信息未录入本系统!";
+                }
+                else
+                {
+                    sql += GetSqlStr(DicTable.Select("Name='" + dr["隶属分公司"] + "'AND ParentCode='LSFGS'")[0]["Code"]);
+                }
                 sql += GetSqlStr(dr["坐落位置"]);
-                sql += GetSqlStr(DicTable.Select("Name='" + dr["结构类型"] + "'AND ParentCode='JGLX'")[0]["Code"]);
+                if (DicTable.Select("Name='" + dr["结构类型"] + "'AND ParentCode='JGLX'").Length == 0)
+                {
+                    errMes += "第" + (dt.Rows.IndexOf(dr) + 1) + "列的结构类型信息未录入本系统!";
+                }
+                else
+                {
+                    sql += GetSqlStr(DicTable.Select("Name='" + dr["结构类型"] + "'AND ParentCode='JGLX'")[0]["Code"]);
+                }
                 sql += GetSqlStr(dr["资产原值"]);
-                sql += GetSqlStr(DicTable.Select("Name='" + dr["所属区域"] + "'AND ParentCode='SSQY'")[0]["Code"]);
+                if (DicTable.Select("Name='" + dr["所属区域"] + "'AND ParentCode='SSQY'").Length == 0)
+                {
+                    errMes += "第" + (dt.Rows.IndexOf(dr) + 1) + "列的所属区域信息未录入本系统!";
+                }
+                else
+                {
+                    sql += GetSqlStr(DicTable.Select("Name='" + dr["所属区域"] + "'AND ParentCode='SSQY'")[0]["Code"]);
+                }
                 sql += GetSqlStr(dr["水表编号"]);
                 sql += GetSqlStr(dr["电表编号"]);
                 sql += GetSqlStr(dr["总房款"]);
@@ -130,7 +152,15 @@ namespace UIDP.ODS.wy
                 sql = sql.TrimEnd(',') + ")";
                 list.Add(sql);
             }
-            return db.Executs(list);          
+            if (errMes == "")
+            {
+                return db.Executs(list);
+            }
+            else
+            {
+                return errMes;
+            }
+                   
         }
 
         public DataTable ExportHouseInfo()

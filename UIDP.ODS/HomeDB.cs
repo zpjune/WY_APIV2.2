@@ -222,13 +222,26 @@ namespace UIDP.ODS
 
         public DataTable YearHistogram()
         {
-            string sql = "SELECT MONTH(PAY_TIME) AS mm," +
-                " SUM(CASE WHEN TYPES_ID=0 THEN TOTAL_FEE ELSE 0 END )/100 AS WYF," +
-                " SUM(CASE WHEN TYPES_ID=1 THEN TOTAL_FEE ELSE 0 END )/100 AS SF," +
-                " SUM(CASE WHEN TYPES_ID=2 THEN TOTAL_FEE ELSE 0 END )/100 AS DF" +
+            string sql = "SELECT t.mm,WXWYF+RECORDWYF AS WYF,WXSF+RECORDSF AS SF,WXDF+RECORDDF AS DF FROM (" +
+                //下面是查微信收入
+                " SELECT MONTH(PAY_TIME) AS mm," +
+                " SUM(CASE WHEN TYPES_ID=0 THEN TOTAL_FEE ELSE 0 END )/100 AS WXWYF," +
+                " SUM(CASE WHEN TYPES_ID=1 THEN TOTAL_FEE ELSE 0 END )/100 AS WXSF," +
+                " SUM(CASE WHEN TYPES_ID=2 THEN TOTAL_FEE ELSE 0 END )/100 AS WXDF" +
                 " FROM wy_wx_pay" +
                 " WHERE YEAR(PAY_TIME)=" + DateTime.Now.Year +
-                " GROUP BY MONTH(PAY_TIME)";
+                " GROUP BY MONTH(PAY_TIME))t" +
+                //微信收入查询结束，下面是线下自主缴费金额查询
+                " left join " +
+                " (SELECT MONTH( JFRQ ) AS mm," +
+                " SUM( CASE WHEN JFLX = 0 AND PAY_WAY=0 THEN JFJE ELSE 0 END ) / 100 AS RECORDWYF," +
+                " SUM( CASE WHEN JFLX = 1 AND PAY_WAY=0 THEN JFJE ELSE 0 END ) / 100 AS RECORDSF," +
+                " SUM( CASE WHEN JFLX = 2 AND PAY_WAY=0 THEN JFJE ELSE 0 END ) / 100 AS RECORDDF " +
+                " FROM wy_pay_record" +
+                " WHERE YEAR ( JFRQ ) = " + DateTime.Now.Year +
+                " GROUP BY MONTH ( JFRQ ))tt" +
+                //线下查询收入结束
+                " ON t.mm=tt.mm";
             return db.GetDataTable(sql);
         }
     }

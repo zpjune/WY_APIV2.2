@@ -188,6 +188,11 @@ namespace UIDP.ODS.wy
             }
             return db.Executs(list);
         }
+        public DataTable GetShopMobilephone(string whereCondition)
+        {
+            string sql = "select MOBILE_PHONE from wy_shopinfo where OPEN_ID in(" + whereCondition + ")";
+            return db.GetDataTable(sql);
+        }
 
         public string InsertLog(string mes,string remark)
         {

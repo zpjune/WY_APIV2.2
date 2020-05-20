@@ -38,7 +38,7 @@ namespace UIDP.ODS.wy
                 DataTable dt = db.GetDataTable(sql);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    rwbh = rwbh + (dt.Rows[0][0].ToString().PadLeft(5, '0'));
+                    rwbh = rwbh + (dt.Rows[0][0].ToString().PadLeft(3, '0'));
                 }
                 else
                 {

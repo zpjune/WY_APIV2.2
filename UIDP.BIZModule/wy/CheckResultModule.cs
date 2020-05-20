@@ -85,6 +85,9 @@ namespace UIDP.BIZModule.wy
                 Configuration = builder.Build();
                 string templateid = Configuration.GetSection("template").GetSection("Rectification").Value;
                 string url= Configuration.GetSection("msgUrl").GetSection("url").Value;
+                string Msgurl= Configuration.GetSection("msgUrl").GetSection("sms").Value;
+                string Msgtemplateid= Configuration.GetSection("msgsmstemp").GetSection("smstemp").Value;
+                string UserMobilephoneNO = string.Empty;
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     string detailstr = string.Empty;
@@ -110,8 +113,16 @@ namespace UIDP.BIZModule.wy
                         string str= await MsgHelper.Msg.SendMsg(url, dr["OPEN_ID"].ToString(), d, templateid);
                         db.InsertLog(str, "检查请求");
                     });
+                    UserMobilephoneNO += dr["MOBILE_PHONE"] + ",";
                     //var str= MsgHelper.Msg.SendMsg(url, dr["OPEN_ID"].ToString(), d, templateid).Result;
                 }
+                UserMobilephoneNO = UserMobilephoneNO.TrimEnd(',');
+                Task.Run(async () =>
+                {
+                    string str = await MsgHelper.Msg.SendSMS(UserMobilephoneNO, new string[2] { "", "检查通知" }, Msgurl, Msgtemplateid);
+                    db.InsertLog(str, "检查的短信通知请求");
+                });
+                
                 r["code"] = 2000;
                 r["message"] = "成功!";
             }

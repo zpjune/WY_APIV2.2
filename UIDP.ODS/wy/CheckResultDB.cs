@@ -48,9 +48,9 @@ namespace UIDP.ODS.wy
         {
             string RESULT = "SELECT b.FWBH,b.FWMC,a.JCSJ,a.RESULT_ID," +
                 " ( CASE WHEN d.ZHXM IS NULL OR d.ZHXM = '' THEN c.ZHXM ELSE d.ZHXM END ) AS ZHXM," +
-                " ( CASE WHEN d.OPEN_ID IS NULL OR d.OPEN_ID = '' THEN c.OPEN_ID ELSE d.OPEN_ID END ) AS OPEN_ID" +
-                " FROM" +
-                " wy_check_result a" +
+                " ( CASE WHEN d.OPEN_ID IS NULL OR d.OPEN_ID = '' THEN c.OPEN_ID ELSE d.OPEN_ID END ) AS OPEN_ID," +
+                " (CASE WHEN d.MOBILE_PHONE IS NULL OR d.MOBILE_PHONE = '' THEN c.MOBILE_PHONE ELSE d.MOBILE_PHONE END) AS MOBILE_PHONE" +
+                " FROM wy_check_result a" +
                 " JOIN wy_houseinfo b ON a.FWID = b.FWID AND b.IS_DELETE = 0" +
                 " JOIN wy_shopinfo c ON b.CZ_SHID = c.CZ_SHID AND c.IS_DELETE = 0" +
                 " LEFT JOIN wy_shopinfo d ON c.SUBLET_ID = d.CZ_SHID AND d.IS_SUBLET =1" +

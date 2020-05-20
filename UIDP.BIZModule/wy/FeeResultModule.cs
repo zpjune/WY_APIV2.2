@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using UIDP.ODS.wy;
 using UIDP.UTILITY;
 using UIDP.UTILITY.JWTHelper;
+using System.Linq;
 
 namespace UIDP.BIZModule.wy
 {
@@ -497,22 +498,28 @@ namespace UIDP.BIZModule.wy
         {
             try
             {
+                string WhereCondigtion=string.Join(",", list.Select(c => c["OPEN_ID"].ToString()));
+                DataTable dt = db.GetShopMobilephone(WhereCondigtion);
+                
+                string MsgType = "收费消息";
                 var builder = new ConfigurationBuilder()
                        .SetBasePath(Directory.GetCurrentDirectory())
                        .AddJsonFile("appsettings.json");
                 Configuration = builder.Build();
+                string Msgurl = Configuration.GetSection("msgUrl").GetSection("sms").Value;
+                string Msgtemplateid = Configuration.GetSection("msgsmstemp").GetSection("smstemp").Value;
                 Dictionary<string, string> MapDicName = new Dictionary<string, string>()
-            {
-                {"0","物业费" },
-                {"1","水费" },
-                {"2","电费" }
-            };
+                {
+                    {"0","物业费" },
+                    {"1","水费" },
+                    {"2","电费" }
+                };
                 Dictionary<string, string> MapDicUnit = new Dictionary<string, string>()
-            {
-                {"0","元" },
-                {"1","吨" },
-                {"2","元" }
-            };
+                {
+                    {"0","元" },
+                    {"1","吨" },
+                    {"2","元" }
+                };
                 //string templateid = Configuration.GetSection("template").GetSection("confirm").Value;
                 switch (SendType)
                 {
@@ -544,13 +551,13 @@ namespace UIDP.BIZModule.wy
                             {
 
                                 Dictionary<string, object> jsondata = new Dictionary<string, object>()
-                            {
-                                {"first","尊敬的用户您好,您的"+MapDicName[d["JFLX"].ToString()]+"余额不足,为了避免您的使用，请尽快充值！" },
-                                {"keyword1",d["ZHXM"] },
-                                {"keyword2",d["FWBH"].ToString()+d["FWMC"].ToString() },
-                                {"keyword3",d["SURPLUSVALUE"]+ MapDicUnit[d["JFLX"].ToString()]},
-                                {"remark","您的"+MapDicName[d["JFLX"].ToString()]+"余额已经不足,请尽快充值！" }
-                            };
+                                {
+                                    {"first","尊敬的用户您好,您的"+MapDicName[d["JFLX"].ToString()]+"余额不足,为了避免您的使用，请尽快充值！" },
+                                    {"keyword1",d["ZHXM"] },
+                                    {"keyword2",d["FWBH"].ToString()+d["FWMC"].ToString() },
+                                    {"keyword3",d["SURPLUSVALUE"]+ MapDicUnit[d["JFLX"].ToString()]},
+                                    {"remark","您的"+MapDicName[d["JFLX"].ToString()]+"余额已经不足,请尽快充值！" }
+                                 };
                                 if (d["OPEN_ID"] != null)
                                 {
                                     //string str=MsgHelper.Msg.SendMsg(url, d["OPEN_ID"].ToString(), jsondata, Configuration.GetSection("template").GetSection("WaterAndEleNotice").Value).Result;
@@ -592,6 +599,11 @@ namespace UIDP.BIZModule.wy
                     default:
                         throw new Exception("未检测到的缴费类型！");
                 }
+                //Task.Run(async () =>
+                //{
+                //    string str = await MsgHelper.Msg.SendSMS(UserMobilephoneNO, new string[2] { "", "检查通知" }, Msgurl, Msgtemplateid);
+                //    db.InsertLog(str, "检查的短信通知请求");
+                //});
             }
             catch(Exception e)
             {
