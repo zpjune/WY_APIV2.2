@@ -31,7 +31,7 @@ namespace UIDP.BIZModule.wy
                         item.LSFGS = dr["LSFGS"] == null ? null : dr["LSFGS"].ToString();
                         item.ZLWZ = dr["ZLWZ"] == null ? null : dr["ZLWZ"].ToString();
                         item.JGLX = dr["JGLX"] == null ? null : dr["JGLX"].ToString();
-                        item.ZCYZ = dr["ZCYZ"] == null ? 0 : Convert.ToDecimal(dr["ZCYZ"]);
+                        item.ZCYZ = dr["ZCYZ"] == null|| dr["ZCYZ"].ToString()=="" ? 0 : Convert.ToDecimal(dr["ZCYZ"]);
                         item.SSQY = dr["SSQY"] == null ? null : dr["SSQY"].ToString();
                         item.WATER_NUMBER = dr["WATER_NUMBER"] == null ? null : dr["WATER_NUMBER"].ToString();
                         item.ELE_NUMBER = dr["ELE_NUMBER"] == null ? null : dr["ELE_NUMBER"].ToString();
@@ -43,7 +43,7 @@ namespace UIDP.BIZModule.wy
                         item.BJR = dr["BJR"] == null ? null : dr["BJR"].ToString();
                         item.BJSJ = dr["BJSJ"] == null ? null : dr["BJSJ"].ToString();
                         item.IS_DELETE = Convert.ToInt32(dr["IS_DELETE"]);
-                        item.ZFK = dr["ZFK"] == null ? 0 : Convert.ToDecimal(dr["ZFK"].ToString());
+                        item.ZFK = dr["ZFK"] == null || dr["ZFK"] .ToString()==""? 0 : Convert.ToDecimal(dr["ZFK"].ToString());
                         item.LS = dr["LS"] == null ? null : dr["LS"].ToString();
                         item.JG = dr["JG"] == null ? null : dr["JG"].ToString();
                         item.SS=dr["SS"] == null ? null : dr["SS"].ToString();

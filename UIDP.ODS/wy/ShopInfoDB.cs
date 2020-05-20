@@ -105,7 +105,7 @@ namespace UIDP.ODS.wy
                 //租户信息插入语句
                 ShopInfoSql = "INSERT INTO wy_shopinfo(CZ_SHID,JYNR,ZHXM,ZHXB,SFZH,MOBILE_PHONE,IS_SUBLET,TELEPHONE,E_MAIL," +
                    "IS_PASS,CJR,CJSJ,SHOP_NAME,SHOPBH,ZHLX,LEASE_ID,FEE_ID,IS_DELETE,FWID,SHOP_STATUS," +
-                   "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,OPEN_ID)values(";
+                   "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,OPEN_ID,WYBZJ,WYBZJJFSJ,WYBZJTFSJ)values(";
                 ShopInfoSql += GetSqlStr(CZ_SHID);
                 ShopInfoSql += GetSqlStr(d["JYNR"]);
                 ShopInfoSql += GetSqlStr(d["ZHXM"]);
@@ -133,6 +133,9 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += GetSqlStr(d["XFBZJJFSJ"]);
                 ShopInfoSql += GetSqlStr(d["XFBZJTFSJ"]);
                 ShopInfoSql += "(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t),";
+                ShopInfoSql += GetSqlStr(d["WYBZJ"], 1);
+                ShopInfoSql += GetSqlStr(d["WYBZJJFSJ"]);
+                ShopInfoSql += GetSqlStr(d["WYBZJTFSJ"]);
                 ShopInfoSql = ShopInfoSql.TrimEnd(',') + ")";
                 list.Add(ShopInfoSql);
                 //房屋信息更新语句
@@ -143,7 +146,7 @@ namespace UIDP.ODS.wy
             {
                 ShopInfoSql = "INSERT INTO wy_shopinfo(CZ_SHID,JYNR,ZHXM,ZHXB,SFZH,MOBILE_PHONE,IS_SUBLET,SUBLET_ID,TELEPHONE,E_MAIL," +
                    "IS_PASS,CJR,CJSJ,SHOP_NAME,SHOPBH,ZHLX,FEE_ID,IS_DELETE,FWID,SHOP_STATUS," +
-                   "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,OPEN_ID)values(";
+                   "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,OPEN_ID,WYBZJ,WYBZJJFSJ,WYBZJTFSJ)values(";
                 ShopInfoSql += GetSqlStr(CZ_SHID);
                 ShopInfoSql += GetSqlStr(d["JYNR"]);
                 ShopInfoSql += GetSqlStr(d["ZHXM"]);
@@ -202,6 +205,9 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += GetSqlStr(d["XFBZJJFSJ"]);
                 ShopInfoSql += GetSqlStr(d["XFBZJTFSJ"]);
                 ShopInfoSql += "(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t),";
+                ShopInfoSql += GetSqlStr(d["WYBZJ"], 1);
+                ShopInfoSql += GetSqlStr(d["WYBZJJFSJ"]);
+                ShopInfoSql += GetSqlStr(d["WYBZJTFSJ"]);
                 ShopInfoSql = ShopInfoSql.TrimEnd(',') + ")";
                 list.Add(ShopInfoSql);
                 HouseUpdateSql = "UPDATE wy_houseinfo set FWSX=" + d["userType"] + ",CZ_SHID='" + CZ_SHID + "' WHERE FWID='" + d["FWID"] + "'";
@@ -282,6 +288,9 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += "XFBZJJFSJ="+GetSqlStr(d["XFBZJJFSJ"]);
                 ShopInfoSql += "XFBZJTFSJ=" + GetSqlStr(d["XFBZJTFSJ"]);
                 ShopInfoSql += "OPEN_ID=(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t),";
+                ShopInfoSql += "WYBZJ=" + GetSqlStr(d["WYBZJ"], 1);
+                ShopInfoSql += "WYBZJJFSJ=" + GetSqlStr(d["WYBZJJFSJ"]);
+                ShopInfoSql += "WYBZJTFSJ=" + GetSqlStr(d["WYBZJTFSJ"]);
                 ShopInfoSql = ShopInfoSql.TrimEnd(',') + " WHERE CZ_SHID='" + d["CZ_SHID"] + "'";
                 list.Add(ShopInfoSql);
             }
@@ -370,7 +379,10 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += "XFBZJ=" + GetSqlStr(d["XFBZJ"], 1);
                 ShopInfoSql += "XFBZJJFSJ=" + GetSqlStr(d["XFBZJJFSJ"]);
                 ShopInfoSql += "XFBZJTFSJ=" + GetSqlStr(d["XFBZJTFSJ"]);
-                ShopInfoSql += "OPEN_ID=(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t)";
+                ShopInfoSql += "OPEN_ID=(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t) ,";
+                ShopInfoSql += "WYBZJ=" + GetSqlStr(d["WYBZJ"], 1);
+                ShopInfoSql += "WYBZJJFSJ=" + GetSqlStr(d["WYBZJJFSJ"]);
+                ShopInfoSql += "WYBZJTFSJ=" + GetSqlStr(d["WYBZJTFSJ"]);
                 ShopInfoSql = ShopInfoSql.TrimEnd(',') + " WHERE CZ_SHID='" + d["CZ_SHID"] + "'";
                 list.Add(ShopInfoSql);
             }
@@ -428,7 +440,7 @@ namespace UIDP.ODS.wy
             
             string NewShopInfoSql = "INSERT INTO wy_shopinfo(CZ_SHID,JYNR,ZHXM,ZHXB,SFZH,MOBILE_PHONE,IS_SUBLET,TELEPHONE,E_MAIL," +
                    "IS_PASS,CJR,CJSJ,SHOP_NAME,SHOPBH,ZHLX,FEE_ID,IS_DELETE,FWID,SHOP_STATUS," +
-                   "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,OPEN_ID)values(";
+                   "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,OPEN_ID,WYBZJ,WYBZJJFSJ,WYBZJTFSJ)values(";
             NewShopInfoSql += GetSqlStr(CZ_SHID);
             NewShopInfoSql += GetSqlStr(d["JYNR1"]);
             NewShopInfoSql += GetSqlStr(d["ZHXM1"]);
@@ -455,6 +467,9 @@ namespace UIDP.ODS.wy
             NewShopInfoSql += GetSqlStr(d["XFBZJJFSJ1"]);
             NewShopInfoSql += GetSqlStr(d["XFBZJTFSJ1"]);
             NewShopInfoSql += "(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t),";
+            NewShopInfoSql += GetSqlStr(d["WYBZJ"], 1);
+            NewShopInfoSql += GetSqlStr(d["WYBZJJFSJ"]);
+            NewShopInfoSql += GetSqlStr(d["WYBZJTFSJ"]);
             NewShopInfoSql = NewShopInfoSql.TrimEnd(',') + ")";
 
 
@@ -578,7 +593,7 @@ namespace UIDP.ODS.wy
                     list.Add(UpdateHouseInfo);
                     string ShopSql = "INSERT INTO wy_shopinfo(CZ_SHID,JYNR,ZHXM,ZHXB,SFZH,MOBILE_PHONE," +
                         "IS_SUBLET,TELEPHONE,E_MAIL,IS_PASS,IS_DELETE,SHOP_NAME,FWID,SHOPBH,LEASE_ID,FEE_ID,ZHLX,SHOP_STATUS," +
-                        "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ)VALUES(";
+                        "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,WYBZJ,WYBZJJFSJ,WYBZJTFSJ)VALUES(";
                     ShopSql += GetSqlStr(CZ_SHID);
                     ShopSql += GetSqlStr(dr["经营内容"]);
                     ShopSql += GetSqlStr(dr["租户姓名"]);
@@ -605,17 +620,20 @@ namespace UIDP.ODS.wy
                     ShopSql += GetSqlStr(1, 1);
                     ShopSql += GetSqlStr(1, 1);
                     ShopSql += GetSqlStr(dr["装修押金"], 1);
-                    ShopSql += GetSqlStr(dr["装修押金缴费时间"]);
-                    ShopSql += GetSqlStr(dr["装修押金退费时间"]);
+                    ShopSql += GetSqlStr(dr["装修押金缴费时间"],2);
+                    ShopSql += GetSqlStr(dr["装修押金退费时间"],2);
                     ShopSql += GetSqlStr(dr["消防保证金"], 1);
-                    ShopSql += GetSqlStr(dr["消防保证金缴费时间"]);
-                    ShopSql += GetSqlStr(dr["消防保证金退费时间"]);
+                    ShopSql += GetSqlStr(dr["消防保证金缴费时间"],2);
+                    ShopSql += GetSqlStr(dr["消防保证金退费时间"],2);
+                    ShopSql += GetSqlStr(dr["违约保证金"], 1);
+                    ShopSql += GetSqlStr(dr["违约保证金缴费时间"],2);
+                    ShopSql += GetSqlStr(dr["违约保证金退费时间"],2);
                     ShopSql = ShopSql.TrimEnd(',') + ")";
                     list.Add(ShopSql);
                     string FeeSql = "INSERT INTO wy_RopertyCosts(FEE_ID,WYJFFS,WYJZSJ,WYJZ,IS_DELETE,WYDJ)VALUES(";
                     FeeSql += GetSqlStr(FEE_ID);
                     FeeSql += GetSqlStr(DicTable.Select("Name='" + dr["物业缴纳方式"] + "'")[0]["Code"]);
-                    FeeSql += GetSqlStr(dr["物业基准日期"]);
+                    FeeSql += GetSqlStr(dr["物业基准日期"],2);
                     FeeSql += GetSqlStr(Convert.ToDecimal(dr["物业费标准（元/平/月）"]) * Convert.ToDecimal(FWdr[0]["JZMJ"]), 1);
                     FeeSql += GetSqlStr(0, 1);
                     FeeSql += GetSqlStr(dr["物业费标准（元/平/月）"], 1);
@@ -623,8 +641,8 @@ namespace UIDP.ODS.wy
                     list.Add(FeeSql);
                     string LeaseSql = "INSERT INTO wy_Leasinginfo(LEASE_ID,ZLKSSJ,ZLZZSJ,ZLZE,ZLYJ,ZLYS,ZJJFFS,IS_DELETE)VALUES(";
                     LeaseSql += GetSqlStr(LEASE_ID);
-                    LeaseSql += GetSqlStr(dr["租赁起始日期"]);
-                    LeaseSql += GetSqlStr(dr["租赁结束日期"]);
+                    LeaseSql += GetSqlStr(dr["租赁起始日期"],2);
+                    LeaseSql += GetSqlStr(dr["租赁结束日期"],2);
                     LeaseSql += GetSqlStr(dr["租赁总额"], 1);
                     LeaseSql += GetSqlStr(dr["租赁押金"], 1);
                     LeaseSql += GetSqlStr(dr["租赁月数"], 1);
@@ -677,7 +695,7 @@ namespace UIDP.ODS.wy
                     list.Add(UpdateHouseInfo);
                     string ShopSql = "INSERT INTO wy_shopinfo(CZ_SHID,JYNR,ZHXM,ZHXB,SFZH,MOBILE_PHONE," +
                         "IS_SUBLET,SUBLET_ID,TELEPHONE,E_MAIL,IS_PASS,IS_DELETE,SHOP_NAME,FWID,SHOPBH,FEE_ID,ZHLX,SHOP_STATUS," +
-                        "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ)VALUES(";
+                        "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,WYBZJ,WYBZJJFSJ,WYBZJTFSJ)VALUES(";
                     ShopSql += GetSqlStr(CZ_SHID);
                     ShopSql += GetSqlStr(dr["经营内容"]);
                     ShopSql += GetSqlStr(dr["租户姓名"]);
@@ -741,11 +759,14 @@ namespace UIDP.ODS.wy
                     ShopSql += GetSqlStr(1, 1);
                     ShopSql += GetSqlStr(2, 1);
                     ShopSql += GetSqlStr(dr["装修押金"], 1);
-                    ShopSql += GetSqlStr(dr["装修押金缴费时间"]);
-                    ShopSql += GetSqlStr(dr["装修押金退费时间"]);
+                    ShopSql += GetSqlStr(dr["装修押金缴费时间"],2);
+                    ShopSql += GetSqlStr(dr["装修押金退费时间"],2);
                     ShopSql += GetSqlStr(dr["消防保证金"], 1);
-                    ShopSql += GetSqlStr(dr["消防保证金缴费时间"]);
-                    ShopSql += GetSqlStr(dr["消防保证金退费时间"]);
+                    ShopSql += GetSqlStr(dr["消防保证金缴费时间"],2);
+                    ShopSql += GetSqlStr(dr["消防保证金退费时间"],2);
+                    ShopSql += GetSqlStr(dr["违约保证金"], 1);
+                    ShopSql += GetSqlStr(dr["违约保证金缴费时间"], 2);
+                    ShopSql += GetSqlStr(dr["违约保证金退费时间"], 2);
                     ShopSql = ShopSql.TrimEnd(',') + ")";
                     list.Add(ShopSql);
                     string FeeSql = "INSERT INTO wy_RopertyCosts(FEE_ID,WYJFFS,WYJZSJ,WYJZ,IS_DELETE,WYDJ)VALUES(";
@@ -848,8 +869,12 @@ namespace UIDP.ODS.wy
                 {
                     if (t.GetType().FullName.Trim().ToLower() == "system.datetime")
                     {
-                        t =Convert.ToDateTime(t).ToString("yyyy-MM-dd");
+                        t = Convert.ToDateTime(t).ToString("yyyy-MM-dd");
                     }
+                    return "'" + t + "',";
+                }
+                else if (type==2) {
+                    t = Convert.ToDateTime(t).ToString("yyyy-MM-dd");
                     return "'" + t + "',";
                 }
                 else
