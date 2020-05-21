@@ -459,7 +459,7 @@ namespace UIDP.BIZModule.wy
                     watercount = dtWater.Rows.Count;
                 }
                 if (elecount>0|| watercount>0) {
-                    string resl = "上个月有"+ elecount + "家商铺电表用电过高，"+ watercount+"家商铺水表用水量过高，详情请去水电报表页面查看！";
+                    string resl = "上个月有"+ elecount + "家商铺用电量异常，"+ watercount+"家商铺用水量异常，详情请去水电报表页面查看！";
                     r["items"] = resl;
                     r["code"] = 2000;
                 }

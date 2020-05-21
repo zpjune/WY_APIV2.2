@@ -22,7 +22,10 @@ namespace UIDP.ODS.wy
         {
             string sql = @"select a.FWBH,a.FWMC,b.ZHXM,b.MOBILE_PHONE,c.ZHXM ZHXM1,c.MOBILE_PHONE MOBILE_PHONE1 ,a.WATER_NUMBER,
                             (d.maxMeterSurflow-d.minMeterSurflow) MeterFlowDiff,case when isnull(e.WaterAmount)=1 then 0 else e.WaterAmount end AmountLimit,
-case when (d.maxMeterSurflow-d.minMeterSurflow)>=(case when isnull(e.WaterAmount)=1 then 0 else e.WaterAmount end) then 1 else 0 end yjstate,d.CreateMonth
+                            case when isnull(e.WaterAmount)=1 or e.WaterAmount=0 then 0 else  
+                            case when     (d.maxMeterSurflow-d.minMeterSurflow)>= (e.WaterAmount*(1+e.WaterPercent/100)) 
+                                               or (d.maxMeterSurflow-d.minMeterSurflow)<= (e.WaterAmount*(e.WaterPercent/100)) then 1 else 0 end
+                            end yjstate,d.CreateMonth,e.WaterPercent
                                  from wy_houseinfo a 
                             join wy_shopinfo b on a.CZ_SHID=b.CZ_SHID
                             left join wy_shopinfo c on  c.CZ_SHID=b.SUBLET_ID
@@ -31,11 +34,11 @@ case when (d.maxMeterSurflow-d.minMeterSurflow)>=(case when isnull(e.WaterAmount
                             where a.IS_DELETE=0 and b.IS_DELETE=0 ";
             if ("1".Equals(yjstate))
             {
-                sql = sql + " and (d.maxMeterSurflow-d.minMeterSurflow)>=(case when isnull(e.WaterAmount)=1 then 0 else e.WaterAmount end) ";
+                sql = sql + " and  case when isnull(e.WaterAmount)=1 or e.WaterAmount=0 then 0 else  case when(d.maxMeterSurflow - d.minMeterSurflow) >= (e.WaterAmount * (1 + e.WaterPercent / 100))  or(d.maxMeterSurflow - d.minMeterSurflow) <= (e.WaterAmount * (e.WaterPercent / 100)) then 1 else 0 end end =1 ";
             }
             else if ("0".Equals(yjstate))
             {
-                sql = sql + " and (d.maxMeterSurflow-d.minMeterSurflow)<(case when isnull(e.WaterAmount)=1 then 0 else e.WaterAmount end) ";
+                sql = sql + " and  case when isnull(e.WaterAmount)=1 or e.WaterAmount=0 then 0 else  case when(d.maxMeterSurflow - d.minMeterSurflow) >= (e.WaterAmount * (1 + e.WaterPercent / 100))  or(d.maxMeterSurflow - d.minMeterSurflow) <= (e.WaterAmount * (e.WaterPercent / 100)) then 1 else 0 end  end =0 ";
             }
             else {
 
@@ -56,16 +59,18 @@ case when (d.maxMeterSurflow-d.minMeterSurflow)>=(case when isnull(e.WaterAmount
             {
                 sql = sql + " c.ZHXM like '%" + ZhuanZuName + "%' ";
             }
-            sql = sql + "order by d.CreateMonth desc,a.FWMC ";
+            sql = sql + " order by d.CreateMonth desc,a.FWMC ";
             return db.GetDataTable(sql);
         }
         public DataTable GetEleData(string yjstate, string month, string HouseName, string YeZhuName, string ZhuanZuName)
         {
             string sql = @"select a.FWBH,a.FWMC,b.ZHXM,b.MOBILE_PHONE,c.ZHXM ZHXM1,c.MOBILE_PHONE MOBILE_PHONE1 ,a.ELE_NUMBER,a.CID,
                           (d.maxTotalEle-d.minTotalEle)  eleAmountDiff,
-case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end AmountLimit,
-case when (d.maxTotalEle-d.minTotalEle)>=(case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end) then 1 else 0 end yjstate,
-d.UpdateDateMonth
+                            case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end AmountLimit,
+                            case when isnull(e.eleAmount)=1 or e.eleAmount=0 then 0 else
+                                        case when (d.maxTotalEle-d.minTotalEle)>=(e.eleAmount*(1+e.elePercent/100)) or (d.maxTotalEle-d.minTotalEle)<=(e.eleAmount*(e.elePercent/100)) then 1 else 0 end
+                            end yjstate,e.elePercent,
+                            d.UpdateDateMonth
                             from wy_houseinfo a 
                             join wy_shopinfo b on a.CZ_SHID=b.CZ_SHID
                             left join wy_shopinfo c on  c.CZ_SHID=b.SUBLET_ID
@@ -74,11 +79,11 @@ d.UpdateDateMonth
                             where a.IS_DELETE=0 and b.IS_DELETE=0  ";
             if ("1".Equals(yjstate))
             {
-                sql = sql + " and   (d.maxTotalEle-d.minTotalEle)>=(case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end) ";
+                sql = sql + " and   case when isnull(e.eleAmount)=1 or e.eleAmount=0 then 0 else  case when(d.maxTotalEle - d.minTotalEle) >= (e.eleAmount * (1 + e.elePercent / 100)) or(d.maxTotalEle - d.minTotalEle) <= (e.eleAmount * (e.elePercent / 100)) then 1 else 0 end   end =1 ";
             }
             else if ("0".Equals(yjstate))
             {
-                sql = sql + " and   (d.maxTotalEle-d.minTotalEle)<(case when isnull(e.eleAmount)=1 then 0 else e.eleAmount end) ";
+                sql = sql + " and   case when isnull(e.eleAmount)=1 or e.eleAmount=0 then 0 else  case when(d.maxTotalEle - d.minTotalEle) >= (e.eleAmount * (1 + e.elePercent / 100)) or(d.maxTotalEle - d.minTotalEle) <= (e.eleAmount * (e.elePercent / 100)) then 1 else 0 end   end =0 ";
             }
             else
             {
