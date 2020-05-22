@@ -9,6 +9,13 @@ namespace UIDP.ODS.wy
     public class CheckReportDB
     {
         DBTool db = new DBTool("");
+        /***
+         * 下面是查询任务检查计划中的检查总表功能。查询基本逻辑如下：
+         * 1.任务区域字段在年度计划明细中，所以要通过检查结果关联到年度计划明细表获得检查区域
+         * 2.任务结果表(获取检查结果)→任务表(为了获取任务ID)→任务表和年度计划详情映射表(获取年度检查明细ID)
+         * →年度计划明细表(获取执行的年度检查明细ID)→年度计划明细检查区域映射表(最终获取到任务的检查区域)→房屋表(房屋信息)→商户表(商户信息)
+         * →任务区域视图(为了合并区域字段)→区域负责人表(为了保证和其他查询的数据一样)→字典表(获取房屋所属区域的中文名)
+         ***/
         public DataTable GetCheckResult(string year, string FWBH, string RWMC, string JCJG,string DLID)
         {
             string sql = "select a.RESULT_ID,a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,f.FWMC,g.ZHXM,GROUP_CONCAT(h.`Name`) AS JCQY,j.Name,a.JCCS,a.IS_REVIEW" +
@@ -41,6 +48,7 @@ namespace UIDP.ODS.wy
             }
             if (!string.IsNullOrEmpty(DLID))
             {
+                //这个条件是为了查询是存在指定大类不合格的检查结果
                 sql += " AND EXISTS (SELECT DISTINCT m.* FROM wy_check_result_detail k" +
                     " JOIN wy_task_detail_config l ON k.DETAIL_CODE=l.Code" +
                     " JOIN wy_task_detail_config m ON l.ParentID=m.ID " +
@@ -51,6 +59,11 @@ namespace UIDP.ODS.wy
             return db.GetDataTable(sql);
         }
 
+        /***
+         * 下面的查询是查询检查结果详情。日常检查的详情允许某一些项不检查，所以需要从任务关联到检查结果。如果直接用检查结果则无法获取未检查的项。
+         * 1.任务表→任务明细映射表→年度检查明细→检查明细地区映射表→检查详情配置表→检查详情配置表→检查结果表→检查结果详情
+         * 
+         ***/
         public DataTable GetCheckResultDetail(string RESULT_ID)
         {
             string sql = "SELECT DISTINCT e.`Name` AS DL,f.`Name` AS XL," +
@@ -71,7 +84,10 @@ namespace UIDP.ODS.wy
         {
             return db.GetDataTable("select ID,Name from wy_task_detail_config where ParentID IS NULL OR ParentID=''");
         }
-
+        /***
+         * 把检查结果和检查结果详情关联起来即可
+         * 
+         ***/
         public DataTable ExportTotalCheckReport(string year, string FWBH, string RWMC, string JCJG, string DLID)
         {
             string TotalSql = "SELECT * FROM ({0})t " +

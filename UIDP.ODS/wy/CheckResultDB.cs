@@ -92,7 +92,7 @@ namespace UIDP.ODS.wy
             //本段查询比较复杂，若需要修改时，可以将查询内()t内的语句拿出来，同时将两个子查询先剥离出去进行修改，最后在修改子查询
             //本段查询的主要逻辑就是通过查询任务范围内应该检查的房子数量减去已经检查过的房子数量，就可以得知没有进行检查的房子数量。
             string sql= "select *,(t.total-t.complete) AS incomplete from" +
-                "(select a.RWBH,a.RWMC,a.RWKSSJ,a.RWJSSJ,a.RWFW,GROUP_CONCAT( e.`Name` )," +
+                "(select a.RWBH,a.RWMC,a.RWKSSJ,a.RWJSSJ,a.RWFW,GROUP_CONCAT( e.`Name` ) AS Name," +
                 //以下为子查询，查询当前任务内包含的所有房子数量，限制条件为:1.任务区域内的房子 2.房子不是空闲状态。
                 "(SELECT COUNT(*)AS TOTAL FROM wy_houseinfo where SSQY IN (" +
                 " SELECT REGION_CODE FROM wy_map_region f " +

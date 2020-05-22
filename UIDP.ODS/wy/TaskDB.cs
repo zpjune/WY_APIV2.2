@@ -131,7 +131,9 @@ namespace UIDP.ODS.wy
 
         public DataSet GetPlanCheckAndDetail(string TASK_ID)
         {
-            string CheckPlanDetailSql = "select a.*,b.NAME AS ALLPLACENAME,c.NAME AS JCNAME from wy_checkPlan_detail a" +
+            string CheckPlanDetailSql = "select a.*,b.NAME AS ALLPLACENAME,c.NAME AS JCNAME, " +
+                " (SELECT count(*) FROM wy_map_checkplandetail WHERE PLAN_DETAIL_ID=a.PLAN_DETAIL_ID )AS ZXCS " +
+                " from wy_checkPlan_detail a" +
                 " JOIN wy_map_checkplandetail d ON a.PLAN_DETAIL_ID=d.PLAN_DETAIL_ID" +
                 " left join V_TaskRegion b on a.PLAN_DETAIL_ID= b.PLAN_DETAIL_ID " +
                 " left join wy_task_detail_config c on c.Code=a.JCLX" +

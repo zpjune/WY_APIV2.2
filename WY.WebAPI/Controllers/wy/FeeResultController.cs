@@ -28,6 +28,8 @@ namespace WY.WebAPI.Controllers.wy
         [HttpGet("GetFeeResult")]
         public IActionResult GetFeeResult(string JFLX, string FWMC, string FWBH, string JFSTATUS, int page, int limit) => Ok(FR.GetFeeResult(JFLX, FWMC, FWBH, JFSTATUS, page, limit));
 
+        [HttpGet("PaidFeeResult")]
+        public IActionResult PaidFeeResult(string date, int page, int limit) => Ok(FR.PaidFeeResult(date, page, limit));
         /// <summary>
         /// 获取商铺信息
         /// </summary>

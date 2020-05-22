@@ -63,6 +63,34 @@ namespace UIDP.BIZModule.wy
             return r;
         }
 
+        public Dictionary<string, object> PaidFeeResult(string date,int page,int limit)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.PaidFeeResult(date);
+                if (dt.Rows.Count > 0)
+                {
+                    r["message"] = "成功！";
+                    r["total"] = dt.Rows.Count;
+                    r["items"] = KVTool.GetPagedTable(dt, page, limit);
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["message"] = "成功！,但是没有数据!";
+                    r["total"] = 0;
+                    r["code"] = 2000;
+                }
+            }
+            catch (Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return r;
+        }
+
 
         public Dictionary<string, object> GetShopInfo(string FWID)
         {

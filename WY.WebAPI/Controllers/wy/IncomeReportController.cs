@@ -24,5 +24,15 @@ namespace WY.WebAPI.Controllers.wy
         /// <returns></returns>
         [HttpGet("GetWYIncomeReport")]
         public IActionResult GetWYIncomeReport(string date, int page, int limit) => Ok(IRM.GetWYIncomeReport(date, page, limit));
+
+        /// <summary>
+        /// 获取普丰日报表
+        /// </summary>
+        /// <param name="date">选择的日期</param>
+        /// <param name="page">页数</param>
+        /// <param name="limit">每页条数</param>
+        /// <returns></returns>
+        [HttpGet("GetPFIncomeReport")]
+        public IActionResult GetPFIncomeReport(string date, int page, int limit) => Ok(IRM.GetPFIncomeReport(date, page, limit));
     }
 }

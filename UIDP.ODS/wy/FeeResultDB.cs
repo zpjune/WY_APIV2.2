@@ -37,7 +37,25 @@ namespace UIDP.ODS.wy
             }
             return db.GetDataTable(sql);
         }
-
+        public DataTable PaidFeeResult(string date)
+        {
+            string sql = "SELECT a.*,b.ORDER_ID,c.FWBH,c.FWMC,d.ZHXM,d.ZHXB,d.MOBILE_PHONE FROM wy_pay_record a" +
+                " LEFT JOIN wy_wx_pay b ON a.RECORD_ID = b.RECORD_ID OR a.RECORD_ID = b.ID" +
+                " JOIN wy_houseinfo c ON a.FWID=c.FWID AND c.IS_DELETE=0" +
+                " JOIN wy_shopinfo d ON a.CZ_SHID=d.CZ_SHID AND d.IS_DELETE=0" +
+                " where JFZT=1" +
+                " {0}" +
+                " ORDER BY JFRQ DESC";
+            if (!string.IsNullOrEmpty(date))
+            {
+                sql = string.Format(sql, " AND DATE_FORMAT(a.JFRQ,'%Y-%m-%d')=DATE_FORMAT('" + date + "','%Y-%m-%d')");
+            }
+            else
+            {
+                sql = string.Format(sql, "");
+            }
+            return db.GetDataTable(sql);
+        }
         public DataTable GetShopInfo(string FWID)
         {
             string sql = "select a.FWID,a.FWBH,a.FWMC,b.*,c.Name,a.FWID AS OLDID from wy_houseinfo a  " +
@@ -107,9 +125,10 @@ namespace UIDP.ODS.wy
 
         public DataTable GetHistoryFeeResult(string JFLX, string FWMC, string FWBH,string JFSTATUS)
         {
-            string sql = "select a.*,b.FWMC,b.FWBH,c.SHOP_NAME,c.ZHXM,c.MOBILE_PHONE from wy_pay_record a" +
+            string sql = "select a.*,b.FWMC,b.FWBH,c.SHOP_NAME,c.ZHXM,c.MOBILE_PHONE,d.ORDER_ID from wy_pay_record a" +
                 " join wy_houseinfo b on a.FWID=b.FWID and b.IS_DELETE=0" +
                 " join wy_shopinfo c on a.CZ_SHID=c.CZ_SHID AND c.IS_DELETE=0" +
+                " LEFT JOIN wy_wx_pay d ON a.RECORD_ID = d.RECORD_ID OR a.RECORD_ID = d.ID" +
                 " where 1=1";
             if (!string.IsNullOrEmpty(JFSTATUS))
             {

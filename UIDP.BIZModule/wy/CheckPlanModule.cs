@@ -65,6 +65,7 @@ namespace UIDP.BIZModule.wy
                         item.IS_DELETE =Convert.ToInt32(dr["IS_DELETE"].ToString());
                         item.ALLPLACENAME = dr["NAME"].ToString();
                         item.JCNAME = dr["JCNAME"].ToString();
+                        item.ZXCS = Convert.ToInt32(dr["ZXCS"]);
                         list.Add(item);
                     }
                     r["message"] = "成功";
