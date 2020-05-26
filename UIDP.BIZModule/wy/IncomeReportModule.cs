@@ -82,14 +82,10 @@ namespace UIDP.BIZModule.wy
             };
             string BasePath =Directory.GetCurrentDirectory()+"/";
             //FileInfo Template = new FileInfo(BasePath+ "/WY_API/ExcelModel/收据模板.xls");
-            string fileName = FileHeaderName[ExportType] +DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+            string fileName = FileHeaderName[ExportType] + "-" + d["USER_NAME"] + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
             string filePath = @"WY_API/DownLoadFiles/";
             try
             {
-                
-                //FileInfo data = new FileInfo(BasePath + filePath + fileName);
-                //Template.CopyTo(BasePath + filePath + fileName);
-
                 //商户基本信息查询
                 DataSet ds = db.GetShopInfo(d["HOUSE_ID"].ToString());
 
@@ -216,7 +212,7 @@ namespace UIDP.BIZModule.wy
                     //准备生成文件
                     while (File.Exists(BasePath + filePath + fileName))
                     {
-                        fileName = FileHeaderName[ExportType] + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ".xls";
+                        fileName = FileHeaderName[ExportType] +"-"+d["USER_NAME"] +"-"+DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
                     }
                     //将excel写入流
                     using (FileStream Reportfile = new FileStream(BasePath + filePath + fileName, FileMode.Create))
