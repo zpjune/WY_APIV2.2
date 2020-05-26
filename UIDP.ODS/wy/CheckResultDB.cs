@@ -12,7 +12,7 @@ namespace UIDP.ODS.wy
 
         public DataTable GetCheckResult(string year,string FWBH,string RWMC,string JCJG)
         {
-            string sql = "select a.RESULT_ID,a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,f.FWMC,g.ZHXM,GROUP_CONCAT(h.`Name`) AS JCQY,j.Name,a.JCCS,a.IS_REVIEW" +
+            string sql = "select a.RESULT_ID,a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,f.FWMC,g.ZHXM,GROUP_CONCAT(h.`Name`) AS JCQY,j.Name,a.JCCS,a.IS_REVIEW,IMGS" +
                 " from wy_check_result a" +
                 " join wy_check_task b on a.TASK_ID=b.TASK_ID AND b.IS_DELETE=0" +
                 " join wy_map_checkplandetail c ON b.TASK_ID=c.TASK_ID" +

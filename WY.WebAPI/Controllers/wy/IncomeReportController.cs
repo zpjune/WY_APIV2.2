@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using UIDP.BIZModule.wy;
 
 namespace WY.WebAPI.Controllers.wy
@@ -34,5 +35,8 @@ namespace WY.WebAPI.Controllers.wy
         /// <returns></returns>
         [HttpGet("GetPFIncomeReport")]
         public IActionResult GetPFIncomeReport(string date, int page, int limit) => Ok(IRM.GetPFIncomeReport(date, page, limit));
+
+        [HttpPost("ExportRecipet")]
+        public IActionResult ExportRecipet([FromBody]JObject value) => Ok(IRM.ExportRecipet(value.ToObject<Dictionary<string, object>>()));
     }
 }

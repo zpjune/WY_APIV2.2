@@ -26,49 +26,55 @@ namespace UIDP.ODS.wy
                 " a.USER_NAME," +
                 " a.SHOP_NAME," +
                 " b.SHOPBH," +
+                " a.HOUSE_ID," +
                 " SUM( CASE FEE_TYPES WHEN 0 THEN TOTAL_FEE ELSE 0 END ) / 100 AS WYF," +
                 " SUM( CASE FEE_TYPES WHEN 1 THEN TOTAL_FEE ELSE 0 END ) / 100 AS SF," +
                 //" SUM( CASE FEE_TYPES WHEN 2 THEN TOTAL_FEE ELSE 0 END ) / 100 AS DF," +
                 " 0 AS ZXYJ," +
                 " 0 AS XFBZJ," +
                 " 0 AS WYBZJ," +
+                " max(a.HOUSE_SERVICE_UNITPRICE) as HOUSE_SERVICE_UNITPRICE," +
                 " DATE_FORMAT( PAY_TIME, '%Y-%m-%d' ) AS payday" +
                 " FROM wy_wx_pay a " +
                 " join wy_shopinfo b on a.USER_ID=b.CZ_SHID AND b.IS_DELETE=0" +
                 " WHERE PAY_TIME IS NOT NULL " +
-                " GROUP BY a.USER_ID,a.USER_NAME,a.SHOP_NAME,DATE_FORMAT( PAY_TIME, '%Y-%m-%d' ),b.SHOPBH";
+                " GROUP BY a.USER_ID,a.USER_NAME,a.SHOP_NAME,DATE_FORMAT( PAY_TIME, '%Y-%m-%d' ),b.SHOPBH,a.HOUSE_ID";
             //记录表查询sql(注释中的第二步)
             string RecordIncomeSql = "SELECT " +
                 " a.CZ_SHID as USER_ID," +
                 " b.ZHXM AS USER_NAME," +
                 " b.SHOP_NAME," +
                 " b.SHOPBH," +
+                " b.FWID as HOUSE_ID," +
                 " SUM( CASE WHEN JFLX = 0 AND PAY_WAY = 0 THEN JFJE ELSE 0 END ) AS WYF," +
                 " SUM( CASE WHEN JFLX = 1 AND PAY_WAY = 0 THEN JFJE ELSE 0 END ) AS SF," +
                 //" SUM( CASE WHEN JFLX = 2 AND PAY_WAY = 0 THEN JFJE ELSE 0 END ) AS DF," +
                 " MAX( ( CASE WHEN DATE_FORMAT( b.ZXYJJFSJ, '%Y-%m-%d' ) =DATE_FORMAT('" + date + "','%Y-%m-%d')  THEN ZXYJ ELSE 0 END ) ) AS ZXYJ," +
                 " MAX( ( CASE WHEN DATE_FORMAT( b.XFBZJJFSJ, '%Y-%m-%d' ) =DATE_FORMAT('" + date + "','%Y-%m-%d')  THEN XFBZJJFSJ ELSE 0 END ) ) AS XFBZ," +
                 " MAX( ( CASE WHEN DATE_FORMAT( b.WYBZJJFSJ, '%Y-%m-%d' ) =DATE_FORMAT('" + date + "','%Y-%m-%d')  THEN WYBZJJFSJ ELSE 0 END ) ) AS WYBZ," +
+                " MAX(a.WYDJ) as HOUSE_SERVICE_UNITPRICE," +
                 " DATE_FORMAT( a.JFRQ, '%Y-%m-%d' ) AS payday" +
                 " FROM wy_pay_record a" +
                 " JOIN wy_shopinfo b ON a.CZ_SHID = b.CZ_SHID AND b.IS_DELETE = 0" +
                 " WHERE PAY_WAY = 0 " +
-                " GROUP BY a.CZ_SHID,b.ZHXM,b.SHOP_NAME,DATE_FORMAT( a.JFRQ, '%Y-%m-%d' ),b.SHOPBH";
+                " GROUP BY a.CZ_SHID,b.ZHXM,b.SHOP_NAME,DATE_FORMAT( a.JFRQ, '%Y-%m-%d' ),b.SHOPBH,b.FWID";
             //上述的第三步,将大表sum
             string SUMSql = "SELECT " +
                 " t.USER_ID," +
                 " t.USER_NAME," +
                 " t.SHOP_NAME," +
                 " t.SHOPBH," +
+                " t.HOUSE_ID," +
                 " SUM( t.WYF ) AS WYF," +
                 " SUM( t.SF ) AS SF," +
                 //" SUM( t.DF ) AS DF," +
                 " SUM( t.ZXYJ ) AS ZXYJ," +
                 " SUM( XFBZJ ) AS XFBZJ," +
                 " SUM( WYBZJ ) AS WYBZJ," +
+                " MAX(t.HOUSE_SERVICE_UNITPRICE) as HOUSE_SERVICE_UNITPRICE," +
                 " t.payday" +
                 " FROM({0})t" +
-                " GROUP BY t.USER_ID,t.USER_ID,t.USER_NAME,t.SHOP_NAME,t.payday,t.SHOPBH";
+                " GROUP BY t.USER_ID,t.USER_ID,t.USER_NAME,t.SHOP_NAME,t.payday,t.SHOPBH,t.HOUSE_ID";
             SUMSql = string.Format(SUMSql, WXIncomeSql + " UNION ALL " + RecordIncomeSql);
             //最后一步，将物业费有有效起止日期查出来
             string TotalSql = "SELECT a.*,a.WYF+a.SF+a.ZXYJ+a.XFBZJ+a.WYBZJ as WYTotal," +
@@ -94,39 +100,55 @@ namespace UIDP.ODS.wy
                 " a.USER_NAME," +
                 " a.SHOP_NAME," +
                 " b.SHOPBH," +
+                " a.HOUSE_ID," +
                 " SUM( CASE FEE_TYPES WHEN 2 THEN TOTAL_FEE ELSE 0 END ) / 100 AS DF," +
                 " 0 as WYBZJ," +
                 " DATE_FORMAT( PAY_TIME, '%Y-%m-%d' ) AS payday" +
                 " FROM wy_wx_pay a " +
                 " join wy_shopinfo b on a.USER_ID=b.CZ_SHID AND b.IS_DELETE=0" +
                 " WHERE PAY_TIME IS NOT NULL " +
-                " GROUP BY a.USER_ID,a.USER_NAME,a.SHOP_NAME,DATE_FORMAT( PAY_TIME, '%Y-%m-%d' ),b.SHOPBH";
+                " GROUP BY a.USER_ID,a.USER_NAME,a.SHOP_NAME,DATE_FORMAT( PAY_TIME, '%Y-%m-%d' ),b.SHOPBH,a.HOUSE_ID";
             string RecordIncomeSql = "SELECT " +
                " a.CZ_SHID as USER_ID," +
                " b.ZHXM AS USER_NAME," +
                " b.SHOP_NAME," +
                " b.SHOPBH," +
+               " b.FWID as HOUSE_ID," +
                " SUM( CASE WHEN JFLX = 2 AND PAY_WAY = 0 THEN JFJE ELSE 0 END ) AS DF," +
                " MAX( ( CASE WHEN DATE_FORMAT( b.WYBZJJFSJ, '%Y-%m-%d' ) =DATE_FORMAT('" + date + "','%Y-%m-%d')  THEN WYBZJJFSJ ELSE 0 END ) ) AS WYBZJ," +
                " DATE_FORMAT( a.JFRQ, '%Y-%m-%d' ) AS payday" +
                " FROM wy_pay_record a" +
                " JOIN wy_shopinfo b ON a.CZ_SHID = b.CZ_SHID AND b.IS_DELETE = 0" +
                " WHERE PAY_WAY = 0 " +
-               " GROUP BY a.CZ_SHID,b.ZHXM,b.SHOP_NAME,DATE_FORMAT( a.JFRQ, '%Y-%m-%d' ),b.SHOPBH";
+               " GROUP BY a.CZ_SHID,b.ZHXM,b.SHOP_NAME,DATE_FORMAT( a.JFRQ, '%Y-%m-%d' ),b.SHOPBH,b.FWID";
             string SUMSql = "SELECT " +
                 " t.USER_ID," +
                 " t.USER_NAME," +
                 " t.SHOP_NAME," +
                 " t.SHOPBH," +
+                " t.HOUSE_ID," +
                 " SUM( t.DF ) AS DF," +
                 " SUM( t.WYBZJ ) AS WYBZJ," +
                 " SUM( t.DF )+SUM( t.WYBZJ ) AS PFTotal," +
                 " t.payday" +
                 " FROM({0})t" +
                 " WHERE t.payday=DATE_FORMAT('" +date+ "','%Y-%m-%d') AND (t.DF!=0 OR t.WYBZJ!=0)" +//这个条件是为了避免当天某个商户没交电费交的别的钱导致出现了0的数据
-                " GROUP BY t.USER_ID,t.USER_ID,t.USER_NAME,t.SHOP_NAME,t.payday,t.SHOPBH";
+                " GROUP BY t.USER_ID,t.USER_ID,t.USER_NAME,t.SHOP_NAME,t.payday,t.SHOPBH,t.HOUSE_ID";
             SUMSql = string.Format(SUMSql, WXIncomeSql + " UNION ALL " + RecordIncomeSql);
             return db.GetDataTable(SUMSql);
+        }
+
+
+        public DataSet GetShopInfo(string HOUSE_ID)
+        {
+            string HouseSql = "SELECT JZMJ,ZLWZ FROM wy_houseinfo where FWID='" + HOUSE_ID + "'";
+            string Configsql = "select * from ts_uidp_config where CONF_CODE='PER_ELECTRIC_SET_PRICE' OR CONF_CODE='PER_WATER_PRICE'";
+            Dictionary<string, string> list = new Dictionary<string, string>()
+            {
+                {"ShopInfosql",HouseSql },
+                {"Configsql",Configsql }
+            };
+            return db.GetDataSet(list);
         }
     }
 }

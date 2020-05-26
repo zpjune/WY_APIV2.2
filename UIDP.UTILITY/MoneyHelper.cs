@@ -143,7 +143,15 @@ namespace UIDP.UTILITY
                 }
                 else
                 {
-                    ChineseStr += "圆" + pointStr;
+                    if (ChineseStr != "")
+                    {
+                        ChineseStr += "圆" + pointStr;
+                    }
+                    else
+                    {
+                        ChineseStr +=pointStr;
+                    }
+                    
                 }
             }
             else

@@ -57,7 +57,7 @@ namespace UIDP.BIZModule.wy
                         item.JCQY = dr["JCQY"].ToString().TrimEnd(',').Split(',');
                         item.JCNR = dr["JCNR"].ToString();
                         item.JCLX = dr["JCLX"].ToString();
-                        item.PCCS = dr["PCCS"]==null?0:Convert.ToInt32(dr["PCCS"].ToString());
+                        item.PCCS = dr.IsNull("PCCS")?0:Convert.ToInt32(dr["PCCS"].ToString());
                         item.CJR = dr["CJR"].ToString();
                         item.CJSJ = dr["CJSJ"].ToString();
                         item.BJR = dr["BJR"].ToString();

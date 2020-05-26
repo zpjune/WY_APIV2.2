@@ -77,13 +77,13 @@ namespace UIDP.ODS.wy
             //    " JOIN wy_RopertyCosts c ON b.FEE_ID=c.FEE_ID AND c.IS_DELETE=0" +
             //    " LEFT JOIN wy_shopinfo d ON b.SUBLET_ID=d.CZ_SHID AND d.IS_DELETE=0 AND b.IS_SUBLET=1" +
             //    " LEFT JOIN V_pay_record e ON a.FWID= e.FWID AND e.JFLX=0";
-            string sql = "SELECT FWID,CZ_SHID,OPEN_ID,FEE_ID,WYJFFS,WYJZSJ,WYJZ,JFZT,YXQS,YXQZ,recordFEE_ID," +
+            string sql = "SELECT FWID,CZ_SHID,OPEN_ID,FEE_ID,WYJFFS,WYJZSJ,WYJZ,JFZT,YXQS,YXQZ,recordFEE_ID,WYDJ," +
                 " (CASE WHEN FEE_ID=recordFEE_ID THEN 1 ELSE 0 END ) AS  IS_CHANGEUSER" +
                 " FROM " +
                 " (SELECT a.FWID," +
                 " ( CASE WHEN d.CZ_SHID IS NOT NULL THEN d.CZ_SHID ELSE b.CZ_SHID END ) AS CZ_SHID," +
                 " ( CASE WHEN d.OPEN_ID IS NOT NULL THEN d.OPEN_ID ELSE b.OPEN_ID END ) AS OPEN_ID," +
-                " c.FEE_ID,c.WYJFFS,c.WYJZSJ,c.WYJZ,e.JFZT,e.YXQS,e.YXQZ,e.FEE_ID AS recordFEE_ID " +
+                " c.FEE_ID,c.WYJFFS,c.WYJZSJ,c.WYJZ,e.JFZT,e.YXQS,e.YXQZ,e.FEE_ID AS recordFEE_ID,c.WYDJ " +
                 " FROM wy_houseinfo a " +
                 " JOIN wy_shopinfo b ON a.CZ_SHID= b.CZ_SHID AND b.IS_DELETE= 0 AND b.IS_PASS=1" +
                 " JOIN wy_RopertyCosts c ON b.FEE_ID= c.FEE_ID AND c.IS_DELETE= 0" +

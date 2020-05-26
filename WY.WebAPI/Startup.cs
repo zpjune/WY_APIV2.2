@@ -86,6 +86,12 @@ namespace WY.WebAPI
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+       System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "WY_API/DownLoadFiles")),
+                RequestPath = "/WY_API/DownLoadFiles"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
 System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "WY_API/Files/export")),
                 RequestPath = "/WY_API/Files/export"
             });
