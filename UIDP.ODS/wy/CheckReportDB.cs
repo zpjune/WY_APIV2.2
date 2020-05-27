@@ -165,6 +165,8 @@ namespace UIDP.ODS.wy
                 " AND YEAR(c.JCSJ)=yyyy ) AS overdue" +
                 " FROM wy_check_result a" +
                 " JOIN wy_region_director b ON a.JCR = b.WX_OPEN_ID" +
+                " JOIN wy_houseinfo c ON c.FWID=a.FWID" +
+                " JOIN wy_check_task d ON a.TASK_ID=d.TASK_ID" +
                 " WHERE 1=1 " +
                 " {0}" +
                 " GROUP BY b.FZR,MONTH ( a.JCSJ ),YEAR ( a.JCSJ ),RD_ID,WX_OPEN_ID" +
@@ -208,8 +210,8 @@ namespace UIDP.ODS.wy
                 " (CASE a.JCJG WHEN 0 THEN '不合格' WHEN 1 THEN '合格' WHEN 2 THEN '复查不合格' WHEN 3 THEN '复查合格' END)AS JCJG," +
                 " (CASE WHEN a.JCSJ BETWEEN d.RWKSSJ AND d.RWJSSJ THEN '否' ELSE '是' END ) as  overdue" +
                 " FROM wy_check_result a" +
-                " JOIN wy_region_director b ON a.JCR=b.WX_OPEN_ID AND b.IS_DELETE=0" +
-                " JOIN wy_houseinfo c ON c.FWID=a.FWID AND c.IS_DELETE=0" +
+                " JOIN wy_region_director b ON a.JCR=b.WX_OPEN_ID " +
+                " JOIN wy_houseinfo c ON c.FWID=a.FWID " +
                 " JOIN wy_check_task d ON a.TASK_ID=d.TASK_ID" +
                 " where MONTH(a.JCSJ)=" + mon + " AND YEAR(a.JCSJ)=" + yyyy + " AND b.RD_ID='" + RD_ID + "'" +
                 " ORDER BY RWBH";
