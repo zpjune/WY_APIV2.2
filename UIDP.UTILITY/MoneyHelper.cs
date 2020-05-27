@@ -7,6 +7,11 @@ namespace UIDP.UTILITY
 {
     public static class MoneyHelper
     {
+        /// <summary>
+        /// 小写数字转成大写数字
+        /// </summary>
+        /// <param name="num">小写数字</param>
+        /// <returns></returns>
         public static string GetNumberCapitalized(double num) 
         {
             string[] Unit = new string[8] { "拾", "佰", "仟", "万", "亿", "圆", "角", "分" };

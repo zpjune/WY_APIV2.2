@@ -18,7 +18,6 @@ namespace UIDP.BIZModule.wy
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                string str=MoneyHelper.GetNumberCapitalized(578393.12);
                 DataTable dt = db.GetWYIncomeReport(date);
                 if (dt.Rows.Count > 0)
                 {
