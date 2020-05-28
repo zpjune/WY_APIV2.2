@@ -98,7 +98,7 @@ namespace UIDP.BIZModule.wy
                 {
                     workbook = new HSSFWorkbook(fs);//初始化
                     sheet = workbook.GetSheetAt(0);//获取第一个sheet页
-                    string JZMJ = ds.Tables[0].Rows[0].IsNull("JZMJ") ? "" : ds.Tables[0].Rows[0]["JZMJ"]+"平方米";
+                    string JZMJ = ds.Tables[0].Rows[0].IsNull("JZMJ") ? "0" : ds.Tables[0].Rows[0]["JZMJ"]+"平方米";
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         row = sheet.GetRow(1);
@@ -203,8 +203,9 @@ namespace UIDP.BIZModule.wy
                         Total += Convert.ToDouble(d["XFBZJ"]);
                         i++;
                     }
-                    string ChineseTotal = MoneyHelper.GetNumberCapitalized(Total);
                     //总计金额
+                    string ChineseTotal = MoneyHelper.GetNumberCapitalized(Total);
+                    
                     row = sheet.GetRow(7);
                     row.GetCell(2).SetCellValue(ChineseTotal);
                     row.GetCell(6).SetCellValue(Total+"元");
