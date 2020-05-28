@@ -467,9 +467,9 @@ namespace UIDP.ODS.wy
             NewShopInfoSql += GetSqlStr(d["XFBZJJFSJ1"]);
             NewShopInfoSql += GetSqlStr(d["XFBZJTFSJ1"]);
             NewShopInfoSql += "(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t),";
-            NewShopInfoSql += GetSqlStr(d["WYBZJ"], 1);
-            NewShopInfoSql += GetSqlStr(d["WYBZJJFSJ"]);
-            NewShopInfoSql += GetSqlStr(d["WYBZJTFSJ"]);
+            NewShopInfoSql += GetSqlStr(d["WYBZJ1"], 1);
+            NewShopInfoSql += GetSqlStr(d["WYBZJJFSJ1"]);
+            NewShopInfoSql += GetSqlStr(d["WYBZJTFSJ1"]);
             NewShopInfoSql = NewShopInfoSql.TrimEnd(',') + ")";
 
 
