@@ -39,7 +39,8 @@ namespace UIDP.UTILITY
                 {
                     if (fileExt == "xls")
                     {
-                        dt = RenderDataTableFromExcel(System.IO.File.OpenRead(path));
+                        dt = RenderDataTableFromExcel(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read));
+                        
                     }
 
                     else

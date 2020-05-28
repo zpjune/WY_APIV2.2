@@ -166,7 +166,8 @@ namespace UIDP.BIZModule.wy
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
             List<string> list = new List<string>();
-            string modePath = System.IO.Directory.GetCurrentDirectory() + "\\ExcelModel\\房屋档案表模板.xls";//原始文件
+            string modePath = System.IO.Directory.GetCurrentDirectory() + "/WY_API/ExcelModel/房屋档案表模板.xls";//原始文件
+            modePath = modePath.Replace("//","/");
             string path = filePath;//原始文件
             string mes = "";
             DataTable dt = new DataTable();

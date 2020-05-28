@@ -36,6 +36,7 @@ namespace UIDP.ODS.wy
             sql += GetSqlStr(d["userId"]);
             sql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             sql += GetSqlStr(0,1);
+            //sql+= " (SELECT WX_OPEN_ID FROM wy_region_director WHERE MOBILE=')"
             sql = sql.TrimEnd(',') + ")";
             return db.ExecutByStringResult(sql);
         }
