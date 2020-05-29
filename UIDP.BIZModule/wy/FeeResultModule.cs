@@ -575,13 +575,13 @@ namespace UIDP.BIZModule.wy
                             if (d["JFLX"].ToString() == "0")
                             {
                                 Dictionary<string, object> jsondata = new Dictionary<string, object>()
-                            {
-                                {"first", "尊敬的业主" + d["ZHXM"] + "您好！您的物业费已出。" },
-                                { "userName", d["ZHXM"]},
-                                { "address",d["FWBH"] + "-" + d["FWMC"]},
-                                { "pay",d["JFJE"]},
-                                { "remark","您本次缴纳的物业费有效期为" + d["YXQS"] + "到" + d["YXQZ"] + "请按时缴纳物业费"}
-                            };
+                                {
+                                    {"first", "尊敬的业主" + d["ZHXM"] + "您好！您的物业费已出。" },
+                                    { "userName", d["ZHXM"]},
+                                    { "address",d["FWBH"] + "-" + d["FWMC"]},
+                                    { "pay",d["JFJE"]},
+                                    { "remark","您本次缴纳的物业费有效期为" + Convert.ToDateTime(d["YXQS"]).ToString("yyyy/MM/dd") + "到" + Convert.ToDateTime(d["YXQZ"]).ToString("yyyy/MM/dd") + "请按时缴纳物业费"}
+                                };
                                 if (d["OPEN_ID"] != null)
                                 {
                                     //string str=MsgHelper.Msg.SendMsg(url, d["OPEN_ID"].ToString(), jsondata, Configuration.GetSection("template").GetSection("confirm").Value).Result;
