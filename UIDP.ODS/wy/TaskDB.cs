@@ -25,6 +25,7 @@ namespace UIDP.ODS.wy
                 sql += " AND RWMC like'%" + RWMC + "%'";
             }
             sql += " GROUP BY a.TASK_ID";
+            sql += " ORDER BY a.RWKSSJ DESC";
             return db.GetDataTable(sql);
         }
         public string getRWBH() {

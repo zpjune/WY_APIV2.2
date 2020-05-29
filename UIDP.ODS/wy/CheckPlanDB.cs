@@ -22,7 +22,6 @@ namespace UIDP.ODS.wy
             {
                 sql += " and JHND=" + JHND;
             }
-            sql += " ORDER BY RWKSSJ DESC";
             return db.GetDataTable(sql);
         }
 
