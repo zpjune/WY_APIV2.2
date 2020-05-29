@@ -28,7 +28,9 @@ namespace UIDP.ODS.wy
         public DataTable GetCheckPlanDetail(string PLAN_ID)
         {
             return db.GetDataTable("SELECT a.*,b.NAME,c.Name AS JCNAME," +
-                " (SELECT count(*) FROM wy_map_checkplandetail WHERE PLAN_DETAIL_ID=a.PLAN_DETAIL_ID )	AS ZXCS" +
+                " (SELECT count(*) FROM wy_map_checkplandetail d " +
+                " join wy_check_task e on e.TASK_ID=d.TASK_ID and e.IS_DELETE=0 " +
+                " WHERE d.PLAN_DETAIL_ID=a.PLAN_DETAIL_ID  )AS ZXCS" +
                 " FROM wy_checkPlan_detail a " +
                 " left join V_TaskRegion b on a.PLAN_DETAIL_ID=b.PLAN_DETAIL_ID" +
                 " left join wy_task_detail_config c on c.Code=a.JCLX" +

@@ -585,7 +585,6 @@ namespace UIDP.BIZModule.wy
                                 if (d["OPEN_ID"] != null)
                                 {
                                     //string str=MsgHelper.Msg.SendMsg(url, d["OPEN_ID"].ToString(), jsondata, Configuration.GetSection("template").GetSection("confirm").Value).Result;
-                                    
                                     Task.Run(async () =>
                                     {
                                         string str=await MsgHelper.Msg.SendMsg(url, d["OPEN_ID"].ToString(), jsondata, Configuration.GetSection("template").GetSection("confirm").Value);
@@ -612,7 +611,6 @@ namespace UIDP.BIZModule.wy
                                         string str=await MsgHelper.Msg.SendMsg(url, d["OPEN_ID"].ToString(), jsondata, Configuration.GetSection("template").GetSection("WaterAndEleNotice").Value);
                                         db.InsertLog(str, "水电请求");
                                     });
-                                    
                                 }
                             }
                         };
