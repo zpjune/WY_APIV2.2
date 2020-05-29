@@ -28,7 +28,7 @@ namespace UIDP.ODS.wy
 
         public string CreateRegionDirector(Dictionary<string,object> d)
         {
-            string sql = "INSERT INTO wy_region_director(RD_ID,SSQY,FZR,MOBILE,CJR,CJSJ,IS_DELETE)VALUES(";
+            string sql = "INSERT INTO wy_region_director(RD_ID,SSQY,FZR,MOBILE,CJR,CJSJ,IS_DELETE,WX_OPEN_ID)VALUES(";
             sql += GetSqlStr(Guid.NewGuid());
             sql += GetSqlStr(d["SSQY"]);
             sql += GetSqlStr(d["FZR"]);
@@ -36,7 +36,7 @@ namespace UIDP.ODS.wy
             sql += GetSqlStr(d["userId"]);
             sql += GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
             sql += GetSqlStr(0,1);
-            //sql+= " (SELECT WX_OPEN_ID FROM wy_region_director WHERE MOBILE=')"
+            sql += "(select * from(SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE"] + "')t LIMIT 1),";
             sql = sql.TrimEnd(',') + ")";
             return db.ExecutByStringResult(sql);
         }
@@ -48,6 +48,7 @@ namespace UIDP.ODS.wy
             sql += "MOBILE=" + GetSqlStr(d["MOBILE"]);
             sql += "BJR=" + GetSqlStr(d["userId"]);
             sql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
+            sql += "WX_OPEN_ID=(select * from(SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE"] + "')t LIMIT 1),";
             sql = sql.TrimEnd(',');
             sql += " WHERE RD_ID='" + d["RD_ID"] + "'";
             return db.ExecutByStringResult(sql);

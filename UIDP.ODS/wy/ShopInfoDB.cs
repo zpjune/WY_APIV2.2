@@ -132,7 +132,7 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += GetSqlStr(d["XFBZJ"],1);
                 ShopInfoSql += GetSqlStr(d["XFBZJJFSJ"]);
                 ShopInfoSql += GetSqlStr(d["XFBZJTFSJ"]);
-                ShopInfoSql += "(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t),";
+                ShopInfoSql += "(select * FROM (SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t),";
                 ShopInfoSql += GetSqlStr(d["WYBZJ"], 1);
                 ShopInfoSql += GetSqlStr(d["WYBZJJFSJ"]);
                 ShopInfoSql += GetSqlStr(d["WYBZJTFSJ"]);
@@ -159,7 +159,7 @@ namespace UIDP.ODS.wy
                     ShopInfoSql += GetSqlStr(SUBLET_ID);
                     //转租语句
                     SuletSql = "INSERT INTO wy_shopinfo(CZ_SHID,JYNR,ZHXM,ZHXB,SFZH,MOBILE_PHONE,IS_SUBLET,TELEPHONE,E_MAIL," +
-                      "IS_PASS,CJR,CJSJ,SHOP_NAME,SHOPBH,ZHLX,IS_DELETE,FWID,OPEN_ID)values(";
+                      "IS_PASS,CJR,CJSJ,SHOP_NAME,SHOPBH,ZHLX,IS_DELETE,FWID,OPEN_ID,SHOP_STATUS)values(";
                     SuletSql += GetSqlStr(SUBLET_ID);
                     SuletSql += GetSqlStr(d["JYNR1"]);
                     SuletSql += GetSqlStr(d["ZHXM1"]);
@@ -177,7 +177,8 @@ namespace UIDP.ODS.wy
                     SuletSql += GetSqlStr(d["ZHLX1"], 1);
                     SuletSql += GetSqlStr(0, 1);
                     SuletSql += GetSqlStr(d["FWID"]);
-                    SuletSql+= "(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t),";
+                    SuletSql+= "(select * FROM (SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t),";
+                    SuletSql += GetSqlStr(5, 1);
                     SuletSql = SuletSql.TrimEnd(',') + ")";
                     list.Add(SuletSql);
                 }
@@ -204,7 +205,7 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += GetSqlStr(d["XFBZJ"], 1);
                 ShopInfoSql += GetSqlStr(d["XFBZJJFSJ"]);
                 ShopInfoSql += GetSqlStr(d["XFBZJTFSJ"]);
-                ShopInfoSql += "(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t),";
+                ShopInfoSql += "(select * FROM (SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t),";
                 ShopInfoSql += GetSqlStr(d["WYBZJ"], 1);
                 ShopInfoSql += GetSqlStr(d["WYBZJJFSJ"]);
                 ShopInfoSql += GetSqlStr(d["WYBZJTFSJ"]);
@@ -287,7 +288,7 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += "XFBZJ="+GetSqlStr(d["XFBZJ"], 1);
                 ShopInfoSql += "XFBZJJFSJ="+GetSqlStr(d["XFBZJJFSJ"]);
                 ShopInfoSql += "XFBZJTFSJ=" + GetSqlStr(d["XFBZJTFSJ"]);
-                ShopInfoSql += "OPEN_ID=(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t),";
+                ShopInfoSql += "OPEN_ID=(select * FROM (SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t),";
                 ShopInfoSql += "WYBZJ=" + GetSqlStr(d["WYBZJ"], 1);
                 ShopInfoSql += "WYBZJJFSJ=" + GetSqlStr(d["WYBZJJFSJ"]);
                 ShopInfoSql += "WYBZJTFSJ=" + GetSqlStr(d["WYBZJTFSJ"]);
@@ -322,7 +323,7 @@ namespace UIDP.ODS.wy
                         SuletSql += "SHOP_NAME=" + GetSqlStr(d["SHOP_NAME1"]);
                         SuletSql += "SHOPBH=" + GetSqlStr(d["SHOPBH1"]);
                         SuletSql += "ZHLX=" + GetSqlStr(d["ZHLX1"], 1);
-                        SuletSql += "OPEN_ID=(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t),";
+                        SuletSql += "OPEN_ID=(select * FROM (SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t),";
                         SuletSql = SuletSql.TrimEnd(',') + " WHERE CZ_SHID='" + d["CZ_SHID1"] + "'";
                     }
                     else
@@ -346,7 +347,7 @@ namespace UIDP.ODS.wy
                         SuletSql += GetSqlStr(d["SHOPBH1"]);
                         SuletSql += GetSqlStr(d["ZHLX1"], 1);
                         SuletSql += GetSqlStr(0, 1);
-                        SuletSql += "(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t)";
+                        SuletSql += "(select * FROM (SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t)";
                         SuletSql = SuletSql.TrimEnd(',') + ")";
                     }
                     list.Add(SuletSql);
@@ -379,7 +380,7 @@ namespace UIDP.ODS.wy
                 ShopInfoSql += "XFBZJ=" + GetSqlStr(d["XFBZJ"], 1);
                 ShopInfoSql += "XFBZJJFSJ=" + GetSqlStr(d["XFBZJJFSJ"]);
                 ShopInfoSql += "XFBZJTFSJ=" + GetSqlStr(d["XFBZJTFSJ"]);
-                ShopInfoSql += "OPEN_ID=(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t) ,";
+                ShopInfoSql += "OPEN_ID=(select * FROM (SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE_PHONE"] + "' LIMIT 1)t) ,";
                 ShopInfoSql += "WYBZJ=" + GetSqlStr(d["WYBZJ"], 1);
                 ShopInfoSql += "WYBZJJFSJ=" + GetSqlStr(d["WYBZJJFSJ"]);
                 ShopInfoSql += "WYBZJTFSJ=" + GetSqlStr(d["WYBZJTFSJ"]);
@@ -466,7 +467,7 @@ namespace UIDP.ODS.wy
             NewShopInfoSql += GetSqlStr(d["XFBZJ1"], 1);
             NewShopInfoSql += GetSqlStr(d["XFBZJJFSJ1"]);
             NewShopInfoSql += GetSqlStr(d["XFBZJTFSJ1"]);
-            NewShopInfoSql += "(select * FROM (SELECT OPEN_ID from wy_shopinfo where MOBILE_PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t),";
+            NewShopInfoSql += "(select * FROM (SELECT OPENID FROM v_allusers WHERE PHONE='" + d["MOBILE_PHONE1"] + "' LIMIT 1)t),";
             NewShopInfoSql += GetSqlStr(d["WYBZJ1"], 1);
             NewShopInfoSql += GetSqlStr(d["WYBZJJFSJ1"]);
             NewShopInfoSql += GetSqlStr(d["WYBZJTFSJ1"]);
@@ -504,7 +505,7 @@ namespace UIDP.ODS.wy
             string sql = "select a.*,b.FWBH,b.FWMC,c.Name from wy_shopinfo a " +
                 " left join wy_houseinfo b on a.FWID=b.FWID AND b.IS_DELETE=0" +
                 " left join tax_dictionary c on b.LSFGS=c.Code AND c.ParentCode='LSFGS'" +
-                " where a.IS_DELETE=0 AND IS_SUBLET!=3";
+                " where a.IS_DELETE=0";
             if (SHOP_STATUS != 0)
             {
                 sql += " AND a.SHOP_STATUS=" + SHOP_STATUS;
@@ -593,7 +594,7 @@ namespace UIDP.ODS.wy
                     list.Add(UpdateHouseInfo);
                     string ShopSql = "INSERT INTO wy_shopinfo(CZ_SHID,JYNR,ZHXM,ZHXB,SFZH,MOBILE_PHONE," +
                         "IS_SUBLET,TELEPHONE,E_MAIL,IS_PASS,IS_DELETE,SHOP_NAME,FWID,SHOPBH,LEASE_ID,FEE_ID,ZHLX,SHOP_STATUS," +
-                        "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,WYBZJ,WYBZJJFSJ,WYBZJTFSJ)VALUES(";
+                        "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,WYBZJ,WYBZJJFSJ,WYBZJTFSJ,OPEN_ID)VALUES(";
                     ShopSql += GetSqlStr(CZ_SHID);
                     ShopSql += GetSqlStr(dr["经营内容"]);
                     ShopSql += GetSqlStr(dr["租户姓名"]);
@@ -628,6 +629,7 @@ namespace UIDP.ODS.wy
                     ShopSql += GetSqlStr(dr["违约保证金"], 1);
                     ShopSql += GetSqlStr(dr["违约保证金缴费时间"],2);
                     ShopSql += GetSqlStr(dr["违约保证金退费时间"],2);
+                    ShopSql += "(select * from(SELECT OPENID FROM v_allusers WHERE PHONE='" + dr["手机号码"] + "')t LIMIT 1),";
                     ShopSql = ShopSql.TrimEnd(',') + ")";
                     list.Add(ShopSql);
                     string FeeSql = "INSERT INTO wy_RopertyCosts(FEE_ID,WYJFFS,WYJZSJ,WYJZ,IS_DELETE,WYDJ)VALUES(";
@@ -695,7 +697,7 @@ namespace UIDP.ODS.wy
                     list.Add(UpdateHouseInfo);
                     string ShopSql = "INSERT INTO wy_shopinfo(CZ_SHID,JYNR,ZHXM,ZHXB,SFZH,MOBILE_PHONE," +
                         "IS_SUBLET,SUBLET_ID,TELEPHONE,E_MAIL,IS_PASS,IS_DELETE,SHOP_NAME,FWID,SHOPBH,FEE_ID,ZHLX,SHOP_STATUS," +
-                        "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,WYBZJ,WYBZJJFSJ,WYBZJTFSJ)VALUES(";
+                        "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,WYBZJ,WYBZJJFSJ,WYBZJTFSJ,OPEN_ID)VALUES(";
                     ShopSql += GetSqlStr(CZ_SHID);
                     ShopSql += GetSqlStr(dr["经营内容"]);
                     ShopSql += GetSqlStr(dr["租户姓名"]);
@@ -720,7 +722,7 @@ namespace UIDP.ODS.wy
                         ShopSql += GetSqlStr(1, 1);
                         ShopSql += GetSqlStr(SUBLET_ID);
                         string SubletSql = "INSERT INTO wy_shopinfo(CZ_SHID,JYNR,ZHXM,ZHXB,SFZH,MOBILE_PHONE," +
-                        "IS_SUBLET,TELEPHONE,E_MAIL,IS_DELETE,SHOP_NAME,FWID,SHOPBH,ZHLX,SHOP_STATUS)VALUES(";
+                        "IS_SUBLET,TELEPHONE,E_MAIL,IS_DELETE,SHOP_NAME,FWID,SHOPBH,ZHLX,SHOP_STATUS,OPEN_ID)VALUES(";
                         SubletSql += GetSqlStr(SUBLET_ID);
                         SubletSql += GetSqlStr(dr["转租经营内容"]);
                         SubletSql += GetSqlStr(dr["转租姓名"]);
@@ -743,7 +745,8 @@ namespace UIDP.ODS.wy
                         SubletSql += GetSqlStr(FWdr[0]["FWID"]);
                         SubletSql += GetSqlStr(dr["转租商户编号"]);
                         SubletSql += GetSqlStr(1, 1);
-                        SubletSql += GetSqlStr(3, 1);
+                        SubletSql += GetSqlStr(5, 1);
+                        SubletSql += "(select * from(SELECT OPENID FROM v_allusers WHERE PHONE='" + dr["转租手机号码"] + "')t LIMIT 1),";
                         SubletSql = SubletSql.TrimEnd(',') + ")";
                         list.Add(SubletSql);
 
@@ -767,6 +770,7 @@ namespace UIDP.ODS.wy
                     ShopSql += GetSqlStr(dr["违约保证金"], 1);
                     ShopSql += GetSqlStr(dr["违约保证金缴费时间"], 2);
                     ShopSql += GetSqlStr(dr["违约保证金退费时间"], 2);
+                    ShopSql += "(select * from(SELECT OPENID FROM v_allusers WHERE PHONE='" + dr["手机号码"] + "')t LIMIT 1),";
                     ShopSql = ShopSql.TrimEnd(',') + ")";
                     list.Add(ShopSql);
                     string FeeSql = "INSERT INTO wy_RopertyCosts(FEE_ID,WYJFFS,WYJZSJ,WYJZ,IS_DELETE,WYDJ)VALUES(";
