@@ -700,8 +700,8 @@ namespace UIDP.ODS.wy
                         "ZXYJ,ZXYJJFSJ,ZXYJTFSJ,XFBZJ,XFBZJJFSJ,XFBZJTFSJ,WYBZJ,WYBZJJFSJ,WYBZJTFSJ,OPEN_ID)VALUES(";
                     ShopSql += GetSqlStr(CZ_SHID);
                     ShopSql += GetSqlStr(dr["经营内容"]);
-                    ShopSql += GetSqlStr(dr["租户姓名"]);
-                    if (dr["租户性别"].ToString() == "女")
+                    ShopSql += GetSqlStr(dr["商户姓名"]);
+                    if (dr["商户性别"].ToString() == "女")
                     {
                         ShopSql += GetSqlStr(0, 1);
 

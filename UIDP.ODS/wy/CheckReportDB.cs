@@ -170,7 +170,7 @@ namespace UIDP.ODS.wy
                 " WHERE 1=1 " +
                 " {0}" +
                 " GROUP BY b.FZR,MONTH ( a.JCSJ ),YEAR ( a.JCSJ ),RD_ID,WX_OPEN_ID" +
-                " ORDER BY FZR,YEAR ( a.JCSJ ),MONTH ( a.JCSJ )";
+                " ORDER BY WX_OPEN_ID,FZR,YEAR ( a.JCSJ ),MONTH ( a.JCSJ )";
             string WhereCondition = string.Empty;//查询条件
             if (type == 0)//年度查询
             {
@@ -206,7 +206,7 @@ namespace UIDP.ODS.wy
 
         public DataTable WorkloadStatisticsDetail(string RD_ID,string yyyy,string mon)
         {
-            string sql = "select d.RWBH,d.RWMC,c.FWBH,c.FWMC,a.JCSJ," +
+            string sql = "select d.RWBH,d.RWMC,c.FWBH,c.FWMC,a.JCSJ,b.WX_OPEN_ID," +
                 " (CASE a.JCJG WHEN 0 THEN '不合格' WHEN 1 THEN '合格' WHEN 2 THEN '复查不合格' WHEN 3 THEN '复查合格' END)AS JCJG," +
                 " (CASE WHEN a.JCSJ BETWEEN d.RWKSSJ AND d.RWJSSJ THEN '否' ELSE '是' END ) as  overdue" +
                 " FROM wy_check_result a" +

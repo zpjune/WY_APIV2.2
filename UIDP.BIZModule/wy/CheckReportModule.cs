@@ -154,7 +154,7 @@ namespace UIDP.BIZModule.wy
             return r;
         }
 
-        public Dictionary<string, object> WorkloadStatisticsDetail(string RD_ID, string yyyy, string mon)
+        public Dictionary<string, object> WorkloadStatisticsDetail(string RD_ID, string yyyy, string mon,int page,int limit)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
@@ -164,7 +164,7 @@ namespace UIDP.BIZModule.wy
                 {
                     r["code"] = 2000;
                     r["message"] = "成功";
-                    r["items"] = dt;
+                    r["items"] = KVTool.GetPagedTable(dt, page, limit);
                     r["total"] = dt.Rows.Count;
                 }
                 else

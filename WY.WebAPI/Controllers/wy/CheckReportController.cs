@@ -73,8 +73,8 @@ namespace WY.WebAPI.Controllers.wy
         /// <param name="mon">月</param>
         /// <returns></returns>
         [HttpGet("WorkloadStatisticsDetail")]
-        public IActionResult WorkloadStatisticsDetail(string RD_ID, string yyyy, string mon) =>
-            Ok(CRM.WorkloadStatisticsDetail(RD_ID, yyyy, mon));
+        public IActionResult WorkloadStatisticsDetail(string RD_ID, string yyyy, string mon,int page,int limit) =>
+            Ok(CRM.WorkloadStatisticsDetail(RD_ID, yyyy, mon,page,limit));
 
         /// <summary>
         /// 商铺统计报表查询
