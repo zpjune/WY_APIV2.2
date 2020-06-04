@@ -598,7 +598,7 @@ namespace UIDP.ODS.wy
                     ShopSql += GetSqlStr(CZ_SHID);
                     ShopSql += GetSqlStr(dr["经营内容"]);
                     ShopSql += GetSqlStr(dr["租户姓名"]);
-                    if (dr["租户性别"].ToString() == "女")
+                    if (dr["租户性别"].ToString() == "男")
                     {
                         ShopSql += GetSqlStr(0, 1);
                     }
@@ -701,7 +701,7 @@ namespace UIDP.ODS.wy
                     ShopSql += GetSqlStr(CZ_SHID);
                     ShopSql += GetSqlStr(dr["经营内容"]);
                     ShopSql += GetSqlStr(dr["商户姓名"]);
-                    if (dr["商户性别"].ToString() == "女")
+                    if (dr["商户性别"].ToString() == "男")
                     {
                         ShopSql += GetSqlStr(0, 1);
 
@@ -726,7 +726,7 @@ namespace UIDP.ODS.wy
                         SubletSql += GetSqlStr(SUBLET_ID);
                         SubletSql += GetSqlStr(dr["转租经营内容"]);
                         SubletSql += GetSqlStr(dr["转租姓名"]);
-                        if (dr["转租性别"].ToString() == "女")
+                        if (dr["转租性别"].ToString() == "男")
                         {
                             SubletSql += GetSqlStr(0, 1);
 
@@ -776,7 +776,7 @@ namespace UIDP.ODS.wy
                     string FeeSql = "INSERT INTO wy_RopertyCosts(FEE_ID,WYJFFS,WYJZSJ,WYJZ,IS_DELETE,WYDJ)VALUES(";
                     FeeSql += GetSqlStr(FEE_ID);
                     FeeSql += GetSqlStr(DicTable.Select("Name='" + dr["物业缴纳方式"] + "'")[0]["Code"]);
-                    FeeSql += GetSqlStr(dr["物业基准日期"]);
+                    FeeSql += GetSqlStr(dr["物业基准日期"],2);
                     FeeSql += GetSqlStr(Convert.ToDecimal(dr["物业费标准（元/平/月）"]) * Convert.ToDecimal(FWdr[0]["JZMJ"]), 1);
                     FeeSql += GetSqlStr(0, 1);
                     FeeSql += GetSqlStr(dr["物业费标准（元/平/月）"], 1);
