@@ -217,7 +217,13 @@ namespace UIDP.ODS.wy
                 " ORDER BY RWBH";
             return db.GetDataTable(sql);
         }
-
+        /***
+         * 房屋检查统计：
+         * 查询逻辑：1.首先去检查明细配置表去查询出所有的检查大类CODE
+         * 2.通过程序将查询的列拼出来，如果检查结果为0就是不合格数量+1。
+         * 3.主查询需要关联房屋和检查人，如果这两表内有置为删除状态的数据则不统计。
+         * 4.关联两次任务明细配置表，找到他们的检查大类。
+         ***/
         public DataSet ShopCheckSummary(string SSQY,string FWBH,string FWMC,string date)
         {
             string MainSql = "select a.FWBH,a.FWMC {0}" +
