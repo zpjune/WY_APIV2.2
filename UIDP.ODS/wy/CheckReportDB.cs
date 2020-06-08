@@ -151,6 +151,11 @@ namespace UIDP.ODS.wy
         /// <param name="FZR">负责人姓名</param>
         /// <param name="type">报表类型 0年度 1月度</param>
         /// <returns></returns>
+        /***
+         *查询逻辑如下：
+         * 1.根据系统内检查人的OPEN_ID、年份月份进行分组查询，统计出他们在一年内的总计检查次数。
+         * 2.还需要查询检查人的超期检查次数，通过子查询实现。
+         ***/
         public DataTable WorkloadStatistics(string date,string FZR,int type=0)
         {
             string sql = "SELECT RD_ID,FZR,count( * ) AS JCCS,MONTH ( a.JCSJ ) AS mon,YEAR ( a.JCSJ ) AS yyyy,WX_OPEN_ID," +
@@ -159,10 +164,10 @@ namespace UIDP.ODS.wy
                 " JOIN wy_check_task d ON c.TASK_ID = d.TASK_ID" +
                 " JOIN wy_region_director e ON c.JCR=e.WX_OPEN_ID" +
                 " WHERE !( c.JCSJ BETWEEN d.RWKSSJ AND d.RWJSSJ)" +
-                //子查询结束
                 " AND e.RD_ID = b.RD_ID" +
                 " AND MONTH(c.JCSJ)=mon" +
                 " AND YEAR(c.JCSJ)=yyyy ) AS overdue" +
+                //子查询结束
                 " FROM wy_check_result a" +
                 " JOIN wy_region_director b ON a.JCR = b.WX_OPEN_ID" +
                 " JOIN wy_houseinfo c ON c.FWID=a.FWID" +
