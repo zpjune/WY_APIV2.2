@@ -606,9 +606,9 @@ namespace UIDP.BIZModule
                     }
                     if (rows.Length == 0)
                     {
-                        StringBuilder sbOrgUser = new StringBuilder("insert into ts_uidp_org_user(ORG_ID,USER_ID)values");
+                        StringBuilder sbOrgUser = new StringBuilder("insert into ts_uidp_org_user(ORG_ID,USER_ID)values(");
                         string id = Guid.NewGuid().ToString();
-                        sbOrgUser.Append("('" + dt.Rows[i]["组织机构编码"].ToString().Trim() + "','" + id + "')");
+                        sbOrgUser.Append("(SELECT ORG_ID FROM ts_uidp_org where ORG_CODE='" + dt.Rows[i]["组织机构编码"].ToString().Trim() + "'),'" + id + "')");
                         list.Add(sbOrgUser.ToString());
                         StringBuilder sb = new StringBuilder(" INSERT INTO ts_uidp_userinfo(USER_ID,AUTHENTICATION_TYPE,USER_DOMAIN,USER_TYPE,USER_PASS,USER_NAME,USER_CODE,USER_SEX,PHONE_OFFICE,PHONE_MOBILE," +
                     "USER_EMAIL,FLAG,REG_TIME,WX_OPEN_ID,REMARK) values ");
