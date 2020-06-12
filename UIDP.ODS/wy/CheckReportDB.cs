@@ -36,7 +36,7 @@ namespace UIDP.ODS.wy
             }
             if (!string.IsNullOrEmpty(FWBH))
             {
-                sql += " AND e.FWBH='" + FWBH + "'";
+                sql += " AND f.FWBH='" + FWBH + "'";
             }
             if (!string.IsNullOrEmpty(RWMC))
             {
@@ -52,7 +52,7 @@ namespace UIDP.ODS.wy
                 sql += " AND EXISTS (SELECT DISTINCT m.* FROM wy_check_result_detail k" +
                     " JOIN wy_task_detail_config l ON k.DETAIL_CODE=l.Code" +
                     " JOIN wy_task_detail_config m ON l.ParentID=m.ID " +
-                    " WHERE m.ID='" + DLID + "' AND k.RESULT_ID=a.RESULT_ID)";
+                    " WHERE m.ID='" + DLID + "' AND k.RESULT_ID=a.RESULT_ID AND k.CHECK_DETAIL_RESULT=0)";
             }
             sql += " GROUP BY a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,f.FWMC,g.ZHXM,a.RESULT_ID,j.Name,a.JCCS,a.IS_REVIEW";
             sql += " ORDER BY b.RWBH,j.Name";
@@ -126,7 +126,7 @@ namespace UIDP.ODS.wy
                 CheckResult += " AND EXISTS (SELECT DISTINCT m.* FROM wy_check_result_detail k" +
                     " JOIN wy_task_detail_config l ON k.DETAIL_CODE=l.Code" +
                     " JOIN wy_task_detail_config m ON l.ParentID=m.ID " +
-                    " WHERE m.ID='" + DLID + "' AND k.RESULT_ID=a.RESULT_ID)";
+                    " WHERE m.ID='" + DLID + "' AND k.RESULT_ID=a.RESULT_ID AND k.CHECK_DETAIL_RESULT=0)";
             }
             CheckResult += " GROUP BY a.JCJG,a.JCSJ,i.FZR,b.RWMC,b.RWBH,f.FWBH,g.ZHXM,a.RESULT_ID,j.Name,a.JCCS,a.IS_REVIEW";
             // CheckResult += " ORDER BY b.RWBH,j.Name";

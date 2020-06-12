@@ -99,7 +99,7 @@ namespace WY.WebAPI.Controllers.wy
         /// <param name="RECORD_ID"></param>
         /// <returns></returns>
         [HttpGet("ConfirmFee")]
-        public IActionResult ConfirmFee(string RECORD_ID,int JFLX,string JFJE) => Ok(FR.ConfirmFee(RECORD_ID,JFLX,JFJE));
+        public IActionResult ConfirmFee(string RECORD_ID,int JFLX,string JFJE,string GMSL) => Ok(FR.ConfirmFee(RECORD_ID,JFLX,JFJE,GMSL));
 
         /// <summary>
         /// 确认收据
@@ -115,6 +115,12 @@ namespace WY.WebAPI.Controllers.wy
         /// <returns></returns>
         [HttpPost("PayOff")]
         public IActionResult PayOff([FromBody]JArray value) => Ok(FR.PayOff(value.ToObject<List<Dictionary<string, object>>>()));
+        /// <summary>
+        /// 获取水单价
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetPER_WATER_PRICE")]
+        public IActionResult GetPER_WATER_PRICE() => Ok(FR.GetPER_WATER_PRICE());
         /// <summary>
         /// 导出缴费通知单功能
         /// </summary>

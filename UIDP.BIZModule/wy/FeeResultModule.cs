@@ -197,7 +197,7 @@ namespace UIDP.BIZModule.wy
                         if (datetime.AddMonths(MonthNum) > JZR)
                         {
                             string sql = "INSERT INTO wy_pay_record" +
-                                "(RECORD_ID,JFLX,FWID,JFJE,JFZT,SFTZ,JFCS,YXQS,YXQZ,CREATE_TIME,CZ_SHID,OPEN_ID,CONFIRM_RECIVEMONEY,FEE_ID,WYDJ)VALUES(";
+                                "(RECORD_ID,JFLX,FWID,JFJE,JFZT,SFTZ,JFCS,YXQS,YXQZ,CREATE_TIME,CZ_SHID,OPEN_ID,CONFIRM_RECIVEMONEY,FEE_ID,WYDJ,REMARK)VALUES(";
                             sql += GetSqlStr(Guid.NewGuid());
                             sql += GetSqlStr(0, 1);//物业费
                             sql += GetSqlStr(dr["FWID"]);
@@ -213,6 +213,7 @@ namespace UIDP.BIZModule.wy
                             sql += GetSqlStr(0, 1);
                             sql += GetSqlStr(dr["FEE_ID"]);
                             sql += GetSqlStr(dr["WYDJ"],1);
+                            sql += GetSqlStr(dr["REMARK"]);
                             sql = sql.TrimEnd(',') + ")";
                             list.Add(sql);
                         }
@@ -246,7 +247,7 @@ namespace UIDP.BIZModule.wy
                     if (datetime.AddMonths(MonthNum) > JZR)
                     {
                         string sql = "INSERT INTO wy_pay_record" +
-                               "(RECORD_ID,JFLX,FWID,JFJE,JFZT,SFTZ,JFCS,YXQS,YXQZ,CREATE_TIME,CZ_SHID,OPEN_ID,CONFIRM_RECIVEMONEY,FEE_ID,WYDJ)VALUES(";
+                               "(RECORD_ID,JFLX,FWID,JFJE,JFZT,SFTZ,JFCS,YXQS,YXQZ,CREATE_TIME,CZ_SHID,OPEN_ID,CONFIRM_RECIVEMONEY,FEE_ID,WYDJ,REMARK)VALUES(";
                         sql += GetSqlStr(Guid.NewGuid());
                         sql += GetSqlStr(0, 1);//物业费
                         sql += GetSqlStr(dr["FWID"]);
@@ -262,6 +263,7 @@ namespace UIDP.BIZModule.wy
                         sql += GetSqlStr(0, 1);
                         sql += GetSqlStr(dr["FEE_ID"]);
                         sql += GetSqlStr(dr["WYDJ"], 1);
+                        sql += GetSqlStr(dr["REMARK"]);
                         sql = sql.TrimEnd(',') + ")";
                         list.Add(sql);
                     }
@@ -409,12 +411,12 @@ namespace UIDP.BIZModule.wy
             return r;
         }
 
-        public Dictionary<string, object> ConfirmFee(string RECORD_ID, int JFLX,string JFJE)
+        public Dictionary<string, object> ConfirmFee(string RECORD_ID, int JFLX,string JFJE,string GMSL)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                string b = db.ConfirmFee(RECORD_ID,JFLX,JFJE);
+                string b = db.ConfirmFee(RECORD_ID,JFLX,JFJE,GMSL);
                 if (b=="")
                 {
                     r["message"] = "成功！";
@@ -501,6 +503,35 @@ namespace UIDP.BIZModule.wy
             try
             {
                 DataTable dt = db.GetFeeResult("", "", "", JFSTATUS);
+                if (dt.Rows.Count > 0)
+                {
+                    r["message"] = "成功！";
+                    r["total"] = dt.Rows.Count;
+                    r["items"] = dt;
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["message"] = "成功！,但是没有数据!";
+                    r["total"] = 0;
+                    r["code"] = 2000;
+                }
+            }
+            catch (Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return r;
+        }
+
+        public Dictionary<string, object> GetPER_WATER_PRICE()
+        {
+
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.GetPER_WATER_PRICE();
                 if (dt.Rows.Count > 0)
                 {
                     r["message"] = "成功！";

@@ -77,13 +77,13 @@ namespace UIDP.ODS.wy
             //    " JOIN wy_RopertyCosts c ON b.FEE_ID=c.FEE_ID AND c.IS_DELETE=0" +
             //    " LEFT JOIN wy_shopinfo d ON b.SUBLET_ID=d.CZ_SHID AND d.IS_DELETE=0 AND b.IS_SUBLET=1" +
             //    " LEFT JOIN V_pay_record e ON a.FWID= e.FWID AND e.JFLX=0";
-            string sql = "SELECT FWID,CZ_SHID,OPEN_ID,FEE_ID,WYJFFS,WYJZSJ,WYJZ,JFZT,YXQS,YXQZ,recordFEE_ID,WYDJ," +
+            string sql = "SELECT FWID,CZ_SHID,OPEN_ID,FEE_ID,WYJFFS,WYJZSJ,WYJZ,REMARK,JFZT,YXQS,YXQZ,recordFEE_ID,WYDJ," +
                 " (CASE WHEN FEE_ID=recordFEE_ID THEN 1 ELSE 0 END ) AS  IS_CHANGEUSER" +
                 " FROM " +
                 " (SELECT a.FWID," +
                 " ( CASE WHEN d.CZ_SHID IS NOT NULL THEN d.CZ_SHID ELSE b.CZ_SHID END ) AS CZ_SHID," +
                 " ( CASE WHEN d.OPEN_ID IS NOT NULL THEN d.OPEN_ID ELSE b.OPEN_ID END ) AS OPEN_ID," +
-                " c.FEE_ID,c.WYJFFS,c.WYJZSJ,c.WYJZ,e.JFZT,e.YXQS,e.YXQZ,e.FEE_ID AS recordFEE_ID,c.WYDJ " +
+                " c.FEE_ID,c.WYJFFS,c.WYJZSJ,c.WYJZ,c.REMARK,e.JFZT,e.YXQS,e.YXQZ,e.FEE_ID AS recordFEE_ID,c.WYDJ " +
                 " FROM wy_houseinfo a " +
                 " JOIN wy_shopinfo b ON a.CZ_SHID= b.CZ_SHID AND b.IS_DELETE= 0 AND b.IS_PASS=1" +
                 " JOIN wy_RopertyCosts c ON b.FEE_ID= c.FEE_ID AND c.IS_DELETE= 0" +
@@ -171,19 +171,35 @@ namespace UIDP.ODS.wy
             return db.GetDataTable(sql);
         }
 
-        public string ConfirmFee(string RECORD_ID, int JFLX,string JFJE)
+        public string ConfirmFee(string RECORD_ID, int JFLX,string JFJE,string GMSL)
         {
+            List<string> sqllist = new List<string>();
             string sql = "UPDATE wy_pay_record SET JFZT=1,JFRQ='"+DateTime.Now.ToString("yyyyMMdd")+ "',PAY_WAY=0 {0}" +
                 " WHERE RECORD_ID='" + RECORD_ID + "'";
-            if (JFLX != 0)
+            if (JFLX == 0)
             {
-                sql = string.Format(sql, ",JFJE=" + JFJE);
+                sql = string.Format(sql, "");
+                
+            }
+            else if(JFLX==2)
+            {
+                sql = string.Format(sql, ",JFJE=" + JFJE);//电费就存一个钱
+                string EleSql = "INSERT INTO wy_ele_recharge(address,cid,Cost,CreateDate)VALUES(" +
+                    "(SELECT ELE_NUMBER FROM wy_houseinfo WHERE FWID=(SELECT FWID FROM wy_pay_record WHERE RECORD_ID='" + RECORD_ID + "'))," +
+                    "(SELECT CID FROM wy_houseinfo WHERE FWID=(SELECT FWID FROM wy_pay_record WHERE RECORD_ID='" + RECORD_ID + "'))," + JFJE + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                sqllist.Add(EleSql);
             }
             else
             {
-                sql = string.Format(sql, "");
+                sql = string.Format(sql, ",SFDJ=(SELECT CONF_VALUE FROM ts_uidp_config where CONF_CODE='PER_WATER_PRICE')" +
+                    ",GMSL=" + GMSL + ",JFJE=" + GMSL + "*(SELECT CONF_VALUE FROM ts_uidp_config where CONF_CODE='PER_WATER_PRICE')");//水费存水单价，数量和计算出来的金额
+                string WaterSql = "INSERT INTO wy_w_pay(GUID,MeterID,RechargeVolume,AddAmount,CreateDate)VALUES('" + Guid.NewGuid() + "'," +
+                    "(SELECT WATER_NUMBER FROM wy_houseinfo WHERE FWID=(SELECT FWID FROM wy_pay_record WHERE RECORD_ID='" + RECORD_ID + "'))," + GMSL + ","
+                    + GMSL + "*(SELECT CONF_VALUE FROM ts_uidp_config where CONF_CODE='PER_WATER_PRICE'),'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                sqllist.Add(WaterSql);
             }
-            return db.ExecutByStringResult(sql);
+            sqllist.Add(sql);
+            return db.Executs(sqllist);
         }
 
         public string ConfirmReciveMoney(List<Dictionary<string, object>> datalist)
@@ -218,6 +234,11 @@ namespace UIDP.ODS.wy
             string sql = "INSERT INTO ts_uidp_loginfo (ACCESS_TIME,LOG_CONTENT,REMARK)values('" + DateTime.Now.ToString("yyyyMMdd") + "','" + mes +
                 " ','" + remark + "')";
             return db.ExecutByStringResult(sql);
+        }
+
+        public DataTable GetPER_WATER_PRICE()
+        {
+            return db.GetDataTable("SELECT CONF_VALUE FROM ts_uidp_config where CONF_CODE='PER_WATER_PRICE'");
         }
 
     }

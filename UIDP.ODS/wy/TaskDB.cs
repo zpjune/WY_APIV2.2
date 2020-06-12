@@ -33,7 +33,7 @@ namespace UIDP.ODS.wy
             try
             {
                 DateTime d = DateTime.Now;
-                 rwbh = d.ToString("yyyyMMdd");
+                 rwbh = d.ToString("yyyyMM");
                 string dtnow = d.ToString("yyyy-MM-dd");
                 string sql = "select count(*)+1 from wy_check_task WHERE TIMESTAMPDIFF(MONTH,CJSJ,'" + dtnow + "')=0";
                 DataTable dt = db.GetDataTable(sql);

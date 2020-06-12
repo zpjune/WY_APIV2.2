@@ -39,7 +39,7 @@ namespace WY.WebAPI.Controllers.wy
                     //double filesize = Math.Round(Convert.ToDouble(file.Length / 1024.00 / 1024.00), 2);
                     string GUID = Guid.NewGuid().ToString();
                     string filepath = @"/WY_API/UploadFiles/HouseImg/" + GUID + suffix;
-                    string filename = System.IO.Directory.GetCurrentDirectory() + filepath;
+                    string filename = (Directory.GetCurrentDirectory() + filepath).Replace("\\","/");
                     if (System.IO.File.Exists(filename))
                     {
                         System.IO.File.Delete(filename);

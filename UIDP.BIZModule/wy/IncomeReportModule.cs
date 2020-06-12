@@ -98,7 +98,7 @@ namespace UIDP.BIZModule.wy
                 {
                     workbook = new HSSFWorkbook(fs);//初始化
                     sheet = workbook.GetSheetAt(0);//获取第一个sheet页
-                    string JZMJ = ds.Tables[0].Rows[0].IsNull("JZMJ") ? "0" : ds.Tables[0].Rows[0]["JZMJ"]+"平方米";
+                    string JZMJ = ds.Tables[0].Rows[0].IsNull("JZMJ") ? "0" : Math.Round(Convert.ToDecimal(ds.Tables[0].Rows[0]["JZMJ"])*100)/100+"平方米";
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         row = sheet.GetRow(1);
@@ -131,7 +131,7 @@ namespace UIDP.BIZModule.wy
                         //物业费金额
                         row.GetCell(6).SetCellValue(d["WYF"]+"元");
                         //物业费备注（起止日期）
-                        row.GetCell(7).SetCellValue(d["YXQ"].ToString());
+                        row.GetCell(7).SetCellValue(d["REMARK"]==null||d["REMARK"].ToString()==""?d["YXQ"].ToString():d["REMARK"].ToString()+"-"+d["YXQ"].ToString());
                         Total = Convert.ToDouble(d["WYF"]);
                         i++;
                     }

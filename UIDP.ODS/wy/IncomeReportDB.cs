@@ -35,7 +35,8 @@ namespace UIDP.ODS.wy
                 " 0 AS XFBZJ," +
                 " 0 AS WYBZJ," +
                 " max(a.HOUSE_SERVICE_UNITPRICE) as HOUSE_SERVICE_UNITPRICE," +
-                " DATE_FORMAT( PAY_TIME, '%Y-%m-%d' ) AS payday" +
+                " DATE_FORMAT( PAY_TIME, '%Y-%m-%d' ) AS payday," +
+                " MAX(a.REMARK1) AS REMARK" +
                 " FROM wy_wx_pay a " +
                 " join wy_shopinfo b on a.USER_ID=b.CZ_SHID AND b.IS_DELETE=0" +
                 " WHERE PAY_TIME IS NOT NULL " +
@@ -54,7 +55,8 @@ namespace UIDP.ODS.wy
                 " 0 AS XFBZJ," +
                 " 0 AS WYBZJ," +
                 " MAX(a.WYDJ) as HOUSE_SERVICE_UNITPRICE," +
-                " DATE_FORMAT( a.JFRQ, '%Y-%m-%d' ) AS payday" +
+                " DATE_FORMAT( a.JFRQ, '%Y-%m-%d' ) AS payday," +
+                " MAX(a.REMARK) as REMARK" +
                 " FROM wy_pay_record a" +
                 " JOIN wy_shopinfo b ON a.CZ_SHID = b.CZ_SHID" +
                 " WHERE PAY_WAY = 0 " +
@@ -62,21 +64,21 @@ namespace UIDP.ODS.wy
             //装修押金sql
             string ZXYJSql = "select CZ_SHID as USER_ID,ZHXM AS USER_NAME,SHOP_NAME,SHOPBH,FWID as HOUSE_ID,0 AS WYF,0 AS SF," +
                 " SUM(case when ZXYJ IS NULL THEN 0 ELSE ZXYJ END) AS ZXYJ," +
-                " 0 AS XFBZJ,0 AS WYBZJ,0 AS HOUSE_SERVICE_UNITPRICE,DATE_FORMAT( ZXYJJFSJ, '%Y-%m-%d' ) AS payday" +
+                " 0 AS XFBZJ,0 AS WYBZJ,0 AS HOUSE_SERVICE_UNITPRICE,DATE_FORMAT( ZXYJJFSJ, '%Y-%m-%d' ) AS payday,''AS REMARK" +
                 " FROM wy_shopinfo" +
                 " WHERE ZXYJJFSJ IS NOT NULL" +
                 " GROUP BY CZ_SHID,ZHXM,SHOP_NAME,DATE_FORMAT( ZXYJJFSJ, '%Y-%m-%d' ),SHOPBH,FWID";
             string XFBZJSql = "select CZ_SHID as USER_ID,ZHXM AS USER_NAME,SHOP_NAME,SHOPBH,FWID as HOUSE_ID,0 AS WYF,0 AS SF," +
                 " 0 AS ZXYJ, " +
                 " SUM(CASE WHEN XFBZJ IS NULL THEN 0 ELSE XFBZJ END) AS XFBZJ,0 AS WYBZJ," +
-                " 0 AS HOUSE_SERVICE_UNITPRICE,DATE_FORMAT( XFBZJJFSJ, '%Y-%m-%d' ) AS payday" +
+                " 0 AS HOUSE_SERVICE_UNITPRICE,DATE_FORMAT( XFBZJJFSJ, '%Y-%m-%d' ) AS payday,''AS REMARK" +
                 " FROM wy_shopinfo" +
                 " WHERE XFBZJJFSJ IS NOT NULL " +
                 " GROUP BY CZ_SHID,ZHXM,SHOP_NAME,DATE_FORMAT( XFBZJJFSJ, '%Y-%m-%d' ),SHOPBH,FWID";
             string WYBZJSql = "select CZ_SHID as USER_ID,ZHXM AS USER_NAME,SHOP_NAME,SHOPBH,FWID as HOUSE_ID,0 AS WYF,0 AS SF," +
                 " 0 AS ZXYJ, 0 AS XFBZJ," +
                 " SUM(CASE WHEN WYBZJ IS NULL THEN 0 ELSE WYBZJ END) AS WYBZJ," +
-                " 0 AS HOUSE_SERVICE_UNITPRICE,DATE_FORMAT( WYBZJJFSJ, '%Y-%m-%d' ) AS payday" +
+                " 0 AS HOUSE_SERVICE_UNITPRICE,DATE_FORMAT( WYBZJJFSJ, '%Y-%m-%d' ) AS payday,''AS REMARK" +
                 " FROM wy_shopinfo" +
                 " WHERE WYBZJJFSJ IS NOT NULL " +
                 " GROUP BY CZ_SHID,ZHXM,SHOP_NAME,DATE_FORMAT( WYBZJJFSJ, '%Y-%m-%d' ),SHOPBH,FWID";
@@ -94,7 +96,8 @@ namespace UIDP.ODS.wy
                 " SUM( XFBZJ ) AS XFBZJ," +
                 " SUM( WYBZJ ) AS WYBZJ," +
                 " MAX(t.HOUSE_SERVICE_UNITPRICE) as HOUSE_SERVICE_UNITPRICE," +
-                " t.payday" +
+                " t.payday," +
+                " MAX(t.REMARK) as REMARK" +
                 " FROM({0})t" +
                 " GROUP BY t.USER_ID,t.USER_ID,t.USER_NAME,t.SHOP_NAME,t.payday,t.SHOPBH,t.HOUSE_ID";
             SUMSql = string.Format(SUMSql, WXIncomeSql + " UNION ALL " + RecordIncomeSql+" UNION ALL "+ZXYJSql+" UNION ALL "+XFBZJSql+" UNION ALL "+WYBZJSql);

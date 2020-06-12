@@ -42,7 +42,7 @@ namespace UIDP.ODS.wy
 
         public DataTable GetShopInfoDetail(string CZ_SHID)
         {
-            string sql = "select a.FWID,a.FWBH,a.FWMC,a.JZMJ,a.ZLWZ,b.*,c.Name,a.FWID AS OLDID,d.LEASE_ID,d.ZLKSSJ,d.ZLZZSJ,d.ZLZE,d.ZLYJ,d.ZLYS,d.ZJJFFS,e.FEE_ID,e.WYJFFS,e.WYJZSJ,e.WYJZ,e.WYDJ,g.Name AS NAME1,h.Name AS NAME2," +
+            string sql = "select a.FWID,a.FWBH,a.FWMC,a.JZMJ,a.ZLWZ,b.*,c.Name,a.FWID AS OLDID,d.LEASE_ID,d.ZLKSSJ,d.ZLZZSJ,d.ZLZE,d.ZLYJ,d.ZLYS,d.ZJJFFS,e.FEE_ID,e.WYJFFS,e.WYJZSJ,e.WYJZ,e.WYDJ,e.REMARK,g.Name AS NAME1,h.Name AS NAME2," +
                 " f.CZ_SHID AS CZ_SHID1,f.JYNR AS JYNR1,f.ZHXM AS ZHXM1,f.ZHXB AS ZHXB1,f.SFZH AS SFZH1,f.MOBILE_PHONE AS MOBILE_PHONE1,f.TELEPHONE AS TELEPHONE1,f.E_MAIL AS E_MAIL1,f.SHOPBH,f.SHOP_NAME,f.ZHLX" +
                 " from wy_houseinfo a " +
                 " join wy_shopinfo b ON a.CZ_SHID=b.CZ_SHID" +
@@ -218,7 +218,7 @@ namespace UIDP.ODS.wy
             {
                 throw new Exception("未检测到正确的用户类型！");
             }
-            FeeSql = "INSERT INTO wy_RopertyCosts (FEE_ID,WYJFFS,WYJZSJ,WYJZ,IS_DELETE,WYDJ,CZ_SHID)VALUES(";
+            FeeSql = "INSERT INTO wy_RopertyCosts (FEE_ID,WYJFFS,WYJZSJ,WYJZ,IS_DELETE,WYDJ,CZ_SHID,REMARK)VALUES(";
             FeeSql += GetSqlStr(FEE_ID);
             FeeSql += GetSqlStr(d["WYJFFS"]);
             FeeSql += GetSqlStr(d["WYJZSJ"]);
@@ -227,6 +227,7 @@ namespace UIDP.ODS.wy
             FeeSql += GetSqlStr(0, 1);
             FeeSql += GetSqlStr(d["WYDJ"], 1);
             FeeSql += GetSqlStr(CZ_SHID);
+            FeeSql += GetSqlStr(d["REMARK"]);
             FeeSql = FeeSql.TrimEnd(',') + ")";
             list.Add(FeeSql);
 
@@ -264,7 +265,7 @@ namespace UIDP.ODS.wy
                 LeaseSql += "ZJJFFS=" + GetSqlStr(d["ZJJFFS"]);
                 LeaseSql += "BJR=" + GetSqlStr(d["userId"]);
                 LeaseSql += "BJSJ=" + GetSqlStr(DateTime.Now.ToString("yyyyMMdd"));
-                
+                LeaseSql += "REMARK=" + GetSqlStr(d["REMARK"]);
                 LeaseSql = LeaseSql.TrimEnd(',') + " WHERE LEASE_ID='" + d["LEASE_ID"] + "'";
                 list.Add(LeaseSql);
                 //修改商户信息
@@ -393,6 +394,7 @@ namespace UIDP.ODS.wy
             FeeSql += "WYJZ=(SELECT JZMJ *  " + d["WYDJ"] +
                 " FROM wy_houseinfo where FWID='" + d["FWID"] + "'),";
             FeeSql += "WYDJ=" + GetSqlStr(d["WYDJ"]);
+            FeeSql += "REMARK=" + GetSqlStr(d["REMARK"]);
             FeeSql = FeeSql.TrimEnd(',') + " WHERE FEE_ID='" + d["FEE_ID"] + "'";
             list.Add(FeeSql);
 
@@ -475,7 +477,7 @@ namespace UIDP.ODS.wy
 
 
 
-            string FeeSql = "INSERT INTO wy_RopertyCosts (FEE_ID,WYJFFS,WYJZSJ,WYJZ,IS_DELETE,WYDJ)VALUES(";
+            string FeeSql = "INSERT INTO wy_RopertyCosts (FEE_ID,WYJFFS,WYJZSJ,WYJZ,IS_DELETE,WYDJ,REMARK)VALUES(";
             FeeSql += GetSqlStr(FEE_ID);
             FeeSql += GetSqlStr(d["WYJFFS1"]);
             FeeSql += GetSqlStr(d["WYJZSJ1"]);
@@ -483,6 +485,7 @@ namespace UIDP.ODS.wy
                      " FROM wy_houseinfo where FWID='" + d["FWID"] + "'),";
             FeeSql += GetSqlStr(0, 1);
             FeeSql += GetSqlStr(d["WYDJ1"], 1);
+            FeeSql += GetSqlStr(d["REMARK1"]);
             FeeSql = FeeSql.TrimEnd(',') + ")";
 
             string HouseUpdateSql = "UPDATE wy_houseinfo set CZ_SHID='" + CZ_SHID + "' WHERE FWID='" + d["FWID"] + "'";
