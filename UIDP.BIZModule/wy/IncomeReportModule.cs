@@ -123,7 +123,7 @@ namespace UIDP.BIZModule.wy
                     {
                         row = sheet.GetRow(i);
                         //费用名称
-                        row.GetCell(0).SetCellValue("物业费");
+                        row.GetCell(0).SetCellValue(d["REMARK"] == null || d["REMARK"].ToString() == "" ? "物业费":d["REMARK"].ToString());
                         //建筑面积
                         row.GetCell(2).SetCellValue(JZMJ);
                         //物业单价
@@ -131,7 +131,7 @@ namespace UIDP.BIZModule.wy
                         //物业费金额
                         row.GetCell(6).SetCellValue(d["WYF"]+"元");
                         //物业费备注（起止日期）
-                        row.GetCell(7).SetCellValue(d["REMARK"]==null||d["REMARK"].ToString()==""?d["YXQ"].ToString():d["REMARK"].ToString()+"-"+d["YXQ"].ToString());
+                        row.GetCell(7).SetCellValue(d["YXQ"].ToString());
                         Total = Convert.ToDouble(d["WYF"]);
                         i++;
                     }
